@@ -47,3 +47,6 @@ client.on("interactionCreate", async (interaction) => {
 
 client.login(process.env.DISCORD_BOT_TOKEN)
 //IUCh bin coolssss
+
+
+// hallo ich bin david und ich habe ganz tollen code geschrieben

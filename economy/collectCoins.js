@@ -52,8 +52,6 @@ module.exports = async (msg, client) => {
       });
 
       newUser.save();
-
-      msg.reply(newUser.coinAmmount.toString());
     }
   });
 };

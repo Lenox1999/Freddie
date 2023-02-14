@@ -11,30 +11,50 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Grundlegende Infos und alle Commands"),
+    .setDescription("Credits und Commands"),
 
   async execute(interaction, client) {
     var startembed = new EmbedBuilder()
-      .setAuthor({name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL()})
-      .setTitle("HELP").setDescription(`
-        **Eco Bot** von David und Niklas *für Hilfe bitte DM*!
-        › Erstellt am 13.02.2023
+      .setAuthor({
+        name: interaction.member.displayName,
+        iconURL: interaction.member.displayAvatarURL(),
+      })
+      .setTitle("HELP")
+      .setDescription(`
+        *So kann man unseren Bot beschreiben: Ein globales System um Items zu sammeln, reich zu werden, Freunde ausrauben oder halt Glückspiel zu betreiben und noch vieles mehr.*
+
+
+        **Das Ziel ist es den vorhandenen Server attraktiv zu machen und User zu Unterhalten.**
+
+        __Inklusive Features:__
         › Geld- und Levelsystem
-        › Dient zur Unterhaltung
+        › Wechselkurse
+        › Shopsystem
+        › Top 10 Listen
+        › und noch vieles mehr...
+
+        Wir sind ein Team aus 2 Mitgliedern, die nach und nach an diesen Bot arbeiten. Es sind viele Ideen und Features geplant. Dazu haben wir eine Reihe an Features schon bereit gestellt. Wir würden uns sehr über dein Feedback freuen und bei Fehlern und sonstigen Bugs gerne von euch hören!
+
+        Discord-Server: https://discord.gg/26xxXbcxfr
+        Team-Discord-Tags: Lenox#9196 und EinfachDavide#5883
     `);
 
     var firstCommands = new EmbedBuilder()
-      .setAuthor({name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL()})
+      .setAuthor({
+        name: interaction.member.displayName,
+        iconURL: interaction.member.displayAvatarURL(),
+      })
       .setTitle("Erste 10 Commands")
-      .setTitle("Commandliste").setDescription(`
-      **/help** ▸ *Du bist gerade hier*
+      .setTitle("Commandliste")
+      .setDescription(`
+      **/help** ▸ *Da bist du gerade*
       **/bal** ▸ *Infos über Burger, Streak, aktive Multiplier, Fähigkeiten*
       **/daily** ▸ *Infos über Daily Reward*
       **/level** ▸ *Infos über Level*
-      **/top10 (bal/lvl)** ▸ *zum einen: XP-Top10 und Geld Top10*
-      **/sell** ▸ *alle Burger verkaufen und Geld bekommen*
-      **/spin** ▸ *spin lotterie starten*
-      **/slots** ▸ *slots lotterie starten*
+      **/top10 (bal/lvl)** ▸ *Zum einen: XP-Top10 und Geld Top10*
+      **/sell** ▸ *Alle Burger verkaufen um Geld bekommen*
+      **/spin** ▸ *Spin starten*
+      **/slots** ▸ *Slots starten*
       `);
 
     const buttons = new ActionRowBuilder().addComponents(

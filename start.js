@@ -7,6 +7,7 @@ const {
   EmbedBuilder,
   ActivityType,
 } = require("discord.js");
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -17,6 +18,9 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
+
+const mongoose = require("mongoose");
+
 const fs = require("fs");
 
 // import functions
@@ -80,3 +84,49 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
+
+// connect MongoDB Databse - URI has to be set in .env file (without it wont work)
+(async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_DB_URI);
+    console.log("MONGO CONNECTED");
+  } catch (error) {
+    console.error(error);
+  }
+  // Database scheme for user with name, id and ammount of collected coins
+  const userScheme = new mongoose.Schema({
+    _id: String,
+    name: String,
+    coinAmmount: Number,
+  });
+
+  const User = mongoose.model("User", userScheme);
+
+  // has to be changed
+  const lalalalala = new User({
+    name: "Lenox",
+    _id: Date.now(),
+    coinAmmount: "5",
+  });
+  if (lalalalala._id == User.findById(lalalalala._id)) return;
+  console.log(lalalalala.name, lalalalala.id);
+
+  lalalalala.save();
+
+  const lol = new User({
+    name: "deine ma",
+    _id: Date.now(),
+    coinAmmount: 1234,
+  });
+
+  lol.save();
+  let query = User.findOne({ name: "Lenox" });
+  query.select("name");
+  query.exec(function (err, user) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log(user.name, user.id);
+  });
+})();

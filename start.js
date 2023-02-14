@@ -42,7 +42,7 @@ client.once("ready", () => {
   client.user.setActivity({ name: "in Arbeit..", type: ActivityType.Playing });
 });
 
-client.on("messageCreate", (msg) => collectCoins(msg, client));
+client.on("messageCreate", async (msg) => await collectCoins(msg, client));
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
@@ -101,32 +101,4 @@ client.login(process.env.DISCORD_BOT_TOKEN);
   });
 
   const User = mongoose.model("User", userScheme);
-
-  // has to be changed
-  const lalalalala = new User({
-    name: "Lenox",
-    _id: Date.now(),
-    coinAmmount: "5",
-  });
-  if (lalalalala._id == User.findById(lalalalala._id)) return;
-  console.log(lalalalala.name, lalalalala.id);
-
-  lalalalala.save();
-
-  const lol = new User({
-    name: "deine ma",
-    _id: Date.now(),
-    coinAmmount: 1234,
-  });
-
-  lol.save();
-  let query = User.findOne({ name: "Lenox" });
-  query.select("name");
-  query.exec(function (err, user) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log(user.name, user.id);
-  });
 })();

@@ -3,40 +3,43 @@ const mongoose = require("mongoose");
 const getUser = require("../util/getUser");
 
 module.exports = async (msg, client) => {
-  let ammount;
+  // define User ID as a const
   const userId = msg.member.id;
 
+  // check if the bot reacts to itself or another bot
   if (msg.member.id === client.user.id) {
     return;
   }
   if (msg.member.bot) {
     return;
   }
-
+  // get access to users document in DB
   const User = mongoose.models.User;
+  // check for eventual loading errors
   if (!User) {
-    console.log("Holy fuck");
+    console.error("DB ERROR");
     return;
   }
-
+  // looks if user is already in DB
   User.countDocuments({ _id: userId }, async (err, count) => {
     if (err) {
       console.log(err);
       return;
     }
+    // only gets executed if User is already registered
     if (count > 0) {
+      // finds user in db
       User.findOne({ _id: userId })
+        // selects coinAmmount field in User Document
         .select("coinAmmount")
         .exec((err, user) => {
           if (err) {
             console.error(err);
             return;
           }
-          ammount = user.coinAmmount + 1;
-          if (!user.coinAmmount) {
-            ammount = 1;
-          }
+          // increases coin ammount by one for each written messagen
           user.coinAmmount += 1;
+          // saving changes
           user.save((err, a) => {
             if (err) {
               console.log(err);
@@ -44,14 +47,14 @@ module.exports = async (msg, client) => {
           });
         });
       return;
-    } else {
-      const newUser = new User({
-        _id: msg.member.id,
-        name: msg.member.displayName,
-        coinAmmount: 1,
-      });
-
-      newUser.save();
     }
+    // this only gets executed if user isn't registered yet
+    const newUser = new User({
+      _id: msg.member.id,
+      name: msg.member.displayName,
+      coinAmmount: 1,
+    });
+
+    newUser.save();
   });
 };

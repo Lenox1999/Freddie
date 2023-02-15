@@ -16,12 +16,9 @@ module.exports = {
       "streak lastLoginDay dailyLastTriggered"
     );
 
-    console.log(user);
-    const currentDay = new Date().getDate();
-    const dailyLastTriggeredDay = user.lastLoginDay;
-
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();
+      user.save();
       interaction.reply(
         "Deine Daily-Streak wurde aktualisiert! Komme morgen wieder!"
       );

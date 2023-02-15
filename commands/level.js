@@ -12,13 +12,17 @@ module.exports = {
       return;
     }
     User.findOne({ _id: interaction.member.id })
-      .select("XP")
+      .select("XP lvl")
       .exec((err, user) => {
         if (err) {
           console.log(err);
           return;
         }
-        interaction.reply(`Du hast derzeit ${user.XP.toString()} XP!`);
+        interaction.reply(
+          `Du bist derzeit Level ${
+            user.lvl
+          } und hast derzeit ${user.XP.toString()} XP!`
+        );
       });
   },
 };

@@ -109,6 +109,12 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     lvl: Number,
   });
   mongoose.model("User", userScheme);
-})();
 
-// levelBuilder();
+  const Level = new mongoose.Schema({
+    _id: String,
+    levels: Object,
+  });
+  // model the Schema -> means we save it in the DB as an element to hold further lists
+  mongoose.model("levels", Level);
+  // levelBuilder();
+})();

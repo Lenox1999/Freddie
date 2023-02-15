@@ -33,7 +33,7 @@ module.exports = {
         // let streak = user.streak.toString();
         var balembed = new EmbedBuilder()
           .setColor(Colors.Aqua)
-          .setTitle("\`Dein Account\`")
+          .setTitle("\`Account\`")
           .setThumbnail(interaction.member.displayAvatarURL())
           .setDescription(`
           ・Coins **${coins}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}

@@ -48,6 +48,10 @@ module.exports = async (msg, client) => {
           } else if (isStreak === 1) {
             user.streak = 0;
           }
+          // STREAK
+
+          // every coin is worth 3 XP
+          user.XP = user.coinAmmount * 3;
 
           // setzt last login auf jetzigen Zeitpunkt
           user.lastLogin = Date.now();
@@ -71,6 +75,7 @@ module.exports = async (msg, client) => {
       abilities: [],
       items: [],
       multiplier: 0,
+      XP: 3,
     });
 
     newUser.save();

@@ -104,6 +104,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     abilities: Array,
     items: Array,
     multiplier: Number,
+    XP: Number,
   });
   mongoose.model("User", userScheme);
 })();

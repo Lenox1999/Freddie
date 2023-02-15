@@ -24,6 +24,9 @@ module.exports = async (userId, msg) => {
         if (lvlObj.levels[newLvl] > user.XP) {
           newLvl -= 1;
         }
+
+        const lvlDiff = lvlObj.levels[user.lvl] - lvlObj.levels[user.lvl + 1];
+
         console.log(newLvl);
         user.lvl = newLvl;
         user.save();

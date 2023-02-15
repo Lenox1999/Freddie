@@ -56,7 +56,7 @@ module.exports = async (msg, client) => {
           user.XP += 3;
 
           // setzt last login auf jetzigen Zeitpunkt
-          user.lastLogin = Date.now();
+          // user.lastLogin = Date.now();
           // saving changes
           user.save((err, a) => {
             if (err) {
@@ -81,6 +81,7 @@ module.exports = async (msg, client) => {
       multiplier: 1,
       XP: 3,
       lvl: 0,
+      dailyLastTriggered: 0,
     });
 
     newUser.save();

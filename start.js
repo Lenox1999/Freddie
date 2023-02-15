@@ -108,6 +108,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     multiplier: Number,
     XP: Number,
     lvl: Number,
+    dailyLastTriggered: Number,
   });
   mongoose.model("User", userScheme);
 

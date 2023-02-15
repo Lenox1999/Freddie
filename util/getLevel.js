@@ -28,14 +28,13 @@ module.exports = async (userId, msg) => {
 
         const lvlDiff = lvlObj.levels[user.lvl] - lvlObj.levels[user.lvl + 1];
 
-        console.log(newLvl);
         user.lvl = newLvl;
         user.save();
 
         var levelupembed = new EmbedBuilder()
           .setColor(Colors.Green)
           .setTitle("\`LEVEL UP\`")
-          .setThumbnail(interaction.member.displayAvatarURL())
+          .setThumbnail(msg.member.displayAvatarURL())
           .setDescription(`
           Du bist nun Level **${user.lvl}**. Mach weiter so!
           `)

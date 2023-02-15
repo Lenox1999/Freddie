@@ -54,7 +54,6 @@ module.exports = async (msg, client) => {
 
           // every coin is worth 3 XP
           user.XP += 3;
-          console.log(user.coinAmmount);
 
           // setzt last login auf jetzigen Zeitpunkt
           user.lastLogin = Date.now();
@@ -65,7 +64,6 @@ module.exports = async (msg, client) => {
             }
           });
           const level = await getLevel(userId, msg);
-          console.log(level);
         });
       return;
     }

@@ -13,20 +13,19 @@ module.exports = async (userId, msg) => {
         console.log(err);
         return;
       }
-      console.log(user);
       if (user.XP >= lvlObj.levels[user.lvl + 1]) {
-        user.lvl += 1;
+        let newLvl = Object.keys(lvlObj.levels).reduce((prev, curr) => {
+          return Math.abs(lvlObj.levels[curr] - user.XP) <
+            Math.abs(lvlObj.levels[prev] - user.XP)
+            ? curr
+            : prev;
+        });
 
-        console.log(
-          Object.keys(lvlObj.levels).reduce((prev, curr) => {
-            return Math.abs(lvlObj.levels[curr] - user.XP) <
-              Math.abs(lvlObj.levels[prev] - user.XP)
-              ? curr
-              : prev;
-          }),
-          "lol"
-        );
-
+        if (lvlObj.levels[newLvl] > user.XP) {
+          newLvl -= 1;
+        }
+        console.log(newLvl);
+        user.lvl = newLvl;
         console.log("Level ist auf gestiegen: ", user.lvl);
         user.save();
         msg.reply(`Dein Level ist auf ${user.lvl} gestiegen!`);

@@ -32,32 +32,18 @@ module.exports = async (msg, client) => {
     if (count > 0) {
       // finds user in db
       User.findOne({ _id: userId })
-        // selects coinAmmount field in User Document
-        .select("coinAmmount XP")
+        // selects burgerAmmount field in User Document
+        .select("XP burgerAmmount")
         .exec(async (err, user) => {
           if (err) {
             console.error(err);
             return;
           }
+
           // increases coin ammount by one for each written messagen
-          user.coinAmmount += 1;
+          user.burgerAmmount += 1;
 
-          // STREAK
-          // let isStreak = streakCalc(user.lastLoginDay, new Date().getDate());
-          // if (isStreak === 0) {
-          //   // nur Streak erweitern wen Tagesunterschied 1 ist und Nachricht länger als 1 Zeichen ist
-          //   msg.content.length > 1 ? (user.streak += 1) : 0;
-          // } else if (isStreak === 1) {
-          //   user.streak = 0;
-          // }
-          // STREAK
-
-          // every coin is worth 3 XP
           user.XP += 3;
-
-          // setzt last login auf jetzigen Zeitpunkt
-          // user.lastLogin = Date.now();
-          // saving changes
           user.save((err, a) => {
             if (err) {
               console.log(err);

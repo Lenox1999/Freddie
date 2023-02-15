@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 
     const user = await User.findOne(
       { _id: interaction.member.id },
-      "streak lastLoginDay dailyLastTriggered"
+      "streak lastLoginDay dailyLastTriggered coinAmmount"
     );
     if (!user) {
       let errorEmbed = new EmbedBuilder()
@@ -35,9 +35,16 @@ module.exports = {
       user.dailyLastTriggered = Date.now();
       user.streak += 1;
       user.save();
-      interaction.reply(
-        "Deine Daily-Streak wurde aktualisiert! Komme morgen wieder!"
-      );
+
+      var firststreamembed = new EmbedBuilder()
+        .setColor(Colors.DarkGreen)
+        .setTitle("\`DAILY REWARD\`")
+        .setThumbnail(interaction.member.displayAvatarURL())
+        .setDescription(
+          `*Du hast deine tägliche Belohnung abgeholt und deine erste Streak abgesahnt!*`
+        );
+
+      interaction.reply({ embeds: [firststreamembed] });
     } else if (
       Date.now() - user.dailyLastTriggered < maxDiff &&
       Date.now() - user.dailyLastTriggered > minDiff
@@ -46,15 +53,26 @@ module.exports = {
       user.lastLoginDay = new Date().getDate();
       user.dailyLastTriggered = Date.now();
       user.streak += 1;
+      await user.save();
+      let rewardedCoins = user.streak * 10;
+      user.coinAmmount += rewardedCoins;
       user.save();
-      interaction.reply(
-        "GLÜCKWUNSCH DU HAST DEINEN DAILY STREAK UM 1 VERLÄNGERT"
-      );
+
+      var nextdailyembed = new EmbedBuilder()
+        .setColor(Colors.Green)
+        .setTitle("\`DAILY REWARD\`")
+        .setThumbnail(interaction.member.displayAvatarURL())
+        .setDescription(
+          `*Du hast deine Streak um 1 Tag verlängert und bekommst **${rewardedCoins}** ${client.emojis.cache.find(
+            (emoji) => emoji.name === "coins"
+          )}*`
+        );
+
+      interaction.reply({ embeds: [nextdailyembed] });
       return;
     } else if (Date.now() - user.dailyLastTriggered < minDiff) {
       let duration = user.dailyLastTriggered + minDiff - Date.now();
-      var milliseconds = Math.floor((duration % 1000) / 100),
-        seconds = Math.floor((duration / 1000) % 60),
+      let seconds = Math.floor((duration / 1000) % 60),
         minutes = Math.floor((duration / (1000 * 60)) % 60),
         hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
@@ -63,18 +81,32 @@ module.exports = {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       let durationMsg = hours + "h " + minutes + "min " + seconds + "s";
-      interaction.reply(
-        `Sorry, du kannst deinen Streak nur einmal pro Tag verlängern. Du kannst sie frühestens in ${durationMsg} wieder verlängern`
-      );
+
+      var alreadydailyembed = new EmbedBuilder()
+        .setColor(Colors.Yellow)
+        .setTitle("\`ALREADY DAILY\`")
+        .setThumbnail(interaction.member.displayAvatarURL())
+        .setDescription(
+          `*Sorry, du hast bereits Daily benutzt, komme in **${durationMsg}** wieder um deine Streak zu verlängern!*`
+        );
+
+      interaction.reply({ embeds: [alreadydailyembed] });
       return;
     } else if (Date.now() - user.dailyLastTriggered > maxDiff) {
       user.lastLoginDay = new Date().getDate();
       user.dailyLastTriggered = Date.now();
       user.streak = 0;
       user.save();
-      interaction.reply(
-        "Sorry, du bist leider zu spät! Komme morgen wieder um sie wieder aufzunehmen"
-      );
+
+      var faildailyembed = new EmbedBuilder()
+        .setColor(Colors.Red)
+        .setTitle("\`DAILY FAIL\`")
+        .setThumbnail(interaction.member.displayAvatarURL())
+        .setDescription(
+          `*Sorry, du bist leider zu spät und hast somit deine Streak verkackt! Komme in **24h** wieder um deine Streak wiederaufzuholen!*`
+        );
+
+      interaction.reply({ embeds: [faildailyembed] });
       return;
     }
   },

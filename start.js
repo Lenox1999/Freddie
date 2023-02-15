@@ -24,7 +24,7 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 
 // import functions
-const collectCoins = require("./economy/collectCoins");
+const collectCoins = require("./economy/collect");
 const levelBuilder = require("./util/levelBuilder");
 
 client.commands = new Collection();

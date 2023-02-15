@@ -8,10 +8,11 @@ module.exports = () => {
       console.log("LvL 1 geskippt");
       continue;
     }
-    // multiplies the neccessary XP of previous level by two
+    // multiplies the neccessary XP of previous level by 1.2 and round it
     lvlObj[i] = Math.floor(lvlObj[i - 1] * 1.2);
   }
 
+  // make level a new
   const Level = new mongoose.Schema({
     levels: Object,
   });

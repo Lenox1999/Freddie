@@ -106,8 +106,9 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     items: Array,
     multiplier: Number,
     XP: Number,
+    lvl: Number,
   });
   mongoose.model("User", userScheme);
 })();
 
-levelBuilder();
+// levelBuilder();

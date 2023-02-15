@@ -25,9 +25,9 @@ module.exports = {
           return;
         }
         let ballance = user.coinAmmount.toString();
-        let streak = user.streak.toString();
+        // let streak = user.streak.toString();
         interaction.reply(
-          `Dein derzeitiger Kontostand beträgt ${ballance} Burger! Dein Streak beträgt ${streak} Tage!`
+          `Dein derzeitiger Kontostand beträgt ${ballance} Burger!`
         );
       });
   },

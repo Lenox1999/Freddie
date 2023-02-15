@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { EmbedBuilder, Colors } = require("discord.js")
 
 module.exports = async (userId, msg) => {
   const Users = mongoose.models.User;
@@ -27,7 +28,16 @@ module.exports = async (userId, msg) => {
         console.log(newLvl);
         user.lvl = newLvl;
         user.save();
-        msg.reply(`Dein Level ist auf ${user.lvl} gestiegen!`);
+
+        var levelupembed = new EmbedBuilder()
+          .setColor(Colors.Green)
+          .setTitle("\`LEVEL UP\`")
+          .setThumbnail(interaction.member.displayAvatarURL())
+          .setDescription(`
+          Du bist nun Level **${user.lvl}**. Mach weiter so!
+          `)
+
+        msg.reply({ embeds: [levelupembed] });
         return user.lvl;
       } else {
         return user.lvl;

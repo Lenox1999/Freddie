@@ -10,7 +10,6 @@ module.exports = () => {
   // create an object with levels until 1000
   for (let i = 1; i <= 1000; i++) {
     if (lvlObj[i]) {
-      console.log("LvL 1 geskippt");
       continue;
     }
     // multiplies the neccessary XP of previous level by 1.2 and round it

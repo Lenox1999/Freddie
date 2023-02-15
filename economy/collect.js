@@ -57,7 +57,7 @@ module.exports = async (msg, client) => {
     const newUser = new User({
       _id: msg.member.id,
       name: msg.member.displayName,
-      burgerAmmount: 0,
+      coinAmmount: 0,
       burgerAmmount: 1,
       streak: 0,
       lastLogin: Date.now(),

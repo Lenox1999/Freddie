@@ -71,13 +71,14 @@ module.exports = async (msg, client) => {
     const newUser = new User({
       _id: msg.member.id,
       name: msg.member.displayName,
-      coinAmmount: 1,
+      coinAmmount: 0,
+      burgerAmmount: 1,
       streak: 0,
       lastLogin: Date.now(),
       lastLoginDay: new Date().getDate(), // get day of month
       abilities: [],
       items: [],
-      multiplier: 0,
+      multiplier: 1,
       XP: 3,
       lvl: 0,
     });

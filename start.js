@@ -99,6 +99,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
+    burgerAmmount: Number,
     streak: Number,
     lastLogin: String,
     lastLoginDay: Number,

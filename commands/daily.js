@@ -18,6 +18,7 @@ module.exports = {
 
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();
+      user.streak += 1;
       user.save();
       interaction.reply(
         "Deine Daily-Streak wurde aktualisiert! Komme morgen wieder!"
@@ -36,8 +37,19 @@ module.exports = {
       );
       return;
     } else if (Date.now() - user.dailyLastTriggered < minDiff) {
+      let duration = user.dailyLastTriggered + minDiff - Date.now();
+      var milliseconds = Math.floor((duration % 1000) / 100),
+        seconds = Math.floor((duration / 1000) % 60),
+        minutes = Math.floor((duration / (1000 * 60)) % 60),
+        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      let durationMsg = hours + "h " + minutes + "min " + seconds + "s";
       interaction.reply(
-        "Sorry, du kannst deinen Streak nur einmal pro Tag verlängern"
+        `Sorry, du kannst deinen Streak nur einmal pro Tag verlängern. Du kannst sie frühestens in ${durationMsg} wieder verlängern`
       );
       return;
     } else if (Date.now() - user.dailyLastTriggered > maxDiff) {
@@ -45,7 +57,9 @@ module.exports = {
       user.dailyLastTriggered = Date.now();
       user.streak = 0;
       user.save();
-      interaction.reply("Sorry, du bist leider zu spät!");
+      interaction.reply(
+        "Sorry, du bist leider zu spät! Komme morgen wieder um sie wieder aufzunehmen"
+      );
       return;
     }
   },

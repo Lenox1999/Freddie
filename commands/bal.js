@@ -24,7 +24,7 @@ module.exports = {
             .setTitle("\`Keinen Account\`")
             .setThumbnail(interaction.member.displayAvatarURL())
             .setDescription(`Du besitzt noch keine Coins.. Schreibe eine Nachricht um Coins zu erhalten!`)
-          interaction.reply({ embeds: {notregisterembed}, ephemeral: true });
+          interaction.reply({ embeds: [notregisterembed], ephemeral: true });
           return;
         }
         let coins = user.coinAmmount.toString();
@@ -32,7 +32,7 @@ module.exports = {
         let multiplier = user.multiplier.toString();
         // let streak = user.streak.toString();
         var balembed = new EmbedBuilder()
-          .setColor(Colors.Red)
+          .setColor(Colors.Aqua)
           .setTitle("\`Dein Account\`")
           .setThumbnail(interaction.member.displayAvatarURL())
           .setDescription(`

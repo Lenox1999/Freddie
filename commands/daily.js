@@ -15,6 +15,21 @@ module.exports = {
       { _id: interaction.member.id },
       "streak lastLoginDay dailyLastTriggered coinAmmount"
     );
+    if (!user) {
+      let errorEmbed = new EmbedBuilder()
+        .setColor(Colors.Red)
+        .setTitle("\`Fehler\`")
+        .setThumbnail(interaction.member.displayAvatarURL())
+        .setDescription(
+          `
+          Du bist noch nicht registriert!
+          Schreibe eine Nachricht um dich zu registrieren.
+          Danach kannst du deinen Command ausführen!
+          `
+        )
+        interaction.reply({embeds: [errorEmbed]});
+        return;
+    }
 
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();

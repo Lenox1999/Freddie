@@ -26,7 +26,6 @@ module.exports = async (userId, msg) => {
         }
         console.log(newLvl);
         user.lvl = newLvl;
-        console.log("Level ist auf gestiegen: ", user.lvl);
         user.save();
         msg.reply(`Dein Level ist auf ${user.lvl} gestiegen!`);
         return user.lvl;

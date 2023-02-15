@@ -14,7 +14,7 @@ module.exports = () => {
       continue;
     }
     // multiplies the neccessary XP of previous level by 1.2 and round it
-    lvlObj[i] = Math.floor(lvlObj[i - 1] * 1.5);
+    lvlObj[i] = Math.floor(lvlObj[i - 1] * 1.2);
   }
 
   // make level a new Schema in MongoDB

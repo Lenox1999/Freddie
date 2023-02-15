@@ -25,6 +25,7 @@ const fs = require("fs");
 
 // import functions
 const collectCoins = require("./economy/collectCoins");
+const levelBuilder = require("./util/levelBuilder");
 
 client.commands = new Collection();
 
@@ -108,3 +109,5 @@ client.login(process.env.DISCORD_BOT_TOKEN);
   });
   mongoose.model("User", userScheme);
 })();
+
+levelBuilder();

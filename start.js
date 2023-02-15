@@ -7,6 +7,7 @@ const {
   EmbedBuilder,
   ActivityType,
 } = require("discord.js");
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -17,10 +18,14 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
+
+const mongoose = require("mongoose");
+
 const fs = require("fs");
 
 // import functions
 const collectCoins = require("./economy/collectCoins");
+const levelBuilder = require("./util/levelBuilder");
 
 client.commands = new Collection();
 
@@ -38,7 +43,7 @@ client.once("ready", () => {
   client.user.setActivity({ name: "in Arbeit..", type: ActivityType.Playing });
 });
 
-client.on("messageCreate", (msg) => collectCoins(msg, client));
+client.on("messageCreate", async (msg) => await collectCoins(msg, client));
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
@@ -80,3 +85,36 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
+
+// connect MongoDB Databse - URI has to be set in .env file (without it wont work)
+(async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_DB_URI);
+    console.log("MONGO CONNECTED");
+  } catch (error) {
+    console.error(error);
+  }
+  // Database scheme for user with name, id and ammount of collected coins
+  const userScheme = new mongoose.Schema({
+    _id: String,
+    name: String,
+    coinAmmount: Number,
+    streak: Number,
+    lastLogin: String,
+    lastLoginDay: Number,
+    abilities: Array,
+    items: Array,
+    multiplier: Number,
+    XP: Number,
+    lvl: Number,
+  });
+  mongoose.model("User", userScheme);
+
+  const Level = new mongoose.Schema({
+    _id: String,
+    levels: Object,
+  });
+  // model the Schema -> means we save it in the DB as an element to hold further lists
+  mongoose.model("levels", Level);
+  // levelBuilder();
+})();

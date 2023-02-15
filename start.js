@@ -98,7 +98,12 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
+    streak: Number,
+    lastLogin: String,
+    lastLoginDay: Number,
+    abilities: Array,
+    items: Array,
+    multiplier: Number,
   });
-
-  const User = mongoose.model("User", userScheme);
+  mongoose.model("User", userScheme);
 })();

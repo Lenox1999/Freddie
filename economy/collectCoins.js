@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const getUser = require("../util/getUser");
+const streakCalc = require("../util/streakCalc");
 
 module.exports = async (msg, client) => {
   // define User ID as a const
@@ -39,6 +39,18 @@ module.exports = async (msg, client) => {
           }
           // increases coin ammount by one for each written messagen
           user.coinAmmount += 1;
+
+          // STREAK
+          let isStreak = streakCalc(user.lastLoginDay, new Date().getDate());
+          if (isStreak === 0) {
+            // nur Streak erweitern wen Tagesunterschied 1 ist und Nachricht länger als 1 Zeichen ist
+            msg.content.length > 1 ? (user.streak += 1) : 0;
+          } else if (isStreak === 1) {
+            user.streak = 0;
+          }
+
+          // setzt last login auf jetzigen Zeitpunkt
+          user.lastLogin = Date.now();
           // saving changes
           user.save((err, a) => {
             if (err) {
@@ -53,6 +65,12 @@ module.exports = async (msg, client) => {
       _id: msg.member.id,
       name: msg.member.displayName,
       coinAmmount: 1,
+      streak: 0,
+      lastLogin: Date.now(),
+      lastLoginDay: new Date().getDate(), // get day of month
+      abilities: [],
+      items: [],
+      multiplier: 0,
     });
 
     newUser.save();

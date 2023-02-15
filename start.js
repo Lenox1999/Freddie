@@ -25,6 +25,7 @@ const fs = require("fs");
 
 // import functions
 const collectCoins = require("./economy/collectCoins");
+const levelBuilder = require("./util/levelBuilder");
 
 client.commands = new Collection();
 
@@ -104,6 +105,16 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     abilities: Array,
     items: Array,
     multiplier: Number,
+    XP: Number,
+    lvl: Number,
   });
   mongoose.model("User", userScheme);
+
+  const Level = new mongoose.Schema({
+    _id: String,
+    levels: Object,
+  });
+  // model the Schema -> means we save it in the DB as an element to hold further lists
+  mongoose.model("levels", Level);
+  // levelBuilder();
 })();

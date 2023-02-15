@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const streakCalc = require("../util/streakCalc");
+const getLevel = require("../util/getLevel");
 
 module.exports = async (msg, client) => {
   // define User ID as a const
@@ -21,6 +22,7 @@ module.exports = async (msg, client) => {
     return;
   }
   // looks if user is already in DB
+
   User.countDocuments({ _id: userId }, async (err, count) => {
     if (err) {
       console.log(err);
@@ -31,8 +33,8 @@ module.exports = async (msg, client) => {
       // finds user in db
       User.findOne({ _id: userId })
         // selects coinAmmount field in User Document
-        .select("coinAmmount")
-        .exec((err, user) => {
+        .select("coinAmmount XP")
+        .exec(async (err, user) => {
           if (err) {
             console.error(err);
             return;
@@ -48,6 +50,10 @@ module.exports = async (msg, client) => {
           } else if (isStreak === 1) {
             user.streak = 0;
           }
+          // STREAK
+
+          // every coin is worth 3 XP
+          user.XP += 3;
 
           // setzt last login auf jetzigen Zeitpunkt
           user.lastLogin = Date.now();
@@ -57,6 +63,7 @@ module.exports = async (msg, client) => {
               console.log(err);
             }
           });
+          const level = await getLevel(userId, msg);
         });
       return;
     }
@@ -71,6 +78,8 @@ module.exports = async (msg, client) => {
       abilities: [],
       items: [],
       multiplier: 0,
+      XP: 3,
+      lvl: 0,
     });
 
     newUser.save();

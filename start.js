@@ -46,7 +46,7 @@ client.once("ready", () => {
 
 client.on("messageCreate", async (msg) => await collectCoins(msg, client));
 
-client.on('voiceStateUpdate', (oldMember, newMember) => voiceState(oldMember, newMember));
+client.on('voiceStateUpdate', (oldMember, newMember) => voiceState(oldMember, newMember, client));
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {

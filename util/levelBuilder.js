@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 module.exports = () => {
   // the object which is going to hold the Level Numbers as Keys and the needed XP as Element
-  const lvlObj = { 1: 21 };
+  const lvlObj = { 1: 100 };
 
   // create an object with levels until 1000
   for (let i = 1; i <= 1000; i++) {
@@ -13,7 +13,7 @@ module.exports = () => {
       continue;
     }
     // multiplies the neccessary XP of previous level by 1.2 and round it
-    lvlObj[i] = Math.floor(lvlObj[i - 1] * 1.2);
+    lvlObj[i] = Math.floor(lvlObj[i - 1] + 100);
   }
 
   // make level a new Schema in MongoDB
@@ -21,10 +21,10 @@ module.exports = () => {
   // get Model from DB
   const lvlList = mongoose.models.levels;
   // add the LvlObj to the new Document
-  const addLevels = new lvlList({
-    _id: "Levels",
-    levels: lvlObj,
+  const newLevels = new lvlList({
+    _id: "levelList",
+    levelObj: lvlObj,
   });
   // save the new Document in DB
-  addLevels.save();
+  newLevels.save();
 };

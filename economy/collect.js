@@ -5,15 +5,17 @@ const getLevel = require("../util/getLevel");
 
 module.exports = async (msg, client) => {
   // define User ID as a const
-  const userId = msg.member.id;
 
   // check if the bot reacts to itself or another bot
-  if (msg.member.id === client.user.id) {
+  if (msg.author.bot) {
     return;
   }
-  if (msg.member.bot) {
+  if (msg.author.id === client.user.id) {
     return;
   }
+
+  const userId = msg.member.id;
+
   // get access to users document in DB
   const User = mongoose.models.User;
   // check for eventual loading errors
@@ -32,8 +34,8 @@ module.exports = async (msg, client) => {
     if (count > 0) {
       // finds user in db
       User.findOne({ _id: userId })
-        // selects burgerAmmount field in User Document
-        .select("XP burgerAmmount")
+        // selects fishAmmount field in User Document
+        .select("XP fishAmmount")
         .exec(async (err, user) => {
           if (err) {
             console.error(err);
@@ -41,7 +43,7 @@ module.exports = async (msg, client) => {
           }
 
           // increases coin ammount by one for each written messagen
-          user.burgerAmmount += 1;
+          user.fishAmmount += 1;
 
           user.XP += 3;
           user.save((err, a) => {
@@ -58,16 +60,18 @@ module.exports = async (msg, client) => {
       _id: msg.member.id,
       name: msg.member.displayName,
       coinAmmount: 0,
-      burgerAmmount: 1,
+      fishAmmount: 1,
       streak: 0,
       lastLogin: Date.now(),
-      lastLoginDay: new Date().getDate(), // get day of month
-      abilities: [],
+      dailyLastTriggered: 0,
+      gears: [],
+      lastMessage: Date.now(),
+      joinedVC: 0,
+      leftVC: 0,
       items: [],
       multiplier: 1,
       XP: 3,
       lvl: 0,
-      dailyLastTriggered: 0,
     });
 
     newUser.save();

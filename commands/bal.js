@@ -41,7 +41,7 @@ module.exports = {
           ・Fische **${fish}** 🐟
 
           ・Multiplier **${multiplier}**x
-          
+
           ・Daily-Streak **${streak}** ${client.emojis.cache.find(emoji => emoji.name === "daily")}
           `)
         interaction.reply({ embeds: [balembed], ephemeral: true });

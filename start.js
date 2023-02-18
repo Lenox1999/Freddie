@@ -116,7 +116,35 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     levels: Object,
   });
+
   // model the Schema -> means we save it in the DB as an element to hold further lists
   mongoose.model("levels", Level);
+
+  const Exchange = new mongoose.Schema({
+    _id: String,
+    value: Number,
+  });
+
+  const exchangeModel = mongoose.model("Exchanges", Exchange);
+
+  // const exchange = new exchangeModel({
+  //   _id: "Exchange",
+  //   value: 0,
+  // });
+
+  // exchange.save();
+
+  const exchange = await exchangeModel.findOne({ _id: "Exchange" }, "value");
+
   // levelBuilder();
+
+  // Burger Wechselkurs generieren
+  const untilNextExchange = 43200000;
+  setInterval(() => {
+    let newExchange = Math.random() * (4 - 0) + 0;
+
+    exchange.value = newExchange;
+    console.log(newExchange);
+    exchange.save();
+  }, untilNextExchange);
 })();

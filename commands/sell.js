@@ -4,16 +4,7 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
-    .setDescription("Alle Burger verkaufen um Geld bekommen")
-    .addStringOption((option) =>
-      option
-        .setName("wunsch")
-        .setDescription("Verkaufen oder nur Wechselkurs einsehen?")
-        .addChoices(
-          { name: "Wechselkurs", value: "xchange" },
-          { name: "Verkaufen", value: "xsell" }
-        ).setRequired(true)
-    ),
+    .setDescription("Alle Fische verkaufen um Geld bekommen"),
   async execute(interaction, client) {
     const userId = interaction.member.id;
 
@@ -22,7 +13,7 @@ module.exports = {
 
     const user = await User.findOne(
       { _id: userId },
-      "burgerAmmount coinAmmount name"
+      "fishAmmount coinAmmount name"
     );
 
     const exchange = await Exchange.findOne({ _id: "Exchange" }, "value");
@@ -35,40 +26,53 @@ module.exports = {
       return;
     }
 
-    if (interaction.options.getString("wunsch") === "xsell") {
-      user.coinAmmount = Math.round(
-        user.coinAmmount + exchange.value * user.burgerAmmount
-      );
-      user.burgerAmmount = 0;
-
-      user.save();
-
-      let sellEmbed = new EmbedBuilder()
+    if (user.fishAmmount === 0) {
+      let sellErrorEmbed = new EmbedBuilder()
+        .setColor(Colors.Red)
         .setAuthor({
           name: interaction.member.displayName,
           iconURL: interaction.member.displayAvatarURL(),
         })
-        .setTitle("ERFOLG ALLE COINS VERKAUFT!")
+        .setTitle("Keine Fische zum Verkaufen")
         .setDescription(
           `
-        Erfolg! Du hast jetzt ${user.coinAmmount} Coins und ${user.burgerAmmount} Burger, ${user.name}
-        Der derzeitige Wechselkurs beträgt ${exchange.value} 
+        *Du kannst keine Fische verkaufen, die du nicht besitzt ;)*
         `
         );
-      interaction.reply({ embeds: [sellEmbed] });
+      interaction.reply({ embeds: [sellErrorEmbed] });
       return;
-    } else {
-      let showExchangeEmbed = new EmbedBuilder()
-        .setTitle(`Derzeitiger Wechselkurs von ${interaction.guild.name}`)
-        .setThumbnail(interaction.guild.iconURL())
-        .setDescription(
-          `
-          Der derzeitige Wechselkurs dieses Servers beträgt ${exchange.value}!
-          Das bedeutet ein Burger ist derzeit ${exchange.value} Coins wert!
-        `
-        );
-
-      interaction.reply({ embeds: [showExchangeEmbed] });
     }
+
+    user.coinAmmount = Math.round(
+      user.coinAmmount + exchange.value * user.fishAmmount
+    );
+    user.fishAmmount = 0;
+
+    user.save();
+
+    // create output string with only two digits after comma
+    const exchangeString = exchange.value
+      .toString()
+      .split("")
+      .splice(0, 4)
+      .join("");
+
+    let sellEmbed = new EmbedBuilder()
+      .setColor(Colors.Green)
+      .setAuthor({
+        name: interaction.member.displayName,
+        iconURL: interaction.member.displayAvatarURL(),
+      })
+      .setTitle("Fische Verkauft!")
+      .setDescription(
+        `
+        *Du hast erfolgreich **${user.coinAmmount}** ${client.emojis.cache.find(
+          (emoji) => emoji.name === "coins"
+        )} bekommen!*
+        *・Momentaner Wechselkurs **${exchangeString}***
+        `
+      );
+    interaction.reply({ embeds: [sellEmbed] });
+    return;
   },
 };

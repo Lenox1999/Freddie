@@ -15,6 +15,7 @@ module.exports = {
 
   async execute(interaction, client) {
     var startembed = new EmbedBuilder()
+      .setColor(Colors.Aqua)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -27,25 +28,49 @@ module.exports = {
         **Das Ziel ist es den vorhandenen Server attraktiv zu machen und User zu Unterhalten.**
 
         __Inklusive Features:__
-        › Geld- und Levelsystem
+        › Coin- und Levelsystem
         › Wechselkurse
         › Shopsystem
         › Top 10 Listen
+        › Items sammeln
         › und noch vieles mehr...
 
         Wir sind ein Team aus 2 Mitgliedern, die nach und nach an diesen Bot arbeiten. Es sind viele Ideen und Features geplant. Dazu haben wir eine Reihe an Features schon bereit gestellt. Wir würden uns sehr über dein Feedback freuen und bei Fehlern und sonstigen Bugs gerne von euch hören!
 
         Discord-Server: https://discord.gg/26xxXbcxfr
         Team-Discord-Tags: Lenox#9196 und EinfachDavide#5883
-    `);
+      `)
+      .setFields([
+        {
+          name: `Allgemein`,
+          value: `
+          \`help\`
+          `,
+          inline: false
+        },
+        {
+          name: `Economy`,
+          value: `
+          \`bal\`, \`daily\`, \`level\`, \`top10\`, \`sell\`, \`spin\`, \`slots\`, \`gears\`, \`cooldown\`, \`fishing\`, \`exch\`, \`shop\`, \`use\`
+          `,
+          inline: false
+        },
+        {
+          name: `Coming Soon`,
+          value: `
+          \`rob\`, \`event\`, \`stocks\`
+          `,
+          inline: false
+        }
+      ])
 
     var firstCommands = new EmbedBuilder()
+      .setColor(Colors.Aqua)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
       })
-      .setTitle("Erste 10 Commands")
-      .setTitle("Commandliste")
+      .setTitle("\`Commandliste #1\`")
       .setDescription(`
       **/help** ▸ *Da bist du gerade*
       **/bal** ▸ *Infos über Burger, Streak, aktive Multiplier, Fähigkeiten*
@@ -55,6 +80,22 @@ module.exports = {
       **/sell** ▸ *Alle Burger verkaufen um Geld bekommen*
       **/spin** ▸ *Spin starten*
       **/slots** ▸ *Slots starten*
+      **/gears** ▸ *Zeigt deine Fischausrüstung*
+      **/cooldown** ▸ *Deine Cooldowns zwischen Nachrichten schreiben oder VC-Zeit*
+      `);
+
+    var secondCommands = new EmbedBuilder()
+      .setColor(Colors.Aqua)
+      .setAuthor({
+        name: interaction.member.displayName,
+        iconURL: interaction.member.displayAvatarURL(),
+      })
+      .setTitle("\`Commandliste #2\`")
+      .setDescription(`
+      **/fishing** ▸ *Jede 4h kannst du fischen gehen*
+      **/exch** ▸ *Sehe den aktuellen Wechselkurs*
+      **/shop** ▸ *Kaufe Gearupgrades, Multiplier oder Lootboxen*
+      **/use** ▸ *Benutze ein Item*
       `);
 
     const buttons = new ActionRowBuilder().addComponents(
@@ -65,6 +106,10 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId("com1")
         .setLabel("Commands #1")
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder()
+        .setCustomId("com2")
+        .setLabel("Commands #2")
         .setStyle(ButtonStyle.Primary)
     );
 
@@ -91,6 +136,11 @@ module.exports = {
       if (id === "com1") {
         BI.deferUpdate();
         interaction.editReply({ embeds: [firstCommands] });
+      }
+
+      if (id === "com2") {
+        BI.deferUpdate();
+        interaction.editReply({ embeds: [secondCommands] });
       }
     });
 

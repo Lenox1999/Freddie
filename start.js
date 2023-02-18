@@ -99,22 +99,24 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
-    burgerAmmount: Number,
+    fishAmmount: Number,
     streak: Number,
     lastLogin: String,
-    lastLoginDay: Number,
-    abilities: Array,
+    dailyLastTriggered: Number,
+    gears: Array,
+    lastMessage: Number,
+    joinedVC: Number,
+    leftVC: Number, 
     items: Array,
     multiplier: Number,
     XP: Number,
     lvl: Number,
-    dailyLastTriggered: Number,
   });
   mongoose.model("User", userScheme);
 
   const Level = new mongoose.Schema({
     _id: String,
-    levels: Object,
+    levelObj: Object,
   });
 
   // model the Schema -> means we save it in the DB as an element to hold further lists
@@ -136,9 +138,9 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
   const exchange = await exchangeModel.findOne({ _id: "Exchange" }, "value");
 
-  // levelBuilder();
+  levelBuilder();
 
-  // Burger Wechselkurs generieren
+  // Fisch-Wechselkurs generieren
   const untilNextExchange = 43200000;
   setInterval(() => {
     let newExchange = Math.random() * (4 - 0) + 0;

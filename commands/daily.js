@@ -84,7 +84,7 @@ module.exports = {
 
       var alreadydailyembed = new EmbedBuilder()
         .setColor(Colors.Yellow)
-        .setTitle("\`ALREADY DAILY\`")
+        .setTitle("\`DAILY\`")
         .setThumbnail(interaction.member.displayAvatarURL())
         .setDescription(
           `*Sorry, du hast bereits Daily benutzt, komme in **${durationMsg}** wieder um deine Streak zu verlängern!*`

@@ -26,6 +26,7 @@ const fs = require("fs");
 // import functions
 const collectCoins = require("./economy/collect");
 const levelBuilder = require("./util/levelBuilder");
+const voiceState = require('./economy/voice');
 
 client.commands = new Collection();
 
@@ -44,6 +45,8 @@ client.once("ready", () => {
 });
 
 client.on("messageCreate", async (msg) => await collectCoins(msg, client));
+
+client.on('voiceStateUpdate', (oldMember, newMember) => voiceState(oldMember, newMember));
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
@@ -138,7 +141,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
   const exchange = await exchangeModel.findOne({ _id: "Exchange" }, "value");
 
-  levelBuilder();
+  // levelBuilder();
 
   // Fisch-Wechselkurs generieren
   const untilNextExchange = 43200000;

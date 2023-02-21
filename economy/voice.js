@@ -161,7 +161,14 @@ module.exports = async (oldState, newState, client) => {
       return;
     }
 
-    // für den Fall, dass User Vorher in keinem Channel war
+
+  
+    /* 
+      ++++++ USER JOINED NEW CHANNEL ++++++
+      if theres no oldstate channel id that means the user joined a voicechannel
+    */
+
+
   } else if (oldState.channelId == null) {
     if (
       client.channels.cache.get(vc).members.size >= 2 &&

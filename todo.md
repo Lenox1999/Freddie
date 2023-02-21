@@ -1,0 +1,2 @@
+- erste daily streak muss belohnung geben
+- spam protection

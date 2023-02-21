@@ -26,7 +26,7 @@ const fs = require("fs");
 // import functions
 const collectCoins = require("./economy/collect");
 const levelBuilder = require("./util/levelBuilder");
-const voiceState = require('./economy/voice');
+const voiceState = require("./economy/voice");
 
 client.commands = new Collection();
 
@@ -46,7 +46,9 @@ client.once("ready", () => {
 
 client.on("messageCreate", async (msg) => await collectCoins(msg, client));
 
-client.on('voiceStateUpdate', (oldMember, newMember) => voiceState(oldMember, newMember, client));
+client.on("voiceStateUpdate", (oldMember, newMember) =>
+  voiceState(oldMember, newMember, client)
+);
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
@@ -92,7 +94,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 // connect MongoDB Databse - URI has to be set in .env file (without it wont work)
 (async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_DB_URI);
+    await mongoose.connect(process.env.MONGO_DB_URI, { dbName: "freddie" });
     console.log("MONGO CONNECTED");
   } catch (error) {
     console.error(error);
@@ -109,7 +111,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     gears: Array,
     lastMessage: Number,
     joinedVC: Number,
-    leftVC: Number, 
+    leftVC: Number,
     items: Array,
     multiplier: Number,
     XP: Number,

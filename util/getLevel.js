@@ -5,7 +5,7 @@ module.exports = async (userId, msg) => {
   const Users = mongoose.models.User;
   const Levels = mongoose.models["levels"];
 
-  const lvlObj = await Levels.findOne({ _id: "Levels" }, "levels");
+  const levelList= await Levels.findOne({ _id: "levelList" }, "levelObj");
 
   Users.findOne({ _id: userId })
     .select("lvl XP")
@@ -14,19 +14,19 @@ module.exports = async (userId, msg) => {
         console.log(err);
         return;
       }
-      if (user.XP >= lvlObj.levels[user.lvl + 1]) {
-        let newLvl = Object.keys(lvlObj.levels).reduce((prev, curr) => {
-          return Math.abs(lvlObj.levels[curr] - user.XP) <
-            Math.abs(lvlObj.levels[prev] - user.XP)
+      if (user.XP >= levelList.levelObj[user.lvl + 1]) {
+        let newLvl = Object.keys(levelList.levelObj).reduce((prev, curr) => {
+          return Math.abs(levelList.levelObj[curr] - user.XP) <
+            Math.abs(levelList.levelObj[prev] - user.XP)
             ? curr
             : prev;
         });
 
-        if (lvlObj.levels[newLvl] > user.XP) {
+        if (levelList.levelObj[newLvl] > user.XP) {
           newLvl -= 1;
         }
 
-        const lvlDiff = lvlObj.levels[user.lvl] - lvlObj.levels[user.lvl + 1];
+        const lvlDiff = levelList.levelObj[user.lvl] - levelList.levelObj[user.lvl + 1];
 
         user.lvl = newLvl;
         user.save();

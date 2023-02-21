@@ -26,6 +26,7 @@ const fs = require("fs");
 // import functions
 const collectCoins = require("./economy/collect");
 const levelBuilder = require("./util/levelBuilder");
+const voiceState = require('./economy/voice');
 
 client.commands = new Collection();
 
@@ -44,6 +45,8 @@ client.once("ready", () => {
 });
 
 client.on("messageCreate", async (msg) => await collectCoins(msg, client));
+
+client.on('voiceStateUpdate', (oldMember, newMember) => voiceState(oldMember, newMember, client));
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
@@ -99,22 +102,24 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
-    burgerAmmount: Number,
+    fishAmmount: Number,
     streak: Number,
     lastLogin: String,
-    lastLoginDay: Number,
-    abilities: Array,
+    dailyLastTriggered: Number,
+    gears: Array,
+    lastMessage: Number,
+    joinedVC: Number,
+    leftVC: Number, 
     items: Array,
     multiplier: Number,
     XP: Number,
     lvl: Number,
-    dailyLastTriggered: Number,
   });
   mongoose.model("User", userScheme);
 
   const Level = new mongoose.Schema({
     _id: String,
-    levels: Object,
+    levelObj: Object,
   });
 
   // model the Schema -> means we save it in the DB as an element to hold further lists
@@ -138,7 +143,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
   // levelBuilder();
 
-  // Burger Wechselkurs generieren
+  // Fisch-Wechselkurs generieren
   const untilNextExchange = 43200000;
   setInterval(() => {
     let newExchange = Math.random() * (4 - 0) + 0;

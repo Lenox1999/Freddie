@@ -7,13 +7,14 @@ module.exports = {
     .setDescription("Infos über Level"),
   async execute(interaction, client) {
     const User = mongoose.models.User;
+    console.log(mongoose.modelNames());
     const Levels = mongoose.models.levels;
 
     if (!Levels || !User) {
       console.log("Error");
       return;
     }
-    const lvlObj = await Levels.findOne({ _id: "Levels" }, "levels");
+    const levelList = await Levels.findOne({ _id: "levelList" }, "levelObj");
 
     if (!User) {
       console.log("DB ERROR!");
@@ -29,13 +30,13 @@ module.exports = {
 
         let LvLDiff = 0;
 
-        if(lvlObj.levels[user.lvl] === undefined) {
-          LvLDiff = lvlObj.levels[user.lvl + 1] - 0
+        if(levelList.levelObj[user.lvl] === undefined) {
+          LvLDiff = levelList.levelObj[user.lvl + 1] - 0
         } else {
-          LvLDiff = lvlObj.levels[user.lvl + 1] - lvlObj.levels[user.lvl]
+          LvLDiff = levelList.levelObj[user.lvl + 1] - levelList.levelObj[user.lvl]
         }
 
-        let nextLvLDiff = LvLDiff - (lvlObj.levels[user.lvl + 1] - user.XP)
+        let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
         var levelembed = new EmbedBuilder()
           .setColor(Colors.Aqua)

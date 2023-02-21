@@ -92,7 +92,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 // connect MongoDB Databse - URI has to be set in .env file (without it wont work)
 (async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_DB_URI);
+    await mongoose.connect(process.env.MONGO_DB_URI, {dbName: 'freddie'});
     console.log("MONGO CONNECTED");
   } catch (error) {
     console.error(error);

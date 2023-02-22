@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
-  const fishPerMin = 5;
+  const fishPerMin = 1;
 
   const vc = newState.channelId;
 

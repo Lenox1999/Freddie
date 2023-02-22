@@ -11,11 +11,11 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Credits und Commands"),
+    .setDescription("🠞 Freddie: Credits + Commands"),
 
   async execute(interaction, client) {
     var startembed = new EmbedBuilder()
-      .setColor(Colors.Aqua)
+      .setColor(Colors.Blue)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -65,7 +65,7 @@ module.exports = {
       ])
 
     var firstCommands = new EmbedBuilder()
-      .setColor(Colors.Aqua)
+      .setColor(Colors.Blue)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -85,7 +85,7 @@ module.exports = {
       `);
 
     var secondCommands = new EmbedBuilder()
-      .setColor(Colors.Aqua)
+      .setColor(Colors.Blue)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -147,7 +147,7 @@ module.exports = {
     collector.on("end", async () => {
       var helptimeout = new EmbedBuilder()
         .setColor(Colors.Red)
-        .setTitle("Diese Hilfeanzeige ist geschlossen.")
+        .setTitle("\`ERROR: Helping closed..\`")
         .setTimestamp();
 
       interaction.editReply({ components: [], embeds: [helptimeout] });

@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("level")
-    .setDescription("Infos über Level"),
+    .setDescription("🠞 Levelsystem: Level + XP"),
+
   async execute(interaction, client) {
     const User = mongoose.models.User;
     console.log(mongoose.modelNames());
@@ -39,13 +40,13 @@ module.exports = {
         let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
         var levelembed = new EmbedBuilder()
-          .setColor(Colors.Aqua)
+          .setColor(Colors.Blue)
           .setTitle(`\`Level ${user.lvl}\``)
-          .setThumbnail(interaction.member.displayAvatarURL())
           .setDescription(`
           **${nextLvLDiff}** | **${LvLDiff}** XP
           `)
-        interaction.reply({ embeds: [levelembed], ephemeral: true });
+          .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        interaction.reply({ embeds: [levelembed] });
       });
   },
 };

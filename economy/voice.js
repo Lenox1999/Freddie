@@ -9,6 +9,7 @@ module.exports = async (oldState, newState, client) => {
 
   const user = await User.findOne({ _id: newState.id });
 
+  // check if user isnt registered
   if (!user) {
     let errorEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
@@ -27,11 +28,17 @@ module.exports = async (oldState, newState, client) => {
     return;
   }
 
+  /*
+    ++++++++USER LEFT++++++++
+
+    if newState contains no new channelid that means that the user left all voice channels
+    and is no longer active in any voice channel on the server 
+  */
   if (newState.channelId == null) {
     user.leftVC = Date.now();
     let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+    // heißt der Nutzer war weniger als eine Minute im Voicechannel
     if (timeInVC < 1) {
-      // heißt der Nutzer war weniger als eine Minute im Voicechannel
       user.leftVC = 0;
       user.save();
       return;
@@ -44,7 +51,9 @@ module.exports = async (oldState, newState, client) => {
     user.leftVC = 0;
     user.save();
 
-    // nach verlasssen muss geprüft werden ob noch mindestens 2 Personen im VC sind
+    // because one user alone cant gain any points we have to check how many people are in the vc
+    // after the one user left
+    // so if the old channel just contains one member the reward has to be triggered
 
     let oldVoiceChannelId = oldState.channelId;
     if (client.channels.cache.get(oldVoiceChannelId).members.size == 1) {
@@ -71,6 +80,16 @@ module.exports = async (oldState, newState, client) => {
         });
     }
     return;
+
+
+  /*
+    +++++ USER MOVED +++++
+  
+    there is a newState and a oldState which means user moved
+    by comparing old channel id and new channel id we can check if user only muted
+  */
+
+
   } else if (
     oldState.channelId !== null &&
     newState.channelId !== null &&
@@ -141,6 +160,15 @@ module.exports = async (oldState, newState, client) => {
     } else {
       return;
     }
+
+
+  
+    /* 
+      ++++++ USER JOINED NEW CHANNEL ++++++
+      if theres no oldstate channel id that means the user joined a voicechannel
+    */
+
+
   } else if (oldState.channelId == null) {
     if (
       client.channels.cache.get(vc).members.size >= 2 &&

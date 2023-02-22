@@ -42,7 +42,7 @@ module.exports = {
       interaction.reply({ embeds: [sellErrorEmbed] });
       return;
     }
-
+    const gainedCoins = Math.round(exchange.value * user.fishAmmount);
     user.coinAmmount = Math.round(
       user.coinAmmount + exchange.value * user.fishAmmount
     );
@@ -66,7 +66,7 @@ module.exports = {
       .setTitle("Fische Verkauft!")
       .setDescription(
         `
-        *Du hast erfolgreich **${user.coinAmmount}** ${client.emojis.cache.find(
+        *Du hast erfolgreich **${gainedCoins}** ${client.emojis.cache.find(
           (emoji) => emoji.name === "coins"
         )} bekommen!*
         *・Momentaner Wechselkurs **${exchangeString}***

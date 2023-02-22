@@ -1,3 +1,2 @@
 - erste daily streak muss belohnung geben
 - spam protection
-- kontostand steht bei /sell statt bekommenen münzen

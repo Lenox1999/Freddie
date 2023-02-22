@@ -33,6 +33,8 @@ module.exports = {
 
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();
+      // user bekommt 10 coins fürs das erste mal daily triggern
+      user.coinAmmount += 10;
       user.streak += 1;
       user.save();
 

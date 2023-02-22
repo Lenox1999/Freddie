@@ -1,2 +1,2 @@
-- erste daily streak muss belohnung geben
 - spam protection
+- cooldowns von rewards durch fische sammeln

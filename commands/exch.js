@@ -23,6 +23,7 @@ module.exports = {
 
     let exchangeEmbed = new EmbedBuilder()
       .setThumbnail(interaction.guild.iconURL())
+      .setColor(Colors.DarkAqua)
       .setTitle(`Momentaner Fisch-Wechselkurs von ${interaction.guild.name}`)
       .setDescription(`
         Der derzeitige Fisch-Wechselkurs beträgt **${exchangeString}**!      

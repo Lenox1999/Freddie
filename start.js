@@ -148,7 +148,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
   // Fisch-Wechselkurs generieren
   const untilNextExchange = 43200000;
   setInterval(() => {
-    let newExchange = Math.random() * (4 - 0) + 0;
+    let newExchange = Math.floor(Math.random() * (20 - 2) + 2 + 1);
 
     exchange.value = newExchange;
     console.log(newExchange);

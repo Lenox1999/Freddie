@@ -9,11 +9,9 @@ module.exports = {
     const User = mongoose.models.User;
     const user = await User.findOne({ _id: interaction.member.id });
 
-    const fishingCooldown = 4 * 60* 60 * 1000;
+    const fishingCooldown = 4 * 60 * 60 * 1000;
 
     let lastFisching;
-
-
 
     const sinceLastTriggered = (Date.now() - user.lastFishing) / 1000 / 60;
 
@@ -34,7 +32,6 @@ module.exports = {
       );
     } else if (sinceLastTriggered > 4 || lastFisching === 0) {
       let odds = Math.random();
-      console.log("lol");
 
       if (odds < 0.125) {
         user.fishAmmount += 8;
@@ -77,8 +74,6 @@ module.exports = {
         user.fishAmmount += 3;
       }
 
-      console.log(typeof user);
-      console.log(user.lastFishing)
       user.lastFishing = Date.now();
       user.save();
     }

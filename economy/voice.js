@@ -1,6 +1,8 @@
 const { EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
+const userNotRegistered = require('../util/userNotRegistered');
+
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
   const fishPerMin = 1;
@@ -11,20 +13,7 @@ module.exports = async (oldState, newState, client) => {
 
   // check if user isnt registered
   if (!user) {
-    let errorEmbed = new EmbedBuilder()
-      .setColor(Colors.Red)
-      .setTitle("`Fehler`")
-      .setThumbnail(oldState.member.displayAvatarURL())
-      .setDescription(
-        `
-      Du bist noch nicht registriert!
-      Schreibe eine Nachricht um dich zu registrieren.
-      Danach kannst du deinen Command ausführen!
-      `
-      );
-    client.channels.cache
-      .get("1074265742482100275")
-      .send({ embeds: [errorEmbed] });
+    userNotRegistered(interaction, client);
     return;
   }
 

@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
+const userNotRegistered = require('../util/userNotRegistered');
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("fishing")
@@ -8,6 +10,10 @@ module.exports = {
   async execute(interaction, client) {
     const User = mongoose.models.User;
     const user = await User.findOne({ _id: interaction.member.id });
+
+    if (!user) {
+      userNotRegistered(interaction, client);
+    }
 
     const fishingCooldown = 4 * 60 * 60 * 1000;
 

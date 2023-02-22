@@ -9,11 +9,11 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("top10")
-    .setDescription("Zum einen: XP-Top10 und Geld Top10")
+    .setDescription("🠞 Leaderboard: First 10 Members in Coins or XP")
     .addStringOption((option) =>
       option
         .setName("art")
-        .setDescription("Top10 von Geld oder Level")
+        .setDescription("Coins or XP?")
         .addChoices(
           { name: "Coins", value: "vcoin" },
           { name: "XP", value: "vxp" }

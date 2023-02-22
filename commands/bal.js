@@ -4,12 +4,13 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("bal")
-    .setDescription("Infos über Fische, Streak, aktive Multiplier"),
+    .setDescription("🠞 Account-Info: Coins, Fish, Multiplier und Streaks"),
 
   async execute(interaction, client) {
-    // !!! KANN BISHER NUR KONTOSTAND ABLESEN, ES FEHLT NOCH STREAK MULTIPLIER UND FÄHIGKEITEN !!!
-
     const User = mongoose.models.User;
+    const Exchanges = mongoose.models.Exchanges;
+    const exchange = await Exchanges.findOne({ _id: "Exchange" }, "value");
+
     User.findOne({ _id: interaction.member.id })
       .select("coinAmmount fishAmmount streak multiplier")
       .exec((err, user) => {
@@ -17,34 +18,44 @@ module.exports = {
           console.log(err);
           return;
         }
-        // check if user isnt registered in DB yet
+
+        // Is User in DB?
         if (!user) {
-          var notregisterembed = new EmbedBuilder()
+          var no = new EmbedBuilder()
             .setColor(Colors.Red)
-            .setTitle("\`Keinen Account\`")
+            .setTitle("\`ERROR: Account is missing..\`")
             .setThumbnail(interaction.member.displayAvatarURL())
-            .setDescription(`Du besitzt noch keine Coins.. Schreibe eine Nachricht um Coins zu erhalten!`)
-          interaction.reply({ embeds: [notregisterembed], ephemeral: true });
+            .setDescription(`Du besitzt noch keine Coins oder Fische.. Schreibe eine Nachricht um Coins zu erhalten!`)
+          interaction.reply({ embeds: [no], ephemeral: true });
           return;
         }
+
         let coins = user.coinAmmount.toString();
         let fish = user.fishAmmount.toString();
         let multiplier = user.multiplier.toString();
         let streak = user.streak.toString();
+
+        var whenselling = ``;
+        const gainedCoins = Math.round(exchange.value * user.fishAmmount);
+        const allinall = Math.floor(gainedCoins + user.coinAmmount)
+
+        if(user.fishAmmount > 0) {
+          whenselling = `
+          ⠀→ *+${gainedCoins}* ${client.emojis.cache.find(emoji => emoji.name === "coins")}
+          ⠀→ *${allinall}* ${client.emojis.cache.find(emoji => emoji.name === "coins")}`
+        }
+
         var balembed = new EmbedBuilder()
-          .setColor(Colors.Aqua)
-          .setTitle("\`Account\`")
+          .setColor(Colors.Blue)
+          .setTitle(`Account: \`${interaction.member.displayName}\``)
           .setThumbnail(interaction.member.displayAvatarURL())
           .setDescription(`
+          ・Fische **${fish}** 🐟${whenselling}
           ・Coins **${coins}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
-
-          ・Fische **${fish}** 🐟
-
           ・Multiplier **${multiplier}**x
-
           ・Daily-Streak **${streak}** ${client.emojis.cache.find(emoji => emoji.name === "daily")}
           `)
-        interaction.reply({ embeds: [balembed], ephemeral: true });
+        interaction.reply({ embeds: [balembed]});
       });
   },
 };

@@ -94,8 +94,11 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 // connect MongoDB Databse - URI has to be set in .env file (without it wont work)
 (async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_DB_URI, { dbName: "freddie-test" });
+    await mongoose.connect(process.env.MONGO_DB_URI, {
+      dbName: "freddie-test",
+    });
     console.log("MONGO CONNECTED");
+    mongoose.set("strictQuery", false);
   } catch (error) {
     console.error(error);
   }
@@ -116,6 +119,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     multiplier: Number,
     XP: Number,
     lvl: Number,
+    lastFishing: Number,
   });
   mongoose.model("User", userScheme);
 

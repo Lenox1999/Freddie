@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("exch")
-    .setDescription("Momentanen Fisch-Wechselkurs ausgeben"),
+    .setDescription("🠞 Exchange: Fish to Coins"),
+    
   async execute(interaction, client) {
     const Exchanges = mongoose.models.Exchanges;
 
@@ -23,11 +24,11 @@ module.exports = {
 
     let exchangeEmbed = new EmbedBuilder()
       .setThumbnail(interaction.guild.iconURL())
-      .setColor(Colors.DarkAqua)
-      .setTitle(`Momentaner Fisch-Wechselkurs von ${interaction.guild.name}`)
+      .setColor(Colors.Blue)
+      .setTitle(`\`${interaction.guild.name}'s Exchange\``)
       .setDescription(`
-        Der derzeitige Fisch-Wechselkurs beträgt **${exchangeString}**!      
+      1 🐟 ➨ **${exchangeString}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
       `);
-    interaction.reply({ embeds: [exchangeEmbed] });
+    interaction.reply({ embeds: [exchangeEmbed], ephemeral: true });
   },
 };

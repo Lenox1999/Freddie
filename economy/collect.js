@@ -48,7 +48,8 @@ module.exports = async (msg, client) => {
         multiplier: 1,
         XP: 3,
         lvl: 0,
-      });
+        lastFishing: 0,
+      }, {strict: false});
       newUser.save();
 
       return;

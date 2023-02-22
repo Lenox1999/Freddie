@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 module.exports = {
     data: new SlashCommandBuilder()
       .setName("spin")
-      .setDescription("Spin starten")
+      .setDescription("🠞 Lottery: Play Spin to double your Coins")
       .addNumberOption(option =>
         option.setName("einsatz")
             .setDescription("10-500?")
@@ -34,21 +34,16 @@ module.exports = {
             { _id: interaction.member.id },
             "coinAmmount"
           );
-          if (!user) {
-            let errorEmbed = new EmbedBuilder()
-              .setColor(Colors.Red)
-              .setTitle("\`Fehler\`")
-              .setThumbnail(interaction.member.displayAvatarURL())
-              .setDescription(
-                `
-                Du bist noch nicht registriert!
-                Schreibe eine Nachricht um dich zu registrieren.
-                Danach kannst du deinen Command ausführen!
-                `
-              )
-              interaction.reply({embeds: [errorEmbed]});
-              return;
-          }
+            // Is User in DB?
+            if (!user) {
+                var no = new EmbedBuilder()
+                .setColor(Colors.Red)
+                .setTitle("\`ERROR: Account is missing..\`")
+                .setThumbnail(interaction.member.displayAvatarURL())
+                .setDescription(`Du besitzt noch keine Coins oder Fische.. Schreibe eine Nachricht um Coins zu erhalten!`)
+                interaction.reply({ embeds: [no], ephemeral: true });
+                return;
+            }
         
         if(user.coinAmmount < interaction.options.getNumber("einsatz")) {
             var failmoney = new EmbedBuilder()

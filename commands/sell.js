@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
-    .setDescription("Alle Fische verkaufen um Geld bekommen"),
+    .setDescription("🠞 Fishtrading: Become Coins for fish"),
   async execute(interaction, client) {
     const userId = interaction.member.id;
 
@@ -33,10 +33,10 @@ module.exports = {
           name: interaction.member.displayName,
           iconURL: interaction.member.displayAvatarURL(),
         })
-        .setTitle("Keine Fische zum Verkaufen")
+        .setTitle("\`ERROR: No fish..\`")
         .setDescription(
           `
-        *Du kannst keine Fische verkaufen, die du nicht besitzt ;)*
+        *Wenn du Fische bekommen willst, dann schreibe etwas oder gehe mit jemanden reden ;)*
         `
         );
       interaction.reply({ embeds: [sellErrorEmbed] });
@@ -63,13 +63,13 @@ module.exports = {
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
       })
-      .setTitle("Fische Verkauft!")
+      .setTitle("\`COMPLETE\`")
+      .setFooter({ text: `mom. Wechselkurs: 1 🐟 ➨ ${exchangeString} Coins` })
       .setDescription(
         `
         *Du hast erfolgreich **${gainedCoins}** ${client.emojis.cache.find(
           (emoji) => emoji.name === "coins"
         )} bekommen!*
-        *・Momentaner Wechselkurs **${exchangeString}***
         `
       );
     interaction.reply({ embeds: [sellEmbed] });

@@ -67,7 +67,7 @@ module.exports = async (oldState, newState, client) => {
           }
 
           let reward = Math.round(timeInVC * fishPerMin);
-          user.fishAmmount = user.fishAmmount + reward;
+          user.fishAmmount += reward;
 
           user.joinedVC = 0;
           user.leftVC = 0;

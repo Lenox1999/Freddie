@@ -51,10 +51,16 @@ module.exports = async (oldState, newState, client) => {
         .members.each(async (data) => {
           const user = await User.findOne({ _id: data.user.id });
 
+           // should prevent that the same user gets handled twice
+           if (user.leftVC == 0 || user.joinedVC == 0) {
+            return;
+           }
+           
           user.leftVC = Date.now();
           let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
           if (timeInVC < 1) {
             // heißt der Nutzer war weniger als eine Minute im Voicechannel
+            user.joinedVC = 0;
             user.leftVC = 0;
             user.save();
             return;

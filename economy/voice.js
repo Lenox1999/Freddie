@@ -1,6 +1,8 @@
 const { EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
+const userNotRegistered = require('../util/userNotRegistered');
+
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
   const fishPerMin = 1;
@@ -11,20 +13,7 @@ module.exports = async (oldState, newState, client) => {
 
   // check if user isnt registered
   if (!user) {
-    let errorEmbed = new EmbedBuilder()
-      .setColor(Colors.Red)
-      .setTitle("`Fehler`")
-      .setThumbnail(oldState.member.displayAvatarURL())
-      .setDescription(
-        `
-      Du bist noch nicht registriert!
-      Schreibe eine Nachricht um dich zu registrieren.
-      Danach kannst du deinen Command ausführen!
-      `
-      );
-    client.channels.cache
-      .get("1074265742482100275")
-      .send({ embeds: [errorEmbed] });
+    userNotRegistered(interaction, client);
     return;
   }
 
@@ -62,17 +51,23 @@ module.exports = async (oldState, newState, client) => {
         .members.each(async (data) => {
           const user = await User.findOne({ _id: data.user.id });
 
+           // should prevent that the same user gets handled twice
+           if (user.leftVC == 0 || user.joinedVC == 0) {
+            return;
+           }
+           
           user.leftVC = Date.now();
           let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
           if (timeInVC < 1) {
             // heißt der Nutzer war weniger als eine Minute im Voicechannel
+            user.joinedVC = 0;
             user.leftVC = 0;
             user.save();
             return;
           }
 
           let reward = Math.round(timeInVC * fishPerMin);
-          user.fishAmmount = user.fishAmmount + reward;
+          user.fishAmmount += reward;
 
           user.joinedVC = 0;
           user.leftVC = 0;

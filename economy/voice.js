@@ -51,7 +51,7 @@ module.exports = async (oldState, newState, client) => {
         .members.each(async (data) => {
           const user = await User.findOne({ _id: data.user.id });
 
-           // should prevent that the same user gets handled twice
+           // should prevent that the same user gets handled twice or dont handle a user that wasnt registered at the point of joining the channel
            if (user.leftVC == 0 || user.joinedVC == 0) {
             return;
            }

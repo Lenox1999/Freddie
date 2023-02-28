@@ -43,10 +43,10 @@ module.exports = async (msg, client) => {
           dailyLastTriggered: 0,
           gears: {
             0: {
-              angel: { level: 1 },
-              köder: { level: 1 },
-              messer: { level: 1 },
-              eimer: { level: 1 },
+              angel: { level: 1, multiplier: 1 },
+              köder: { level: 1, multiplier: 1 },
+              messer: { level: 1, cooldown: 30 },
+              eimer: { level: 1, cooldown: 60 },
             },
           },
           lastMessage: Date.now(),

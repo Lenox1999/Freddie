@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
+const userNotRegistered = require('../util/userNotRegistered');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,6 +16,10 @@ module.exports = {
       { _id: userId },
       "fishAmmount coinAmmount name"
     );
+
+    if (!user) {
+      userNotRegistered(interaction, client);
+    }
 
     const exchange = await Exchange.findOne({ _id: "Exchange" }, "value");
     console.log(exchange);

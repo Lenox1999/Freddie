@@ -32,24 +32,34 @@ module.exports = async (msg, client) => {
     }
     // if user isnt registered yet we have to registerer them
     if (count === 0) {
-      const newUser = new User({
-        _id: msg.member.id,
-        name: msg.member.displayName,
-        coinAmmount: 0,
-        fishAmmount: 1,
-        streak: 0,
-        lastLogin: Date.now(),
-        dailyLastTriggered: 0,
-        gears: [],
-        lastMessage: Date.now(),
-        joinedVC: 0,
-        leftVC: 0,
-        items: [],
-        multiplier: 1,
-        XP: 3,
-        lvl: 0,
-        lastFishing: 0,
-      }, {strict: false});
+      const newUser = new User(
+        {
+          _id: msg.member.id,
+          name: msg.member.displayName,
+          coinAmmount: 0,
+          fishAmmount: 1,
+          streak: 0,
+          lastLogin: Date.now(),
+          dailyLastTriggered: 0,
+          gears: {
+            0: {
+              angel: { level: 1 },
+              köder: { level: 1 },
+              messer: { level: 1 },
+              eimer: { level: 1 },
+            },
+          },
+          lastMessage: Date.now(),
+          joinedVC: 0,
+          leftVC: 0,
+          items: [],
+          multiplier: 1,
+          XP: 3,
+          lvl: 0,
+          lastFishing: 0,
+        },
+        { strict: false }
+      );
       newUser.save();
 
       return;
@@ -65,7 +75,7 @@ module.exports = async (msg, client) => {
           return;
         }
 
-        let timeSinceLastMsg = Math.round((Date.now() - user.lastLogin) /1000);
+        let timeSinceLastMsg = Math.round((Date.now() - user.lastLogin) / 1000);
 
         if (timeSinceLastMsg < 30) return;
 

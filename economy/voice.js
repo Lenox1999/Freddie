@@ -1,37 +1,38 @@
 const { EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
+const userNotRegistered = require("../util/userNotRegistered");
+
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
-  const fishPerMin = 5;
+  const fishPerMin = 1;
 
   const vc = newState.channelId;
 
   const user = await User.findOne({ _id: newState.id });
 
+  // check if user isnt registered
   if (!user) {
-    let errorEmbed = new EmbedBuilder()
-      .setColor(Colors.Red)
-      .setTitle("`Fehler`")
-      .setThumbnail(oldState.member.displayAvatarURL())
-      .setDescription(
-        `
-      Du bist noch nicht registriert!
-      Schreibe eine Nachricht um dich zu registrieren.
-      Danach kannst du deinen Command ausführen!
-      `
-      );
-    client.channels.cache
-      .get("1074265742482100275")
-      .send({ embeds: [errorEmbed] });
+    userNotRegistered(interaction, client);
     return;
   }
 
+  /*
+    ++++++++USER LEFT++++++++
+
+    if newState contains no new channelid that means that the user left all voice channels
+    and is no longer active in any voice channel on the server 
+  */
   if (newState.channelId == null) {
+    let oldVoiceChannelId = oldState.channelId;
+    // if (client.channels.cache.get(oldVoiceChannelId).members.size == 0) {
+    //   return;
+    // }
     user.leftVC = Date.now();
+    if (user.joinedVC === 0 || user.leftVC === 0) return;
     let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+    // heißt der Nutzer war weniger als eine Minute im Voicechannel
     if (timeInVC < 1) {
-      // heißt der Nutzer war weniger als eine Minute im Voicechannel
       user.leftVC = 0;
       user.save();
       return;
@@ -44,26 +45,37 @@ module.exports = async (oldState, newState, client) => {
     user.leftVC = 0;
     user.save();
 
-    // nach verlasssen muss geprüft werden ob noch mindestens 2 Personen im VC sind
+    // because one user alone cant gain any points we have to check how many people are in the vc
+    // after the one user left
+    // so if the old channel just contains one member the reward has to be triggered
 
-    let oldVoiceChannelId = oldState.channelId;
     if (client.channels.cache.get(oldVoiceChannelId).members.size == 1) {
       client.channels.cache
         .get(oldVoiceChannelId)
         .members.each(async (data) => {
           const user = await User.findOne({ _id: data.user.id });
 
+          // should prevent that the same user gets handled twice or dont handle a user that wasnt registered at the point of joining the channel
+          if (user.joinedVC == 0 ) {
+            return;
+          }
+          console.log(user.name)
+
           user.leftVC = Date.now();
+          console.log(user.name);
           let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
           if (timeInVC < 1) {
             // heißt der Nutzer war weniger als eine Minute im Voicechannel
+            user.joinedVC = 0;
             user.leftVC = 0;
             user.save();
             return;
           }
 
           let reward = Math.round(timeInVC * fishPerMin);
-          user.fishAmmount = user.fishAmmount + reward;
+          console.log(timeInVC, 'spent time');
+          console.log(reward);
+          user.fishAmmount += reward;
 
           user.joinedVC = 0;
           user.leftVC = 0;
@@ -71,6 +83,13 @@ module.exports = async (oldState, newState, client) => {
         });
     }
     return;
+
+    /*
+    +++++ USER MOVED +++++
+  
+    there is a newState and a oldState which means user moved
+    by comparing old channel id and new channel id we can check if user only muted
+  */
   } else if (
     oldState.channelId !== null &&
     newState.channelId !== null &&
@@ -141,6 +160,11 @@ module.exports = async (oldState, newState, client) => {
     } else {
       return;
     }
+
+    /* 
+      ++++++ USER JOINED NEW CHANNEL ++++++
+      if theres no oldstate channel id that means the user joined a voicechannel
+    */
   } else if (oldState.channelId == null) {
     if (
       client.channels.cache.get(vc).members.size >= 2 &&

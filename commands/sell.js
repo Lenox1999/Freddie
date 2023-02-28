@@ -1,10 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
+const userNotRegistered = require('../util/userNotRegistered');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
-    .setDescription("Alle Fische verkaufen um Geld bekommen"),
+    .setDescription("🠞 Fishtrading: Become Coins for fish"),
   async execute(interaction, client) {
     const userId = interaction.member.id;
 
@@ -15,6 +16,10 @@ module.exports = {
       { _id: userId },
       "fishAmmount coinAmmount name"
     );
+
+    if (!user) {
+      userNotRegistered(interaction, client);
+    }
 
     const exchange = await Exchange.findOne({ _id: "Exchange" }, "value");
     console.log(exchange);
@@ -33,16 +38,16 @@ module.exports = {
           name: interaction.member.displayName,
           iconURL: interaction.member.displayAvatarURL(),
         })
-        .setTitle("Keine Fische zum Verkaufen")
+        .setTitle("\`ERROR: No fish..\`")
         .setDescription(
           `
-        *Du kannst keine Fische verkaufen, die du nicht besitzt ;)*
+        *Wenn du Fische bekommen willst, dann schreibe etwas oder gehe mit jemanden reden ;)*
         `
         );
       interaction.reply({ embeds: [sellErrorEmbed] });
       return;
     }
-
+    const gainedCoins = Math.round(exchange.value * user.fishAmmount);
     user.coinAmmount = Math.round(
       user.coinAmmount + exchange.value * user.fishAmmount
     );
@@ -63,13 +68,13 @@ module.exports = {
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
       })
-      .setTitle("Fische Verkauft!")
+      .setTitle("\`COMPLETE\`")
+      .setFooter({ text: `mom. Wechselkurs: 1 🐟 ➨ ${exchangeString} Coins` })
       .setDescription(
         `
-        *Du hast erfolgreich **${user.coinAmmount}** ${client.emojis.cache.find(
+        *Du hast erfolgreich **${gainedCoins}** ${client.emojis.cache.find(
           (emoji) => emoji.name === "coins"
         )} bekommen!*
-        *・Momentaner Wechselkurs **${exchangeString}***
         `
       );
     interaction.reply({ embeds: [sellEmbed] });

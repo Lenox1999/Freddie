@@ -1,10 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
+const userNotRegistered = require('../util/userNotRegistered');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("daily")
-    .setDescription("Infos über Daily Reward"),
+    .setDescription("🠞 Daily Reward: COINS COINS COINS"),
+    
   async execute(interaction, client) {
     const User = mongoose.models.User;
 
@@ -15,33 +17,26 @@ module.exports = {
       { _id: interaction.member.id },
       "streak lastLoginDay dailyLastTriggered coinAmmount"
     );
+
+    // Is User in DB?
     if (!user) {
-      let errorEmbed = new EmbedBuilder()
-        .setColor(Colors.Red)
-        .setTitle("\`Fehler\`")
-        .setThumbnail(interaction.member.displayAvatarURL())
-        .setDescription(
-          `
-          Du bist noch nicht registriert!
-          Schreibe eine Nachricht um dich zu registrieren.
-          Danach kannst du deinen Command ausführen!
-          `
-        )
-        interaction.reply({embeds: [errorEmbed]});
-        return;
+      userNotRegistered(interaction, client);
     }
 
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();
+      user.coinAmmount += 10;
       user.streak += 1;
       user.save();
 
       var firststreamembed = new EmbedBuilder()
         .setColor(Colors.DarkGreen)
-        .setTitle("\`DAILY REWARD\`")
+        .setTitle("\`FIRST DAILY REWARD\`")
         .setThumbnail(interaction.member.displayAvatarURL())
         .setDescription(
-          `*Du hast deine tägliche Belohnung abgeholt und deine erste Streak abgesahnt!*`
+          `*Du hast deine tägliche Belohnung abgeholt und deine erste Streak abgesahnt!*
+          +**10** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
+          `
         );
 
       interaction.reply({ embeds: [firststreamembed] });
@@ -90,7 +85,7 @@ module.exports = {
           `*Sorry, du hast bereits Daily benutzt, komme in **${durationMsg}** wieder um deine Streak zu verlängern!*`
         );
 
-      interaction.reply({ embeds: [alreadydailyembed] });
+      interaction.reply({ embeds: [alreadydailyembed], ephemeral: true });
       return;
     } else if (Date.now() - user.dailyLastTriggered > maxDiff) {
       user.lastLoginDay = new Date().getDate();

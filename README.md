@@ -31,6 +31,7 @@
 - /fishing -> jede 4 Stunden kannst du fischen gehen (Mehr Fische bekommen)
 - /exch -> Fischwechselkurs anzeigen
 - /shop -> kaufe Fischausrüstung und Items (Ohne Argument: Shop anzeigen, Mit Argument: bestimmtes item kaufen)
+- /inv -> Sehe deine benutzbaren und nicht benutzbaren Items
 - /use -> Benutze ein Item
 
 ## Changelog

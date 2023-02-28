@@ -1,15 +1,16 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js")
 const mongoose = require("mongoose");
+const userNotRegistered = require('../util/userNotRegistered');
 
 module.exports = {
     data: new SlashCommandBuilder()
       .setName("slots")
-      .setDescription("Slots starten")
+      .setDescription("🠞 Lottery: Play Slots to double your Coins")
       .addNumberOption(option =>
         option.setName("einsatz")
-            .setDescription("10-500?")
+            .setDescription("10-1000?")
             .setRequired(true)
-            .setMaxValue(500)
+            .setMaxValue(1000)
             .setMinValue(10)
         ),
     async execute(interaction, client) {
@@ -19,20 +20,10 @@ module.exports = {
             { _id: interaction.member.id },
             "coinAmmount"
           );
-          if (!user) {
-            let errorEmbed = new EmbedBuilder()
-              .setColor(Colors.Red)
-              .setTitle("\`Fehler\`")
-              .setThumbnail(interaction.member.displayAvatarURL())
-              .setDescription(
-                `
-                Du bist noch nicht registriert!
-                Schreibe eine Nachricht um dich zu registrieren.
-                Danach kannst du deinen Command ausführen!
-                `
-              )
-              interaction.reply({embeds: [errorEmbed]});
-              return;
+
+        // Is User in DB?
+        if (!user) {
+            userNotRegistered(interaction, client);
           }
         
         if(user.coinAmmount < interaction.options.getNumber("einsatz")) {

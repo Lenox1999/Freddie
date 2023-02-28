@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js")
 const mongoose = require("mongoose");
+const userNotRegistered = require('../util/userNotRegistered');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,14 +23,8 @@ module.exports = {
 
         // Is User in DB?
         if (!user) {
-            var no = new EmbedBuilder()
-              .setColor(Colors.Red)
-              .setTitle("\`ERROR: Account is missing..\`")
-              .setThumbnail(interaction.member.displayAvatarURL())
-              .setDescription(`Du besitzt noch keine Coins oder Fische.. Schreibe eine Nachricht um Coins zu erhalten!`)
-            interaction.reply({ embeds: [no], ephemeral: true });
-            return;
-        }
+            userNotRegistered(interaction, client);
+          }
         
         if(user.coinAmmount < interaction.options.getNumber("einsatz")) {
             var failmoney = new EmbedBuilder()

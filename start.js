@@ -111,7 +111,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     streak: Number,
     lastLogin: String,
     dailyLastTriggered: Number,
-    gears: Array,
+    gears: Object,
     lastMessage: Number,
     joinedVC: Number,
     leftVC: Number,

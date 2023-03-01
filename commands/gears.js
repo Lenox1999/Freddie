@@ -20,6 +20,8 @@ module.exports = {
 
     let output = [];
 
+    // objectstructure of user: user -> gears -> "0" -> item (-> level/cooldown/multiplier)
+
     for (const [key, value] of Object.entries(user.gears[0])) {
       // make first letter of the name upper case
       let name = key.split('');

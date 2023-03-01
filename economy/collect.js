@@ -68,19 +68,27 @@ module.exports = async (msg, client) => {
     // finds user in db
     User.findOne({ _id: userId })
       // selects fishAmmount field in User Document
-      .select("XP fishAmmount lastLogin")
+      .select("XP fishAmmount lastLogin gears")
       .exec(async (err, user) => {
         if (err) {
           console.error(err);
           return;
         }
+        let fishMultiplier = user.gears[0].angel.multiplier;
+        let fishCooldown = user.gears[0].messer.cooldown;
 
-        let timeSinceLastMsg = Math.round((Date.now() - user.lastLogin) / 1000);
+        let timeSinceLastMsg = Math.abs(
+          Math.round((Date.now() - user.lastLogin) / 1000)
+        );
 
-        if (timeSinceLastMsg < 30) return;
+
+        if (timeSinceLastMsg < fishCooldown) {
+          console.log(timeSinceLastMsg, fishCooldown);
+          return;
+        }
 
         // increases coin ammount by one for each written messagen
-        user.fishAmmount += 1;
+        user.fishAmmount += fishMultiplier;
         user.lastLogin = Date.now();
 
         // increase user xp by 3 with each msg

@@ -5,6 +5,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
+  Colors
 } = require("discord.js");
 const mongoose = require("mongoose");
 
@@ -20,11 +21,77 @@ module.exports = {
     const fertilizer = user.gears.fertilizer;
     const monkeys = user.gears.moremonkeys;
 
-    let startembed = new EmbedBuilder().setTitle("SHOP").setDescription(`
-      Plantation: [Description Plantation] Level ${banana.level} 
-      Fertilizer: [Description Fertilizer] Level ${fertilizer.level}
-      Monkeys: [Description Monkeys] Level ${monkeys.level}
-    `);
+    let startembed = new EmbedBuilder()
+        .setColor(Colors.Blue)
+        .setTitle("\`Shop\`")
+        .setThumbnail(interaction.guild.iconURL())
+        .setDescription(`*Hier kannst du deine Gears upgraden, Coin-Multiplier kaufen oder auch Lootboxen erwerben!*`)
+
+    let gearsembed = new EmbedBuilder()
+        .setColor(Colors.Blue)
+        .setTitle("Shop \`Gears Update\`")
+        .setThumbnail(interaction.guild.iconURL())
+        .setFields([
+            {
+                name:`Plantage Lvl ${banana.level}`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`Dünger Lvl ${fertilizer.level}`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`Affenbande Lvl ${monkeys.level}`,
+                value:`Kosten: ...`,
+                inline: false
+            }
+        ])
+
+    let multiplierembed = new EmbedBuilder()
+        .setColor(Colors.Blue)
+        .setTitle("Shop \`Coin-Multiplier\`")
+        .setThumbnail(interaction.guild.iconURL())
+        .setFields([
+            {
+                name:`1.5x Multiplier`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`2x Multiplier`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`3x Multiplier`,
+                value:`Kosten: ...`,
+                inline: false
+            }
+        ])
+
+    let lootboxembed = new EmbedBuilder()
+        .setColor(Colors.Blue)
+        .setTitle("Shop \`Lootboxen\`")
+        .setThumbnail(interaction.guild.iconURL())
+        .setFields([
+            {
+                name:`Default Lootbox`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`Rare Lootbox`,
+                value:`Kosten: ...`,
+                inline: false
+            },
+            {
+                name:`Epic Lootbox`,
+                value:`Kosten: ...`,
+                inline: false
+            }
+        ])
 
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -40,21 +107,6 @@ module.exports = {
         .setLabel("Lootboxen")
         .setStyle(ButtonStyle.Primary)
     );
-
-    // embed für coin multiplier
-    let multiplierEmbed = new EmbedBuilder().setTitle("Multiplier")
-      .setDescription(`
-      Mit Multipliern bekommst du mehr Coins 
-      1.5x Multiplier - Dauer: 5h, Preis: 5000 Coins - Code: 1.5x
-      2x Multiplier - Dauer: 4h, Preis: 15000 Coins -  Code 2x
-      3x Multiplier - Dauer 1.5h, Preis 35000 Coins - Code 3x
-    `);
-
-    let lootBoxEmbed = new EmbedBuilder().setTitle("Lootboxen").setDescription(`
-      Rare Lootbox: Preis: 500 coins 
-      Epic Lootbox: Preis: 2000 Coins
-      Legendary Lootbox: Preis: 5000 Coins
-    `);
 
     const msg = await interaction.reply({
       embeds: [startembed],
@@ -73,19 +125,20 @@ module.exports = {
 
       if (id === "upgrade") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [startembed] });
+        interaction.editReply({ embeds: [gearsembed] });
       } else if (id === "multiplier") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [multiplierEmbed] });
+        interaction.editReply({ embeds: [multiplierembed] });
       } else if (id === "lootbox") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [lootBoxEmbed] });
+        interaction.editReply({ embeds: [lootboxembed] });
       }
     });
 
     collector.on("end", async () => {
       let shopTimeout = new EmbedBuilder()
-        .setTitle("Shop geschlossen")
+        .setColor(Colors.Red)
+        .setTitle("\`ERROR: Shop closed..\`")
         .setTimestamp();
 
       interaction.editReply({ components: [], embeds: [shopTimeout] });

@@ -18,22 +18,6 @@ module.exports = {
         userNotRegistered(interaction, client);
     }
 
-    let output = []
-    let outputplantation = [];
-    let outputfertilizer = [];
-    let outputmoremonkeys = [];
-
-    for (const [key, value] of Object.entries(user.gears)) {
-      let name = key.split('');
-      name[0] = name[0].toUpperCase();
-      name = name.join('')
-
-      output.push(`${name}`);
-      outputplantation.push(`${value.level}`, `${value.onebanana}`,  `${value.twobanana}`,  `${value.threebanana}`)
-      outputfertilizer.push(`${value.level}`, `${value.cooldownmsg}`, `${value.cooldownvc}`)
-      outputmoremonkeys.push(`${value.level}`, `${value.time}`)
-    }
-
     let gearsembed = new EmbedBuilder()
         .setColor(Colors.Blue)
         .setTitle(`Gears: \`${interaction.member.displayName}\``)
@@ -41,18 +25,18 @@ module.exports = {
         .setDescription("*Mit \`/shop\` kannst du diese Tools upgraden.*")
         .setFields([
             {
-                name:`Plantage **Lvl \`${outputplantation[0]}\``,
-                value:`Die Chance auf 1🍌 = **${outputplantation[1]}**%, auf 2🍌 = **${outputplantation[2]}**% und auf 3🍌 = **${outputplantation[3]}**%.`,
+                name:`Plantage Lvl \`${user.gears.plantation.level}\``,
+                value:`Die Chance auf\n1🍌 = **${user.gears.plantation.onebanana}**%\n2🍌 = **${user.gears.plantation.twobanana}**%\n3🍌 = **${user.gears.plantation.threebanana}**%.`,
                 inline: true
             },
             {
-                name:`Dünger **Lvl \`${outputfertilizer[0]}\``,
-                value:`Der Cooldown von Nachrichten **${outputfertilizer[1]}** Sekunden und Cooldown von VC-Zeit **${outputfertilizer[2]}** Sekunden.`,
+                name:`Dünger Lvl \`${user.gears.fertilizer.level}\``,
+                value:`Der Cooldown von Nachrichten **${user.gears.fertilizer.cooldownmsg}**sec\nVC-Zeit **${user.gears.fertilizer.cooldownvc}**sec`,
                 inline: true
             },
             {
-                name:`Affenbande **Lvl \`${outputmoremonkeys[0]}\``,
-                value:`Die Zeit beträgt gerade **${outputmoremonkeys[1]}**h bis deine Affen wieder da sind.`,
+                name:`Affenbande Lvl \`${user.gears.moremonkeys.level}\``,
+                value:`Die Zeit beträgt gerade **${user.gears.moremonkeys.time}**h bis deine Affen wieder da sind.`,
                 inline: true
             },
         ])

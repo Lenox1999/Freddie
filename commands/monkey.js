@@ -53,7 +53,7 @@ module.exports = {
           .setColor(Colors.Gold)
           .setTitle("\`Looting some shit..\`")
           .setThumbnail(interaction.member.displayAvatarURL())
-          .setDescription(`Leider kamen sie nur mit **${defaultitem[randomitemd]}** wieder. \n*Du schickst die Affen weg und kannst in 4h wiederkommen!*`)
+          .setDescription(`Leider kamen sie nur mit **${defaultitem[randomitemd]}** wieder. \n*Du schickst die Affen weg und kannst in ${user.gears.moremonkeys.time}h wiederkommen!*`)
         interaction.reply({ embeds: [defaultbananaembed] })
       } else if(randomNumber <= 99) {
         let randomitemr = Math.floor(Math.random() * rareitem.length);
@@ -61,7 +61,7 @@ module.exports = {
           .setColor(Colors.Gold)
           .setTitle("\`Looting some basic stuff..\`")
           .setThumbnail(interaction.member.displayAvatarURL())
-          .setDescription(`Die Affen haben dir **${rareitem[randomitemr]}** mitgebracht, dass entspricht **10** 🍌. \n*Du schickst die Affen weg und kannst in 4h wiederkommen!*`)
+          .setDescription(`Die Affen haben dir **${rareitem[randomitemr]}** mitgebracht, dass entspricht **10** 🍌. \n*Du schickst die Affen weg und kannst in ${user.gears.moremonkeys.time}h wiederkommen!*`)
         interaction.reply({ embeds: [rarebananaembed] })
         user.bananaAmmount += 10;
       } else if(randomNumber == 100) {
@@ -70,7 +70,7 @@ module.exports = {
           .setColor(Colors.Gold)
           .setTitle("\`Looting very big bananananas..\`")
           .setThumbnail(interaction.member.displayAvatarURL())
-          .setDescription(`GLÜCKWUNSCH! Die Affen **${epicitem[randomiteme]}**, im Wert von **100** 🍌. \n*Du schickst die Affen weg und kannst in 4h wiederkommen!*`)
+          .setDescription(`GLÜCKWUNSCH! Die Affen **${epicitem[randomiteme]}**, im Wert von **100** 🍌. \n*Du schickst die Affen weg und kannst in ${user.gears.moremonkeys.time}h wiederkommen!*`)
         interaction.reply({ embeds: [epicbananaembed] })
         user.bananaAmmount += 100;
       }

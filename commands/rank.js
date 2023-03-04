@@ -41,7 +41,7 @@ module.exports = {
 
         var levelembed = new EmbedBuilder()
           .setColor(Colors.Blue)
-          .setTitle(`\`Level ${user.lvl}\``)
+          .setTitle(`\`Rank ${user.lvl}\``)
           .setDescription(`
           **${nextLvLDiff}** | **${LvLDiff}** XP
           `)

@@ -6,6 +6,7 @@ const {
   InteractionType,
   EmbedBuilder,
   ActivityType,
+  Colors
 } = require("discord.js");
 
 const client = new Client({

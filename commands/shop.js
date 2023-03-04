@@ -4,7 +4,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  CompenentType,
+  ComponentType,
 } = require("discord.js");
 const mongoose = require("mongoose");
 
@@ -18,7 +18,7 @@ module.exports = {
 
     const banana = user.gears.plantation;
     const fertilizer = user.gears.fertilizer;
-    const monkeys = user.gears.moreMonkeys;
+    const monkeys = user.gears.moremonkeys;
 
     let startembed = new EmbedBuilder().setTitle("SHOP").setDescription(`
       Plantation: [Description Plantation] Level ${banana.level} 
@@ -64,7 +64,7 @@ module.exports = {
     });
 
     let collector = msg.createMessageComponentCollector({
-      ComponentType: CompenentType.Button,
+      ComponentType: ComponentType.Button,
       time: 300000,
     });
 

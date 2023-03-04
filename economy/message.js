@@ -37,17 +37,14 @@ module.exports = async (msg, client) => {
           _id: msg.member.id,
           name: msg.member.displayName,
           coinAmmount: 0,
-          fishAmmount: 1,
+          bananaAmmount: 1,
           streak: 0,
           lastLogin: Date.now(),
           dailyLastTriggered: 0,
           gears: {
-            0: {
-              angel: { level: 1, multiplier: 1 },
-              köder: { level: 1, multiplier: 1 },
-              messer: { level: 1, cooldown: 30 },
-              eimer: { level: 1, cooldown: 60 },
-            },
+              plantation: { level: 1, onebanana: 95, twobanana: 4, threebanana: 1  }, //max Level 9, onebanana: 50(5), twobanana: 40(4), threebanana: 10(1)
+              fertilizer: { level: 1, cooldownmsg: 30, cooldownvc: 60 }, //max Level: 10, cooldownmsg: 20, cooldownvc: 50
+              moremonkeys: { level: 1, time: 4 }, //max Level: 6, time: 1(0.5)
           },
           lastMessage: Date.now(),
           joinedVC: 0,
@@ -56,7 +53,7 @@ module.exports = async (msg, client) => {
           multiplier: 1,
           XP: 3,
           lvl: 0,
-          lastFishing: 0,
+          lastMonkeys: 0,
         },
         { strict: false }
       );
@@ -67,20 +64,38 @@ module.exports = async (msg, client) => {
 
     // finds user in db
     User.findOne({ _id: userId })
-      // selects fishAmmount field in User Document
-      .select("XP fishAmmount lastLogin")
+      // selects bananaAmmount field in User Document
+      .select("XP bananaAmmount lastLogin gears")
       .exec(async (err, user) => {
         if (err) {
           console.error(err);
           return;
         }
 
-        let timeSinceLastMsg = Math.round((Date.now() - user.lastLogin) / 1000);
+        let bananas = user.gears.plantation;
+        let cooldowns = user.gears.fertilizer;
+        let getbanana = 0;
 
-        if (timeSinceLastMsg < 30) return;
+        let amount = Math.floor(Math.random() * 100);
+        if(amount <= bananas.onebanana) { 
+          getbanana = 1;
+         } else if(amount <= bananas.twobanana + bananas.onebanana) {
+          getbanana = 2;
+         } else if(amount <= bananas.threebanana + bananas.twobanana + bananas.onebanana) {
+          getbanana = 3
+         }
+
+        let timeSinceLastMsg = Math.abs(
+          Math.round((Date.now() - user.lastLogin) / 1000)
+        );
+
+
+        if (timeSinceLastMsg < cooldowns.cooldownmsg) {
+          return;
+        }
 
         // increases coin ammount by one for each written messagen
-        user.fishAmmount += 1;
+        user.bananaAmmount += getbanana;
         user.lastLogin = Date.now();
 
         // increase user xp by 3 with each msg

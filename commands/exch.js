@@ -27,7 +27,7 @@ module.exports = {
       .setColor(Colors.Blue)
       .setTitle(`\`${interaction.guild.name}'s Exchange\``)
       .setDescription(`
-      1 🐟 ➨ **${exchangeString}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
+      1 🍌 ➨ **${exchangeString}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
       `);
     interaction.reply({ embeds: [exchangeEmbed], ephemeral: true });
   },

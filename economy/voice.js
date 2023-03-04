@@ -5,12 +5,24 @@ const userNotRegistered = require("../util/userNotRegistered");
 
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
-  const fishPerMin = 1;
 
   const vc = newState.channelId;
 
   const user = await User.findOne({ _id: newState.id });
 
+  let bananas = user.gears.plantation;
+  const getbanana = 0;
+
+  let amount = Math.floor(Math.random() * 100);
+  if(amount <= bananas.onebanana) { 
+    getbanana = 1;
+   } else if(amount <= bananas.twobanana + bananas.onebanana) {
+    getbanana = 2;
+   } else if(amount <= bananas.threebanana + bananas.twobanana + bananas.onebanana) {
+    getbanana = 3
+   }
+
+  const cooldown = user.gears.fertilizer.cooldownvc;
   // check if user isnt registered
   if (!user) {
     userNotRegistered(interaction, client);
@@ -30,7 +42,7 @@ module.exports = async (oldState, newState, client) => {
     // }
     user.leftVC = Date.now();
     if (user.joinedVC === 0 || user.leftVC === 0) return;
-    let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+    let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
     // heißt der Nutzer war weniger als eine Minute im Voicechannel
     if (timeInVC < 1) {
       user.leftVC = 0;
@@ -38,7 +50,7 @@ module.exports = async (oldState, newState, client) => {
       return;
     }
 
-    let reward = Math.round(timeInVC * fishPerMin);
+    let reward = Math.round(timeInVC * getbanana);
     user.fishAmmount = user.fishAmmount + reward;
 
     user.joinedVC = 0;
@@ -63,7 +75,7 @@ module.exports = async (oldState, newState, client) => {
 
           user.leftVC = Date.now();
           console.log(user.name);
-          let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+          let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
           if (timeInVC < 1) {
             // heißt der Nutzer war weniger als eine Minute im Voicechannel
             user.joinedVC = 0;
@@ -72,7 +84,7 @@ module.exports = async (oldState, newState, client) => {
             return;
           }
 
-          let reward = Math.round(timeInVC * fishPerMin);
+          let reward = Math.round(timeInVC * getbanana);
           console.log(timeInVC, 'spent time');
           console.log(reward);
           user.fishAmmount += reward;
@@ -104,7 +116,7 @@ module.exports = async (oldState, newState, client) => {
           const user = await User.findOne({ _id: data.user.id });
 
           user.leftVC = Date.now();
-          let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+          let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
           if (timeInVC < 1) {
             // heißt der Nutzer war weniger als eine Minute im Voicechannel
             user.leftVC = 0;
@@ -112,7 +124,7 @@ module.exports = async (oldState, newState, client) => {
             return;
           }
 
-          let reward = Math.round(timeInVC * fishPerMin);
+          let reward = Math.round(timeInVC * getbanana);
           user.fishAmmount = user.fishAmmount + reward;
 
           user.joinedVC = 0;
@@ -126,7 +138,7 @@ module.exports = async (oldState, newState, client) => {
         const user = await User.findOne({ _id: data.user.id });
 
         user.leftVC = Date.now();
-        let timeInVC = (user.leftVC - user.joinedVC) / 1000 / 60;
+        let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
         if (timeInVC < 1) {
           // heißt der Nutzer war weniger als eine Minute im Voicechannel
           user.leftVC = 0;
@@ -134,7 +146,7 @@ module.exports = async (oldState, newState, client) => {
           return;
         }
 
-        let reward = Math.round(timeInVC * fishPerMin);
+        let reward = Math.round(timeInVC * getbanana);
         user.fishAmmount = user.fishAmmount + reward;
 
         user.joinedVC = 0;

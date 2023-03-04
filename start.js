@@ -6,6 +6,7 @@ const {
   InteractionType,
   EmbedBuilder,
   ActivityType,
+  Colors
 } = require("discord.js");
 
 const client = new Client({
@@ -24,7 +25,7 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 
 // import functions
-const collectCoins = require("./economy/collect");
+const messages = require("./economy/message");
 const levelBuilder = require("./util/levelBuilder");
 const voiceState = require("./economy/voice");
 
@@ -44,7 +45,7 @@ client.once("ready", () => {
   client.user.setActivity({ name: "in Arbeit..", type: ActivityType.Playing });
 });
 
-client.on("messageCreate", async (msg) => await collectCoins(msg, client));
+client.on("messageCreate", async (msg) => await messages(msg, client));
 
 client.on("voiceStateUpdate", (oldMember, newMember) =>
   voiceState(oldMember, newMember, client)
@@ -64,15 +65,10 @@ client.on("interactionCreate", async (interaction) => {
   const command = client.commands.get(interaction.commandName);
 
   var fail = new EmbedBuilder()
-    .setColor(0x85c1e9)
-    .setTitle("`ERROR`")
-    .setAuthor({
-      name: interaction.member.displayName,
-      iconURL: interaction.member.displayAvatarURL(),
-    })
-    .setDescription(
-      "*Melde dich bei **David und Niklas**, da etwas nicht funktioniert... Danke!*"
-    );
+    .setColor(Colors.Red)
+    .setTitle("\`ERROR: Something going wrong..\`")
+    .setThumbnail(interaction.member.displayAvatarURL())
+    .setDescription(`Melde dich bei **Niklas** oder bei **David**!`)
 
   if (command) {
     try {
@@ -94,8 +90,8 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 // connect MongoDB Databse - URI has to be set in .env file (without it wont work)
 (async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_DB_URI, {dbName: 'freddie'});
-    console.log("MONGO CONNECTED");
+    await mongoose.connect(process.env.MONGO_DB_URI, {dbName: 'freddie-test'});
+    console.log("Connected to MongoDB");
     mongoose.set("strictQuery", false);
   } catch (error) {
     console.error(error);
@@ -105,7 +101,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
-    fishAmmount: Number,
+    bananaAmmount: Number,
     streak: Number,
     lastLogin: String,
     dailyLastTriggered: Number,
@@ -117,7 +113,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     multiplier: Number,
     XP: Number,
     lvl: Number,
-    lastFishing: Number,
+    lastMonkeys: Number,
   });
   mongoose.model("User", userScheme);
 

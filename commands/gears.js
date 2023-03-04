@@ -5,7 +5,7 @@ const userNotRegistered = require('../util/userNotRegistered');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("gears")
-    .setDescription("🠞 Fishing equipment: rod, bait, knife, bucket"),
+    .setDescription("🠞 Equipment: plantation, fertilizer and moremonkeys"),
   async execute(interaction, client) {
     const User = mongoose.models.User;
 
@@ -18,41 +18,25 @@ module.exports = {
         userNotRegistered(interaction, client);
     }
 
-    let output = [];
-
-    for (const [key, value] of Object.entries(user.gears[0])) {
-      // make first letter of the name upper case
-      let name = key.split('');
-      name[0] = name[0].toUpperCase();
-      name = name.join('')
-
-      output.push(`${name}・Level \`${value.level}\``);
-    }
-
     let gearsembed = new EmbedBuilder()
         .setColor(Colors.Blue)
         .setTitle(`Gears: \`${interaction.member.displayName}\``)
         .setThumbnail(interaction.member.displayAvatarURL())
-        .setDescription("*Mit \`/cooldown\` siehst du deine aktuellen Cooldowns und Fische pro Nachricht bzw. pro Voice-Time und \`/shop\` kannst du dein Equipment aufwerten!*")
+        .setDescription("*Mit \`/shop\` kannst du diese Tools upgraden.*")
         .setFields([
             {
-                name:`${output[0]}`,
-                value:`Die Angel kann deine Fische pro Nachricht verbessern.`,
+                name:`Plantage Lvl \`${user.gears.plantation.level}\``,
+                value:`Die Chance auf\n1🍌 = **${user.gears.plantation.onebanana}**%\n2🍌 = **${user.gears.plantation.twobanana}**%\n3🍌 = **${user.gears.plantation.threebanana}**%.`,
                 inline: true
             },
             {
-                name:`${output[1]}`,
-                value:`Der Köder verbessert die Fische pro Voice-Time im Channel.`,
+                name:`Dünger Lvl \`${user.gears.fertilizer.level}\``,
+                value:`Der Cooldown von Nachrichten **${user.gears.fertilizer.cooldownmsg}**sec\nVC-Zeit **${user.gears.fertilizer.cooldownvc}**sec`,
                 inline: true
             },
             {
-                name:`${output[2]}`,
-                value:`Das Messer verkürzt den Cooldown zwischen geschriebenen Nachrichten.`,
-                inline: true
-            },
-            {
-                name:`${output[3]}`,
-                value:`Der Eimer verkürzt den Cooldown der Fische die man bekommt pro Voice-Time.`,
+                name:`Affenbande Lvl \`${user.gears.moremonkeys.level}\``,
+                value:`Die Zeit beträgt gerade **${user.gears.moremonkeys.time}**h bis deine Affen wieder da sind.`,
                 inline: true
             },
         ])

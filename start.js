@@ -24,7 +24,7 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 
 // import functions
-const collectCoins = require("./economy/collect");
+const messages = require("./economy/message");
 const levelBuilder = require("./util/levelBuilder");
 const voiceState = require("./economy/voice");
 
@@ -44,7 +44,7 @@ client.once("ready", () => {
   client.user.setActivity({ name: "in Arbeit..", type: ActivityType.Playing });
 });
 
-client.on("messageCreate", async (msg) => await collectCoins(msg, client));
+client.on("messageCreate", async (msg) => await messages(msg, client));
 
 client.on("voiceStateUpdate", (oldMember, newMember) =>
   voiceState(oldMember, newMember, client)

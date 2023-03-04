@@ -1,3 +1,6 @@
+- Fehler finden und beheben!
+- erst danach weiterarbeiten..
+
 - shop
 
 - FÜR MEHRERE SERVER: DBs müssen 

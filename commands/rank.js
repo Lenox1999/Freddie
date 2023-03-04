@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("level")
+    .setName("rank")
     .setDescription("🠞 Levelsystem: Level + XP"),
 
   async execute(interaction, client) {

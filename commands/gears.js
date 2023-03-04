@@ -5,7 +5,7 @@ const userNotRegistered = require('../util/userNotRegistered');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("gears")
-    .setDescription("🠞 Fishing equipment: rod, bait, knife, bucket"),
+    .setDescription("🠞 Equipment: plantation, fertilizer and moremonkeys"),
   async execute(interaction, client) {
     const User = mongoose.models.User;
 
@@ -18,43 +18,41 @@ module.exports = {
         userNotRegistered(interaction, client);
     }
 
-    let output = [];
+    let output = []
+    let outputplantation = [];
+    let outputfertilizer = [];
+    let outputmoremonkeys = [];
 
-    // objectstructure of user: user -> gears -> "0" -> item (-> level/cooldown/multiplier)
-
-    for (const [key, value] of Object.entries(user.gears[0])) {
-      // make first letter of the name upper case
+    for (const [key, value] of Object.entries(user.gears)) {
       let name = key.split('');
       name[0] = name[0].toUpperCase();
       name = name.join('')
 
-      output.push(`${name}・Level \`${value.level}\``);
+      output.push(`${name}`);
+      outputplantation.push(`${value.level}`, `${value.onebanana}`,  `${value.twobanana}`,  `${value.threebanana}`)
+      outputfertilizer.push(`${value.level}`, `${value.cooldownmsg}`, `${value.cooldownvc}`)
+      outputmoremonkeys.push(`${value.level}`, `${value.time}`)
     }
 
     let gearsembed = new EmbedBuilder()
         .setColor(Colors.Blue)
         .setTitle(`Gears: \`${interaction.member.displayName}\``)
         .setThumbnail(interaction.member.displayAvatarURL())
-        .setDescription("*Mit \`/cooldown\` siehst du deine aktuellen Cooldowns und Fische pro Nachricht bzw. pro Voice-Time und \`/shop\` kannst du dein Equipment aufwerten!*")
+        .setDescription("*Mit \`/shop\` kannst du diese Tools upgraden.*")
         .setFields([
             {
-                name:`${output[0]}`,
-                value:`Die Angel kann deine Fische pro Nachricht verbessern.`,
+                name:`Plantage **Lvl \`${outputplantation[0]}\``,
+                value:`Die Chance auf 1🍌 = **${outputplantation[1]}**%, auf 2🍌 = **${outputplantation[2]}**% und auf 3🍌 = **${outputplantation[3]}**%.`,
                 inline: true
             },
             {
-                name:`${output[1]}`,
-                value:`Der Köder verbessert die Fische pro Voice-Time im Channel.`,
+                name:`Dünger **Lvl \`${outputfertilizer[0]}\``,
+                value:`Der Cooldown von Nachrichten **${outputfertilizer[1]}** Sekunden und Cooldown von VC-Zeit **${outputfertilizer[2]}** Sekunden.`,
                 inline: true
             },
             {
-                name:`${output[2]}`,
-                value:`Das Messer verkürzt den Cooldown zwischen geschriebenen Nachrichten.`,
-                inline: true
-            },
-            {
-                name:`${output[3]}`,
-                value:`Der Eimer verkürzt den Cooldown der Fische die man bekommt pro Voice-Time.`,
+                name:`Affenbande **Lvl \`${outputmoremonkeys[0]}\``,
+                value:`Die Zeit beträgt gerade **${outputmoremonkeys[1]}**h bis deine Affen wieder da sind.`,
                 inline: true
             },
         ])

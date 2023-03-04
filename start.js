@@ -112,7 +112,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     multiplier: Number,
     XP: Number,
     lvl: Number,
-    lastFishing: Number,
+    lastMonkeys: Number,
   });
   mongoose.model("User", userScheme);
 

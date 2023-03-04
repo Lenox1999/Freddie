@@ -22,18 +22,18 @@
 - Economy: User (rank, bal, daily, top10, sell, spin, slots, exch, monkeys, gears, shop, inv, use)
 
 - /help -> Credits, Liste aller Commands
-- /bal -> Geld + Fische + Streak + aktive Multiplier + Fähigkeiten
+- /bal -> Geld + Bananen + Streak + aktive Multiplier + Fähigkeiten
 - /daily -> Infos über Daily Reward
 - /rank -> Infos über Level und XP
 - /top10 (bal/lvl) -> zum einen: XP-Top10(basierend auf Levels) zum anderen: Geld-Top10
-- /sell -> Fische verkaufen -> Geld
+- /sell -> Bananen verkaufen -> Geld
 - /spin -> spin lotterie starten
 - /slots -> slots lotterie starten
-- /gear -> zeigt Fischerausrüstung
-- /cooldowns -> zeigt Fischcooldowns
-- /fishing -> jede 4 Stunden kannst du fischen gehen (Mehr Fische bekommen)
-- /exch -> Fischwechselkurs anzeigen
-- /shop -> kaufe Fischausrüstung und Items (Ohne Argument: Shop anzeigen, Mit Argument: bestimmtes item kaufen)
+- /gears -> zeigt Bananenausrüstung
+- /cooldowns -> zeigt Bananencooldowns
+- /monkey -> jede 4 Stunden kannst du Bananenn gehen (Mehr Bananen bekommen)
+- /exch -> Bananenwechselkurs anzeigen
+- /shop -> kaufe Bananenausrüstung und Items (Ohne Argument: Shop anzeigen, Mit Argument: bestimmtes item kaufen)
 - /inv -> Sehe deine benutzbaren und nicht benutzbaren Items
 - /use -> Benutze ein Item
 

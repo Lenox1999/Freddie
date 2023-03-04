@@ -1,4 +1,14 @@
 {
-    "functional": [""],
-    "nofunctional": [""]
+    "functional": [{
+        "default": [""],
+        "rare": [""],
+        "epic": [""],
+        "mystical": [""]
+    }],
+    "nofunctional": [{
+        "default": [""],
+        "rare": [""],
+        "epic": [""],
+        "mystical": [""]
+    }]
 }

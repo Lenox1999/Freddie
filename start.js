@@ -64,15 +64,10 @@ client.on("interactionCreate", async (interaction) => {
   const command = client.commands.get(interaction.commandName);
 
   var fail = new EmbedBuilder()
-    .setColor(0x85c1e9)
-    .setTitle("`ERROR`")
-    .setAuthor({
-      name: interaction.member.displayName,
-      iconURL: interaction.member.displayAvatarURL(),
-    })
-    .setDescription(
-      "*Melde dich bei **David und Niklas**, da etwas nicht funktioniert... Danke!*"
-    );
+    .setColor(Colors.Red)
+    .setTitle("\`ERROR: Something going wrong..\`")
+    .setThumbnail(interaction.member.displayAvatarURL())
+    .setDescription(`Melde dich bei **Niklas** oder bei **David**!`)
 
   if (command) {
     try {
@@ -95,7 +90,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 (async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_DB_URI, {dbName: 'freddie-test'});
-    console.log("MONGO CONNECTED");
+    console.log("Connected to MongoDB");
     mongoose.set("strictQuery", false);
   } catch (error) {
     console.error(error);
@@ -105,7 +100,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     _id: String,
     name: String,
     coinAmmount: Number,
-    fishAmmount: Number,
+    bananaAmmount: Number,
     streak: Number,
     lastLogin: String,
     dailyLastTriggered: Number,

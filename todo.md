@@ -1,5 +1,3 @@
-- cooldown command, der zeigt voice und chat cooldowns anzeigt
-- cooldowns implementieren
 - shop
 
 - FÜR MEHRERE SERVER: DBs müssen 

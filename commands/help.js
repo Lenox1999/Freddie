@@ -11,7 +11,7 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("🠞 Freddie: Credits + Commands"),
+    .setDescription("🠞 Freddie: Credits + Commands + Coming Soon"),
 
   async execute(interaction, client) {
     var startembed = new EmbedBuilder()
@@ -22,7 +22,7 @@ module.exports = {
       })
       .setTitle("HELP")
       .setDescription(`
-        *So kann man unseren Bot beschreiben: Ein globales System um Items zu sammeln, reich zu werden, Freunde ausrauben oder halt Glückspiel zu betreiben und noch vieles mehr.*
+        *So kann man unseren Bot beschreiben: Ein globales Economy System um Items zu sammeln, reich zu werden, Freunde ausrauben oder halt Glückspiel zu betreiben und noch vieles mehr.*
 
 
         **Das Ziel ist es den vorhandenen Server attraktiv zu machen und User zu Unterhalten.**
@@ -42,7 +42,7 @@ module.exports = {
       `)
       .setFields([
         {
-          name: `Allgemein`,
+          name: `Moderation`,
           value: `
           \`help\`
           `,
@@ -51,14 +51,14 @@ module.exports = {
         {
           name: `Economy`,
           value: `
-          \`bal\`, \`daily\`, \`level\`, \`top10\`, \`sell\`, \`spin\`, \`slots\`, \`gears\`, \`cooldown\`, \`fishing\`, \`exch\`, \`shop\`, \`use\`
+          \`bal\`, \`daily\`, \`rank\`, \`top10\`, \`sell\`, \`spin\`, \`slots\`, \`gears\`, \`monkeys\`, \`exch\`, \`shop\`, \`inv\`, \`use\`
           `,
           inline: false
         },
         {
           name: `Coming Soon`,
           value: `
-          \`rob\`, \`event\`, \`stocks\`
+          \`rob\`, \`event\`, \`stocks\`, \`(Moderation Commands!)\`
           `,
           inline: false
         }
@@ -75,13 +75,12 @@ module.exports = {
       **/help** ▸ *Da bist du gerade*
       **/bal** ▸ *Infos über Burger, Streak, aktive Multiplier, Fähigkeiten*
       **/daily** ▸ *Infos über Daily Reward*
-      **/level** ▸ *Infos über Level*
+      **/rank** ▸ *Infos über Level*
       **/top10 (bal/lvl)** ▸ *Zum einen: XP-Top10 und Geld Top10*
-      **/sell** ▸ *Alle Burger verkaufen um Geld bekommen*
+      **/sell** ▸ *Alle Bananen verkaufen um Coins bekommen*
       **/spin** ▸ *Spin starten*
       **/slots** ▸ *Slots starten*
-      **/gears** ▸ *Zeigt deine Fischausrüstung*
-      **/cooldown** ▸ *Deine Cooldowns zwischen Nachrichten schreiben oder VC-Zeit*
+      **/gears** ▸ *Zeigt das Level und Effektivität der Ausrüstung*
       `);
 
     var secondCommands = new EmbedBuilder()
@@ -92,9 +91,10 @@ module.exports = {
       })
       .setTitle("\`Commandliste #2\`")
       .setDescription(`
-      **/fishing** ▸ *Jede 4h kannst du fischen gehen*
+      **/monkeys** ▸ *Jede 4h sind deine Affen für mit Bananen wieder da*
       **/exch** ▸ *Sehe den aktuellen Wechselkurs*
       **/shop** ▸ *Kaufe Gearupgrades, Multiplier oder Lootboxen*
+      **/inv** ▸ *Sehe deine Items*
       **/use** ▸ *Benutze ein Item*
       `);
 

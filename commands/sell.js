@@ -14,7 +14,7 @@ module.exports = {
 
     const user = await User.findOne(
       { _id: userId },
-      "fishAmmount coinAmmount name"
+      "bananaAmmount coinAmmount name"
     );
 
     if (!user) {
@@ -31,7 +31,7 @@ module.exports = {
       return;
     }
 
-    if (user.fishAmmount === 0) {
+    if (user.bananaAmmount === 0) {
       let sellErrorEmbed = new EmbedBuilder()
         .setColor(Colors.Red)
         .setAuthor({
@@ -47,11 +47,11 @@ module.exports = {
       interaction.reply({ embeds: [sellErrorEmbed] });
       return;
     }
-    const gainedCoins = Math.round(exchange.value * user.fishAmmount);
+    const gainedCoins = Math.round(exchange.value * user.bananaAmmount);
     user.coinAmmount = Math.round(
-      user.coinAmmount + exchange.value * user.fishAmmount
+      user.coinAmmount + exchange.value * user.bananaAmmount
     );
-    user.fishAmmount = 0;
+    user.bananaAmmount = 0;
 
     user.save();
 
@@ -69,7 +69,7 @@ module.exports = {
         iconURL: interaction.member.displayAvatarURL(),
       })
       .setTitle("\`COMPLETE\`")
-      .setFooter({ text: `mom. Wechselkurs: 1 🐟 ➨ ${exchangeString} Coins` })
+      .setFooter({ text: `mom. Wechselkurs: 1 🍌 ➨ ${exchangeString} Coins` })
       .setDescription(
         `
         *Du hast erfolgreich **${gainedCoins}** ${client.emojis.cache.find(

@@ -5,7 +5,7 @@ const userNotRegistered = require('../util/userNotRegistered');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("bal")
-    .setDescription("🠞 Account-Info: Coins, Fish, Multiplier und Streaks"),
+    .setDescription("🠞 Account-Info: Coins, Banana, Multiplier und Streaks"),
 
   async execute(interaction, client) {
     const User = mongoose.models.User;
@@ -13,7 +13,7 @@ module.exports = {
     const exchange = await Exchanges.findOne({ _id: "Exchange" }, "value");
 
     User.findOne({ _id: interaction.member.id })
-      .select("coinAmmount fishAmmount streak multiplier")
+      .select("coinAmmount bananaAmmount streak multiplier")
       .exec((err, user) => {
         if (err) {
           console.log(err);
@@ -26,15 +26,15 @@ module.exports = {
         }
 
         let coins = user.coinAmmount.toString();
-        let fish = user.fishAmmount.toString();
+        let bananas = user.bananaAmmount.toString();
         let multiplier = user.multiplier.toString();
         let streak = user.streak.toString();
 
         var whenselling = ``;
-        const gainedCoins = Math.round(exchange.value * user.fishAmmount);
+        const gainedCoins = Math.round(exchange.value * user.bananaAmmount);
         const allinall = Math.floor(gainedCoins + user.coinAmmount)
 
-        if(user.fishAmmount > 0) {
+        if(user.bananaAmmount > 0) {
           whenselling = `
           ⠀→ *+${gainedCoins}* ${client.emojis.cache.find(emoji => emoji.name === "coins")}
           ⠀→ *${allinall}* ${client.emojis.cache.find(emoji => emoji.name === "coins")}`
@@ -45,7 +45,7 @@ module.exports = {
           .setTitle(`Account: \`${interaction.member.displayName}\``)
           .setThumbnail(interaction.member.displayAvatarURL())
           .setDescription(`
-          ・Fische **${fish}** 🐟${whenselling}
+          ・Bananas **${bananas}** 🍌${whenselling}
           ・Coins **${coins}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
           ・Multiplier **${multiplier}**x
           ・Daily-Streak **${streak}** ${client.emojis.cache.find(emoji => emoji.name === "daily")}

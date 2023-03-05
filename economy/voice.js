@@ -10,8 +10,19 @@ module.exports = async (oldState, newState, client) => {
 
   const user = await User.findOne({ _id: newState.id });
 
-  const fishPerMin = user.gears[0].köder.multiplier;
-  const cooldown = user.gears[0].eimer.cooldown;
+  let bananas = user.gears.plantation;
+  const getbanana = 0;
+
+  let amount = Math.floor(Math.random() * 100);
+  if(amount <= bananas.onebanana) { 
+    getbanana = 1;
+   } else if(amount <= bananas.twobanana + bananas.onebanana) {
+    getbanana = 2;
+   } else if(amount <= bananas.threebanana + bananas.twobanana + bananas.onebanana) {
+    getbanana = 3
+   }
+
+  const cooldown = user.gears.fertilizer.cooldownvc;
   // check if user isnt registered
   if (!user) {
     userNotRegistered(interaction, client);
@@ -39,7 +50,7 @@ module.exports = async (oldState, newState, client) => {
       return;
     }
 
-    let reward = Math.round(timeInVC * fishPerMin);
+    let reward = Math.round(timeInVC * getbanana);
     user.fishAmmount = user.fishAmmount + reward;
 
     user.joinedVC = 0;
@@ -73,7 +84,7 @@ module.exports = async (oldState, newState, client) => {
             return;
           }
 
-          let reward = Math.round(timeInVC * fishPerMin);
+          let reward = Math.round(timeInVC * getbanana);
           console.log(timeInVC, 'spent time');
           console.log(reward);
           user.fishAmmount += reward;
@@ -113,7 +124,7 @@ module.exports = async (oldState, newState, client) => {
             return;
           }
 
-          let reward = Math.round(timeInVC * fishPerMin);
+          let reward = Math.round(timeInVC * getbanana);
           user.fishAmmount = user.fishAmmount + reward;
 
           user.joinedVC = 0;
@@ -135,7 +146,7 @@ module.exports = async (oldState, newState, client) => {
           return;
         }
 
-        let reward = Math.round(timeInVC * fishPerMin);
+        let reward = Math.round(timeInVC * getbanana);
         user.fishAmmount = user.fishAmmount + reward;
 
         user.joinedVC = 0;

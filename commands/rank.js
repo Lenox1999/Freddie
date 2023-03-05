@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("level")
+    .setName("rank")
     .setDescription("🠞 Levelsystem: Level + XP"),
 
   async execute(interaction, client) {
@@ -41,7 +41,7 @@ module.exports = {
 
         var levelembed = new EmbedBuilder()
           .setColor(Colors.Blue)
-          .setTitle(`\`Level ${user.lvl}\``)
+          .setTitle(`\`Rank ${user.lvl}\``)
           .setDescription(`
           **${nextLvLDiff}** | **${LvLDiff}** XP
           `)

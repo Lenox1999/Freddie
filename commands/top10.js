@@ -1,8 +1,7 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder,
-  Colors,
-  TextInputAssertions,
+  Colors
 } = require("discord.js");
 const mongoose = require("mongoose");
 

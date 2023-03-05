@@ -8,10 +8,10 @@ module.exports = async (oldState, newState, client) => {
 
   const vc = newState.channelId;
 
-  const user = await User.findOne({ _id: newState.id });
+  const user = await User.findOne({ _id: newState.id }, "coinAmmount gears bananaAmmount");
 
   let bananas = user.gears.plantation;
-  const getbanana = 0;
+  let getbanana = 0;
 
   let amount = Math.floor(Math.random() * 100);
   if(amount <= bananas.onebanana) { 

@@ -5,17 +5,39 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
-  Colors
+  Colors,
+  InteractionResponse
 } = require("discord.js");
 const mongoose = require("mongoose");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("shop")
-    .setDescription("Hier kannst du Items kaufen und upgraden"),
+    .setDescription("Hier kannst du Items kaufen und upgraden")
+    .addStringOption((option) => 
+       option
+        .setName("produkt")
+        .setDescription("Gewünschtes Produkt")
+        .addChoices(
+        {name: 'Plantage', value: 'plantation'},
+        {name: 'Dünger', value: 'fertilizer'},
+        {name: 'Affenbande', value: 'moremonkeys'},
+        {name: '1.5x Multiplier', value: '1.5x'},
+        {name: '2x Multiplier', value: '2x'},
+        {name: '3x Multiplier', value: '3x'},
+        {name: 'Default Lootbox', value: 'defaultLoot'},
+        {name: 'Rare Lootbox', value: 'rareLoot'},
+        {name: 'Epic Lootbox', value: 'epicLoot'},
+
+      ).setRequired(false)),
   async execute(interaction, client) {
     const User = mongoose.models.User;
-    const user = await User.findOne({ _id: interaction.member.id }, "gears");
+    const user = await User.findOne({ _id: interaction.member.id }, "gears coinAmmount multiplier");
+
+    const product = interaction.options.getString('produkt');
+
+
+    if (product === null) {
 
     const banana = user.gears.plantation;
     const fertilizer = user.gears.fertilizer;
@@ -144,5 +166,74 @@ module.exports = {
       interaction.editReply({ components: [], embeds: [shopTimeout] });
       return;
     });
+
+  // means user wants to buy a product
+  } else if (product === 'plantation' || product === 'fertilizer' || product === 'moremonkeys'){
+    if (product === 'plantation') {
+
+    if (user.gears.plantation.level >= 9) {
+      interaction.reply('Deine Plantage hat bereits das Maximallevel erreicht');
+      return;
+    } else if (user.coinAmmount < 1500) {
+      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    }
+
+    await User.updateOne({_id: interaction.member.id}, {$set: {
+      coinAmmount: user.coinAmmount -= 1500,
+      "gears.plantation.level": user.gears.plantation.level += 1,
+      "gears.plantation.onebanana": user.gears.plantation.onebanana -= 5,
+      "gears.plantation.twobanana": user.gears.plantation.twobanana += 4,
+      "gears.plantation.threebanana": user.gears.plantation.threebanana += 1,
+    }})
+    interaction.reply(`Deine Plantage wurde erfolgreich auf Level ${user.gears[product].level + 1} geupgradet`);
+    return;
+    } else if (product === 'fertilizer') {
+
+    if (user.gears.fertilizer.level == 10) {
+      interaction.reply('Dein Dünger hat bereits das Maximallevel erreicht');
+      return;
+    } else if (user.coinAmmount < 1500) {
+      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    }
+
+    await User.updateOne({_id: interaction.member.id}, {$set: {
+      coinAmmount: user.coinAmmount -= 1500,
+      "gears.fertilizer.level": user.gears.fertilizer.level += 1,
+      "gears.fertilizer.cooldownmsg": user.gears.fertilizer.cooldownmsg -= 1,
+      "gears.fertilizer.cooldownvc": user.gears.fertilizer.cooldownvc -= 1,
+
+    }})
+
+    interaction.reply(`Dünger wurde erfolgreich auf Level ${user.gears[product].level} geupgradet`);
+    return;
+    } else  if (product === 'moremonkeys') {
+    if (user.gears.moremonkeys.level >= 6) {
+      interaction.reply('Deine Affenbande hat bereits das Maximallevel erreicht');
+      return;
+    } else if (user.coinAmmount < 1500) {
+      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    }
+
+    await User.updateOne({_id: interaction.member.id}, {$set: {
+      coinAmmount: user.coinAmmount -= 1500,
+      "gears.moremonkeys.level": user.gears.moremonkeys.level += 1,
+      "gears.moremonkeys.time": user.gears.moremonkeys.time -= 0.5,
+    }})
+
+    interaction.reply(`Affenbande wurde erfolgreich auf Level ${user.gears[product].level} geupgradet`);
+    return;
+    }
+
+  } else if (product === '1.5x' || product === '2x' || product === '3x') {
+    let multiplier = Number(product.split('').slice(0, 3).join(''));
+    console.log(typeof multiplier);
+    user.multiplier = multiplier;
+    user.save();
+    interaction.reply(`Dein Multiplier beträgt jetzt ${multiplier}!`);
+    return;
+  } else if (product === 'rareLoot' || product === 'defaultLoot'  || product === 'epicLoot') {
+    interaction.reply('Coming soon! Lootboxen sind noch nicht verfügbar.');
+  }
+
   },
 };

@@ -2,18 +2,24 @@ const { EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
 const userNotRegistered = require("../util/userNotRegistered");
-const createNewUser = require('../util/createNewUser');
+const createNewUser = require("../util/createNewUser");
 
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
 
   const vc = newState.channelId;
 
-  const user = await User.findOne({ _id: newState.id }, "coinAmmount gears bananaAmmount");
+  const user = await User.findOne(
+    { _id: newState.id },
+    "coinAmmount gears bananaAmmount"
+  );
 
   if (!user) {
     await createNewUser(newState.id, client);
     // userNotRegistered(client);
+    if (newState.id) {
+      module.exports(oldState, newState, client);
+    }
     return;
   }
 
@@ -21,13 +27,16 @@ module.exports = async (oldState, newState, client) => {
   let getbanana = 0;
 
   let amount = Math.floor(Math.random() * 100);
-  if(amount <= bananas.onebanana) { 
+  if (amount <= bananas.onebanana) {
     getbanana = 1;
-   } else if(amount <= bananas.twobanana + bananas.onebanana) {
+  } else if (amount <= bananas.twobanana + bananas.onebanana) {
     getbanana = 2;
-   } else if(amount <= bananas.threebanana + bananas.twobanana + bananas.onebanana) {
-    getbanana = 3
-   }
+  } else if (
+    amount <=
+    bananas.threebanana + bananas.twobanana + bananas.onebanana
+  ) {
+    getbanana = 3;
+  }
 
   const cooldown = user.gears.fertilizer.cooldownvc;
   // check if user isnt registered
@@ -71,10 +80,10 @@ module.exports = async (oldState, newState, client) => {
           const user = await User.findOne({ _id: data.user.id });
 
           // should prevent that the same user gets handled twice or dont handle a user that wasnt registered at the point of joining the channel
-          if (user.joinedVC == 0 ) {
+          if (user.joinedVC == 0) {
             return;
           }
-          console.log(user.name)
+          console.log(user.name);
 
           user.leftVC = Date.now();
           console.log(user.name);
@@ -88,7 +97,7 @@ module.exports = async (oldState, newState, client) => {
           }
 
           let reward = Math.round(timeInVC * getbanana);
-          console.log(timeInVC, 'spent time');
+          console.log(timeInVC, "spent time");
           console.log(reward);
           user.fishAmmount += reward;
 
@@ -137,25 +146,27 @@ module.exports = async (oldState, newState, client) => {
     }
 
     if (client.channels.cache.get(newVoiceChannelId).members.size == 1) {
-      client.channels.cache.get(newVoiceChannelId).members.each(async (data) => {
-        const user = await User.findOne({ _id: data.user.id });
+      client.channels.cache
+        .get(newVoiceChannelId)
+        .members.each(async (data) => {
+          const user = await User.findOne({ _id: data.user.id });
 
-        user.leftVC = Date.now();
-        let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
-        if (timeInVC < 1) {
-          // heißt der Nutzer war weniger als eine Minute im Voicechannel
+          user.leftVC = Date.now();
+          let timeInVC = (user.leftVC - user.joinedVC) / 1000 / cooldown;
+          if (timeInVC < 1) {
+            // heißt der Nutzer war weniger als eine Minute im Voicechannel
+            user.leftVC = 0;
+            user.save();
+            return;
+          }
+
+          let reward = Math.round(timeInVC * getbanana);
+          user.fishAmmount = user.fishAmmount + reward;
+
+          user.joinedVC = 0;
           user.leftVC = 0;
           user.save();
-          return;
-        }
-
-        let reward = Math.round(timeInVC * getbanana);
-        user.fishAmmount = user.fishAmmount + reward;
-
-        user.joinedVC = 0;
-        user.leftVC = 0;
-        user.save();
-      });
+        });
     }
 
     if (

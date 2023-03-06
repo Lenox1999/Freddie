@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 module.exports = async (id, client) => {
   const User = mongoose.models.User;
-  
+  const allreadyUser = await User.findOne({_id: id});  
+  if (allreadyUser) return;
   const user = await client.users.fetch(id);
 
   const newUser = new User(

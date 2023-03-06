@@ -2,6 +2,7 @@ const { EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
 
 const userNotRegistered = require("../util/userNotRegistered");
+const createNewUser = require('../util/createNewUser');
 
 module.exports = async (oldState, newState, client) => {
   const User = mongoose.models.User;
@@ -9,6 +10,12 @@ module.exports = async (oldState, newState, client) => {
   const vc = newState.channelId;
 
   const user = await User.findOne({ _id: newState.id }, "coinAmmount gears bananaAmmount");
+
+  if (!user) {
+    await createNewUser(newState.id, client);
+    // userNotRegistered(client);
+    return;
+  }
 
   let bananas = user.gears.plantation;
   let getbanana = 0;
@@ -24,10 +31,6 @@ module.exports = async (oldState, newState, client) => {
 
   const cooldown = user.gears.fertilizer.cooldownvc;
   // check if user isnt registered
-  if (!user) {
-    userNotRegistered(interaction, client);
-    return;
-  }
 
   /*
     ++++++++USER LEFT++++++++
@@ -134,7 +137,7 @@ module.exports = async (oldState, newState, client) => {
     }
 
     if (client.channels.cache.get(newVoiceChannelId).members.size == 1) {
-      client.channels.cache.get(n).members.each(async (data) => {
+      client.channels.cache.get(newVoiceChannelId).members.each(async (data) => {
         const user = await User.findOne({ _id: data.user.id });
 
         user.leftVC = Date.now();

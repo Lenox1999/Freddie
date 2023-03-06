@@ -72,6 +72,17 @@ client.on("interactionCreate", async (interaction) => {
 
   if (command) {
     try {
+
+      const User = mongoose.models.User;
+      const user = await User.findOne({_id: interaction.member.id}, 'multiplier');
+
+      if (Date.now() - user.multiplier.last > 4 * 60* 60 * 1000) {
+        await User.updateOne({_id: interaction.member.id}, {$set: {
+          "multiplier.value": 1,
+          "multiplier.last": 0,
+        }})
+      }
+
       await command.execute(interaction, client);
     } catch (error) {
       console.error(error);
@@ -110,7 +121,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     joinedVC: Number,
     leftVC: Number,
     items: Array,
-    multiplier: Number,
+    multiplier: Object,
     XP: Number,
     lvl: Number,
     lastMonkeys: Number,

@@ -14,7 +14,7 @@ module.exports = {
 
     const user = await User.findOne(
       { _id: userId },
-      "bananaAmmount coinAmmount name"
+      "bananaAmmount coinAmmount name multiplier multiplierduration"
     );
 
     if (!user) {
@@ -30,6 +30,12 @@ module.exports = {
     if (interaction.member.bot) {
       return;
     }
+
+    let multiplier = 1;
+    if (user.multiplier.value > 1 && Date.now() - user.multiplier.last <= 4 *60*60*1000) {
+      multiplier = user.multiplier.value;
+    }
+    console.log(multiplier)
 
     if (user.bananaAmmount === 0) {
       let sellErrorEmbed = new EmbedBuilder()
@@ -47,9 +53,9 @@ module.exports = {
       interaction.reply({ embeds: [sellErrorEmbed] });
       return;
     }
-    const gainedCoins = Math.round(exchange.value * user.bananaAmmount);
+    const gainedCoins = Math.round(exchange.value * user.bananaAmmount * multiplier);
     user.coinAmmount = Math.round(
-      user.coinAmmount + exchange.value * user.bananaAmmount
+      user.coinAmmount + exchange.value * user.bananaAmmount * multiplier
     );
     user.bananaAmmount = 0;
 

@@ -27,11 +27,11 @@ module.exports = {
 
         let coins = user.coinAmmount.toString();
         let bananas = user.bananaAmmount.toString();
-        let multiplier = user.multiplier.toString();
+        let multiplier = user.multiplier.value.toString();
         let streak = user.streak.toString();
 
         var whenselling = ``;
-        const gainedCoins = Math.round(exchange.value * user.bananaAmmount);
+        const gainedCoins = Math.round(exchange.value * user.bananaAmmount * user.multiplier.value);
         const allinall = Math.floor(gainedCoins + user.coinAmmount)
 
         if(user.bananaAmmount > 0) {

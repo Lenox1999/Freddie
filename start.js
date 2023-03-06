@@ -77,7 +77,6 @@ client.on("interactionCreate", async (interaction) => {
       const user = await User.findOne({_id: interaction.member.id}, 'multiplier');
 
       if (Date.now() - user.multiplier.last > 4 * 60* 60 * 1000) {
-        console.log('lol');
         await User.updateOne({_id: interaction.member.id}, {$set: {
           "multiplier.value": 1,
           "multiplier.last": 0,

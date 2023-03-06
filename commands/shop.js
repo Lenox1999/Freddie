@@ -23,8 +23,8 @@ module.exports = {
         {name: 'Dünger', value: 'fertilizer'},
         {name: 'Affenbande', value: 'moremonkeys'},
         {name: '1.5x Multiplier', value: '1.5x'},
-        {name: '2x Multiplier', value: '2x'},
-        {name: '3x Multiplier', value: '3x'},
+        {name: '2x Multiplier', value: '2.0x'},
+        {name: '3x Multiplier', value: '3.0x'},
         {name: 'Default Lootbox', value: 'defaultLoot'},
         {name: 'Rare Lootbox', value: 'rareLoot'},
         {name: 'Epic Lootbox', value: 'epicLoot'},
@@ -224,11 +224,12 @@ module.exports = {
     return;
     }
 
-  } else if (product === '1.5x' || product === '2x' || product === '3x') {
+  } else if (product === '1.5x' || product === '2.0x' || product === '3.0x') {
     let multiplier = Number(product.split('').slice(0, 3).join(''));
-    console.log(typeof multiplier);
-    user.multiplier = multiplier;
-    user.save();
+    await User.updateOne({_id: interaction.member.id}, {$set: {
+      multiplier: multiplier,
+      multiplierduration: 4*60*60*1000,
+    }})
     interaction.reply(`Dein Multiplier beträgt jetzt ${multiplier}!`);
     return;
   } else if (product === 'rareLoot' || product === 'defaultLoot'  || product === 'epicLoot') {

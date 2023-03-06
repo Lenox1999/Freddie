@@ -32,9 +32,10 @@ module.exports = {
     }
 
     let multiplier = 1;
-    if (user.multiplier > 1 && Date.now() - user.multiplierduration <= 4 *60*60*1000) {
-      multiplier = user.multiplier;
+    if (user.multiplier.value > 1 && Date.now() - user.multiplier.last <= 4 *60*60*1000) {
+      multiplier = user.multiplier.value;
     }
+    console.log(multiplier)
 
     if (user.bananaAmmount === 0) {
       let sellErrorEmbed = new EmbedBuilder()
@@ -52,7 +53,7 @@ module.exports = {
       interaction.reply({ embeds: [sellErrorEmbed] });
       return;
     }
-    const gainedCoins = Math.round(exchange.value * user.bananaAmmount);
+    const gainedCoins = Math.round(exchange.value * user.bananaAmmount * multiplier);
     user.coinAmmount = Math.round(
       user.coinAmmount + exchange.value * user.bananaAmmount * multiplier
     );

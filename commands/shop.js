@@ -225,10 +225,10 @@ module.exports = {
     }
 
   } else if (product === '1.5x' || product === '2.0x' || product === '3.0x') {
-    let multiplier = Number(product.split('').slice(0, 3).join(''));
+    let multiplier = Number(product.split('').slice(0, 3).join('')); // get the value from the input and slice the x in 2x and so on away
     await User.updateOne({_id: interaction.member.id}, {$set: {
-      multiplier: multiplier,
-      multiplierduration: 4*60*60*1000,
+      "multiplier.value": multiplier,
+      "multiplier.last": Date.now(), 
     }})
     interaction.reply(`Dein Multiplier beträgt jetzt ${multiplier}!`);
     return;

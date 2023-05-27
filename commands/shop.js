@@ -260,7 +260,7 @@ module.exports = {
     let nomoney = new EmbedBuilder()
       .setColor(Colors.DarkRed)
       .setTitle("\`Du bist arm..\`")
-      .setDescription("Du hast nicht genügend Geld um dieses Upgrade zu erwerben!")
+      .setDescription("Du hast nicht genügend Geld um diesen Multiplier zu erwerben!")
       .setTimestamp();
 
     if (user.multiplier.last != 0) {

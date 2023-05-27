@@ -65,12 +65,12 @@ module.exports = {
         interaction.reply({ embeds: [rarebananaembed] })
         user.bananaAmmount += 10;
       } else if(randomNumber == 100) {
-        let randomiteme = Math.floor(Math.random() * epicitem.length);
+        let randomitems = Math.floor(Math.random() * epicitem.length);
         var epicbananaembed = new EmbedBuilder()
           .setColor(Colors.Gold)
           .setTitle("\`Looting very big bananananas..\`")
           .setThumbnail(interaction.member.displayAvatarURL())
-          .setDescription(`GLÜCKWUNSCH! Die Affen **${epicitem[randomiteme]}**, im Wert von **100** 🍌. \n*Du schickst die Affen weg und kannst in ${user.gears.moremonkeys.time}h wiederkommen!*`)
+          .setDescription(`GLÜCKWUNSCH! Die Affen **${epicitem[randomitems]}**, im Wert von **100** 🍌. \n*Du schickst die Affen weg und kannst in ${user.gears.moremonkeys.time}h wiederkommen!*`)
         interaction.reply({ embeds: [epicbananaembed] })
         user.bananaAmmount += 100;
       }

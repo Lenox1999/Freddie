@@ -1,0 +1,26 @@
+{
+  "plantation": {
+    "max-level": 9,
+    "default-price": 1000
+  },
+  "fertilizer": {
+    "max-level": 10,
+    "default-price": 1000
+  },
+  "moremonkeys": {
+    "max-level": 6,
+    "default-price": 1000
+  },
+  "1.5x": {
+    "duration": 4,
+    "price": 5000
+  },
+  "2.0x": {
+    "duration": 4,
+    "price": 10000
+  },
+  "3.0x": {
+    "duration": 4,
+    "price": 30000
+  }
+}

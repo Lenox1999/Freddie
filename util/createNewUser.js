@@ -24,7 +24,7 @@ module.exports = async (id, client) => {
       joinedVC: 0,
       leftVC: 0,
       items: [],
-      multiplier: 1,
+      multiplier: {value: 1, last: 0},
       XP: 3,
       lvl: 0,
       lastMonkeys: 0,

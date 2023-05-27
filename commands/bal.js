@@ -24,7 +24,6 @@ module.exports = {
         if (!user) {
           userNotRegistered(interaction, client);
         }
-
         let coins = user.coinAmmount.toString();
         let bananas = user.bananaAmmount.toString();
         let multiplier = user.multiplier.value.toString();

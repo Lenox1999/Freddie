@@ -1,9 +1,232 @@
-{
+{  
     "Excalibur": {
         "id": 1,
         "rarity": "mystical",
         "class": "weapon",
         "description": "-"
+    },
+    "Ebcalibur": {
+        "id": 2,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Eccalibur": {
+        "id": 3,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Edcalibur": {
+        "id": 4,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Eealibur": {
+        "id": 5,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exclibur": {
+        "id": 6,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Excaliur": {
+        "id": 7,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Excaiur": {
+        "id": 8,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Excibur": {
+        "id": 9,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Elibur": {
+        "id": 10,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exbur": {
+        "id": 11,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exur": {
+        "id": 12,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exr": {
+        "id": 13,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exu": {
+        "id": 14,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exc": {
+        "id": 15,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exca": {
+        "id": 16,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Excasdf": {
+        "id": 17,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Excali": {
+        "id": 18,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "Exusr": {
+        "id": 19,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "asdf": {
+        "id": 20,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösldkfj": {
+        "id": 2,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösdlfkj": {
+        "id": 3,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "asödlfikij": {
+        "id": 4,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "asödlfkj": {
+        "id": 5,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    },
+    "yöxlckvjyxcvs": {
+        "id": 6,
+        "rarity": "rare",
+        "class": "weapon",
+        "description": "-"
+    },
+    "ansnn": {
+        "id": 7,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "ösalvkdja": {
+        "id": 8,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösdlkfnasdv": {
+        "id": 9,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    },
+    "vaölkdsnvöasldvk": {
+        "id": 10,
+        "rarity": "epic",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösvldkn": {
+        "id": 11,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aäsvöldkojas": {
+        "id": 12,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösldkfjaövlsdkn": {
+        "id": 13,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aösvldknavsd": {
+        "id": 14,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aöävsldknvasöd": {
+        "id": 15,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "10293847": {
+        "id": 16,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "aövlskdnv": {
+        "id": 17,
+        
+        "rarity": "default",
+
+        "class": "weapon",
+        "description": "-"
+    },
+    "aövlskdnvaöslvkdn": {
+        "id": 18,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
+    },
+    "1ß3109fj123ß0921j": {
+        "id": 19,
+        "rarity": "default",
+        "class": "weapon",
+        "description": "-"
     }
 }
-

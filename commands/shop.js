@@ -8,6 +8,9 @@ const {
   Colors,
   InteractionResponse
 } = require("discord.js");
+
+const createLootbox = require('../economy/lootbox');
+
 const mongoose = require("mongoose");
 
 const shopDB = require('../economy/shop.json');
@@ -27,14 +30,22 @@ module.exports = {
         {name: '1.5x Multiplier', value: '1.5x'},
         {name: '2x Multiplier', value: '2.0x'},
         {name: '3x Multiplier', value: '3.0x'},
-        {name: 'Default Lootbox', value: 'defaultLoot'},
-        {name: 'Rare Lootbox', value: 'rareLoot'},
-        {name: 'Epic Lootbox', value: 'epicLoot'},
+        {name: 'Default Lootbox', value: 'default'},
+        {name: 'Rare Lootbox', value: 'rare'},
+        {name: 'Epic Lootbox', value: 'epic'},
+        {name: 'Mystical Lootbox', value: 'mystical'}
 
       ).setRequired(false)),
   async execute(interaction, client) {
+
+    let nomoney = new EmbedBuilder()
+      .setColor(Colors.DarkRed)
+      .setTitle("\`Du bist arm..\`")
+      .setDescription("Du hast nicht genügend Geld um diesen Multiplier zu erwerben!")
+      .setTimestamp();
+
     const User = mongoose.models.User;
-    const user = await User.findOne({ _id: interaction.member.id }, "gears coinAmmount multiplier");
+    const user = await User.findOne({ _id: interaction.member.id }, "gears coinAmmount multiplier ");
 
     const product = interaction.options.getString('produkt');
 
@@ -295,14 +306,32 @@ module.exports = {
 
     interaction.reply({embeds: [multiplierfinish], ephemeral: true});
     return;
-  } else if (product === 'rareLoot' || product === 'defaultLoot'  || product === 'epicLoot') {
-    interaction.reply('Coming soon! Lootboxen sind noch nicht verfügbar.');
+  } else if (product === 'rare' || product === 'default'  || product === 'epic' || product === 'mystical') {
+    
+
+    if (user.coinAmmount < shopDB[product].price) {
+      interaction.reply({embeds: [nomoney]})
+      return;
+    }     
+
+    lootbox = await createLootbox(product, undefined)
+
+    console.log(lootbox);    
+
+    const lol1  = await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
+    const lol = await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
+
+    console.log(lol, lol1);
+
+    interaction.reply(`Eine ${product} Lootbox wurde deinem Inventar hinzugefügt`);
+
+    return;
     /*
       items aus items.json werden in einen Array eingelesen
       es wird eine Random Zahl generiert zwischen 0 und der länge des Arrays
       Lootboxen verschiedener Raritäten haben unterschiedliche Wahrscheinlichkeiten auf Items verschiedener Raritäten
       Wenn die Rarität eines gezogenen Items höher ist, als die der Lootbox, muss eine Zahl so und so oft regeneriert werden.
-      Wenn der Index beispielsweise mehr als 10 mal von hundert generierten Zahlen auftaucht, wird das Item in die Lootbox gepackt. 
+      Wenn der Index beispielsweise mehr als 10 mal avon hundert generierten Zahlen auftaucht, wird das Item in die Lootbox gepackt. 
     */
   }
 

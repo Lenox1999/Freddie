@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 module.exports = async (id, client) => {
   const User = mongoose.models.User;
-  const allreadyUser = await User.findOne({_id: id});  
+  const allreadyUser = await User.findOne({ _id: id });
   if (allreadyUser) return;
   const user = await client.users.fetch(id);
 
@@ -24,10 +24,11 @@ module.exports = async (id, client) => {
       joinedVC: 0,
       leftVC: 0,
       items: [],
-      multiplier: {value: 1, last: 0},
+      multiplier: { value: 1, last: 0 },
       XP: 3,
       lvl: 0,
       lastMonkeys: 0,
+      inventory: { lootboxes: [] },
     },
     { strict: false }
   );

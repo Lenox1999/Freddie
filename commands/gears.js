@@ -41,6 +41,7 @@ module.exports = {
                 inline: true
             },
         ])
+        .setTimestamp();
     interaction.reply({ embeds: [gearsembed] })
     },
 };

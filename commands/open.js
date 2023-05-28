@@ -17,14 +17,12 @@ module.exports = {
     for (let i = 0; i <= lootboxes.length -1; i++) {
       let currRarity = lootboxes[i].rarity;
       if (alreadyListedRarities.includes(currRarity.toUpperCase())){
-        console.log(alreadyListedRarities, currRarity, "das jibts schon");
         continue;
       }
       let rarityCount = 1;
       for (let k = i+1; k <= lootboxes.length -1; k++) {
         if(lootboxes[k].rarity === currRarity) {
           rarityCount += 1;
-          console.log('ey');
         } else {
           continue;
         }

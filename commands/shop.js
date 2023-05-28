@@ -306,7 +306,7 @@ module.exports = {
 
     interaction.reply({embeds: [multiplierfinish], ephemeral: true});
     return;
-  } else if (product === 'rare' || product === 'default'  || product === 'epic' || product === 'mystical') {
+  } else if (product === 'default' || product === 'rare'  || product === 'epic' || product === 'mystical') {
     
 
     if (user.coinAmmount < shopDB[product].price) {
@@ -316,12 +316,8 @@ module.exports = {
 
     lootbox = await createLootbox(product, undefined)
 
-    console.log(lootbox);    
-
-    const lol1  = await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
-    const lol = await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
-
-    console.log(lol, lol1);
+    await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
+    await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
 
     interaction.reply(`Eine ${product} Lootbox wurde deinem Inventar hinzugefügt`);
 

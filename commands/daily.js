@@ -35,7 +35,8 @@ module.exports = {
           Wie lange schaffst du es diese Streak laufen zu lassen?*
           +**10** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
           `
-        );
+        )
+        .setTimestamp();
 
       interaction.reply({ embeds: [firststreamembed] });
     } else if (
@@ -60,7 +61,8 @@ module.exports = {
           `*Du hast deine Streak um 1 Tag verlängert und bekommst **${rewardedCoins}** ${client.emojis.cache.find(
             (emoji) => emoji.name === "coins"
           )}*`
-        );
+        )
+        .setTimestamp();
 
       interaction.reply({ embeds: [nextdailyembed] });
       return;
@@ -83,7 +85,8 @@ module.exports = {
         .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112473161632583810/tryagain.png")
         .setDescription(
           `*Sorry, du hast bereits Daily benutzt, komme in **${durationMsg}** wieder um deine Streak zu verlängern!*`
-        );
+        )
+        .setTimestamp();
 
       interaction.reply({ embeds: [alreadydailyembed], ephemeral: true });
       return;
@@ -100,7 +103,8 @@ module.exports = {
         .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112473801054236842/fail.png")
         .setDescription(
           `*Sorry, du bist leider zu spät und hast somit deine Streak verkackt! Komme in **24h** wieder um deine Streak wiederaufzuholen!*`
-        );
+        )
+        .setTimestamp();
 
       interaction.reply({ embeds: [faildailyembed] });
       return;

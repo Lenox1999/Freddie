@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
-const userNotRegistered = require('../util/userNotRegistered');
+const ecolor = require("../util/embedColors.json")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,29 +14,30 @@ module.exports = {
       "name gears"
     );
 
-    if (!user) {
-        userNotRegistered(interaction, client);
-    }
-
     let gearsembed = new EmbedBuilder()
-        .setColor(Colors.Blue)
-        .setTitle(`Gears: \`${interaction.member.displayName}\``)
+        .setColor(ecolor.TEXT)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        .setTitle(`Gears`)
         .setThumbnail(interaction.member.displayAvatarURL())
-        .setDescription("*Mit \`/shop\` kannst du diese Tools upgraden.*")
+        .setDescription(`
+        ∘ Plantage | Level \`${user.gears.plantation.level}\`
+        ⠀∘ Chance auf Bananen bei Voice Time/Message
+        ⠀⠀→ 1🍌 zu **${user.gears.plantation.onebanana}**%
+        ⠀⠀→ 2🍌 zu **${user.gears.plantation.twobanana}**%
+        ⠀⠀→ 3🍌 zu **${user.gears.plantation.threebanana}**%
+
+        ∘ Dünger | Level \`${user.gears.fertilizer.level}\`
+        ⠀∘ Cooldown zwischen Chance auf Bananen
+        ⠀⠀→ Messages jede **${user.gears.fertilizer.cooldownmsg}**sec
+        ⠀⠀→ Voice Time jede **${user.gears.fertilizer.cooldownvc}**sec
+
+        ∘ Affenbande | Level \`${user.gears.moremonkeys.level}\`
+        ⠀→ Zeit bis deine Affen wieder da sind: **${user.gears.moremonkeys.time}**h
+        `)
         .setFields([
             {
-                name:`Plantage Lvl \`${user.gears.plantation.level}\``,
-                value:`Die Chance auf\n1🍌 = **${user.gears.plantation.onebanana}**%\n2🍌 = **${user.gears.plantation.twobanana}**%\n3🍌 = **${user.gears.plantation.threebanana}**%.`,
-                inline: true
-            },
-            {
-                name:`Dünger Lvl \`${user.gears.fertilizer.level}\``,
-                value:`Der Cooldown von Nachrichten **${user.gears.fertilizer.cooldownmsg}**sec\nVC-Zeit **${user.gears.fertilizer.cooldownvc}**sec`,
-                inline: true
-            },
-            {
-                name:`Affenbande Lvl \`${user.gears.moremonkeys.level}\``,
-                value:`Die Zeit beträgt gerade **${user.gears.moremonkeys.time}**h bis deine Affen wieder da sind.`,
+                name: "Info",
+                value:`*Mit \`/shop\` kannst du diese Tools upgraden.*`,
                 inline: true
             },
         ])

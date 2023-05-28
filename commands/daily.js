@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
-const userNotRegistered = require('../util/userNotRegistered');
+const ecolor = require("../util/embedColors.json")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,11 +18,6 @@ module.exports = {
       "streak lastLoginDay dailyLastTriggered coinAmmount"
     );
 
-    // Is User in DB?
-    if (!user) {
-      userNotRegistered(interaction, client);
-    }
-
     if (user.dailyLastTriggered === 0) {
       user.dailyLastTriggered = Date.now();
       user.coinAmmount += 10;
@@ -30,11 +25,14 @@ module.exports = {
       user.save();
 
       var firststreamembed = new EmbedBuilder()
-        .setColor(Colors.DarkGreen)
-        .setTitle("\`FIRST DAILY REWARD\`")
-        .setThumbnail(interaction.member.displayAvatarURL())
+        .setColor(ecolor.UPDATE)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        .setTitle(`\`FIRST DAILY REWARD\``)
+        .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112472169067319377/FirstDaily.gif")
         .setDescription(
-          `*Du hast deine tägliche Belohnung abgeholt und deine erste Streak abgesahnt!*
+          `*Du hast deine tägliche Belohnung abgeholt und deine erste Streak abgesahnt! 
+          
+          Wie lange schaffst du es diese Streak laufen zu lassen?*
           +**10** ${client.emojis.cache.find(emoji => emoji.name === "coins")}
           `
         );
@@ -54,9 +52,10 @@ module.exports = {
       user.save();
 
       var nextdailyembed = new EmbedBuilder()
-        .setColor(Colors.Green)
-        .setTitle("\`DAILY REWARD\`")
-        .setThumbnail(interaction.member.displayAvatarURL())
+        .setColor(ecolor.ACCEPT)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        .setTitle(`\`DAILY REWARD\``)
+        .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112472168744370227/Dailyagain.gif")
         .setDescription(
           `*Du hast deine Streak um 1 Tag verlängert und bekommst **${rewardedCoins}** ${client.emojis.cache.find(
             (emoji) => emoji.name === "coins"
@@ -78,9 +77,10 @@ module.exports = {
       let durationMsg = hours + "h " + minutes + "min " + seconds + "s";
 
       var alreadydailyembed = new EmbedBuilder()
-        .setColor(Colors.Yellow)
-        .setTitle("\`DAILY\`")
-        .setThumbnail(interaction.member.displayAvatarURL())
+        .setColor(ecolor.ATTENTION)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        .setTitle(`\`TRY TO BECOME DAILY AGAIN\``)
+        .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112473161632583810/tryagain.png")
         .setDescription(
           `*Sorry, du hast bereits Daily benutzt, komme in **${durationMsg}** wieder um deine Streak zu verlängern!*`
         );
@@ -94,9 +94,10 @@ module.exports = {
       user.save();
 
       var faildailyembed = new EmbedBuilder()
-        .setColor(Colors.Red)
+        .setColor(ecolor.DENY)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
         .setTitle("\`DAILY FAIL\`")
-        .setThumbnail(interaction.member.displayAvatarURL())
+        .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112473801054236842/fail.png")
         .setDescription(
           `*Sorry, du bist leider zu spät und hast somit deine Streak verkackt! Komme in **24h** wieder um deine Streak wiederaufzuholen!*`
         );

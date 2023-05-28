@@ -6,13 +6,15 @@ const {
   InteractionType,
   EmbedBuilder,
   ActivityType,
-  Colors
+  Colors,
+  PermissionsBitField
 } = require("discord.js");
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
@@ -24,10 +26,15 @@ const mongoose = require("mongoose");
 
 const fs = require("fs");
 
+//EmbedColor
+const ecolor = require("./util/embedColors.json")
+
 // import functions
 const messages = require("./economy/message");
 const levelBuilder = require("./util/levelBuilder");
 const voiceState = require("./economy/voice");
+const createNewUser = require('./util/createNewUser');
+const { create } = require("domain");
 
 client.commands = new Collection();
 
@@ -51,6 +58,57 @@ client.on("voiceStateUpdate", (oldMember, newMember) =>
   voiceState(oldMember, newMember, client)
 );
 
+client.on("guildCreate", (guild) => {
+  let channelToSendTo;
+
+  guild.channels.cache.forEach(channel => {
+      if (channel.type !== 0) { return; }
+      if (channelToSendTo) { return; }
+      if (!channel.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.AttachFiles, PermissionsBitField.Flags.EmbedLinks])) { return; }
+      channelToSendTo = channel;
+  });
+
+  if(!channelToSendTo) return;
+
+  let newGuildEmbed = new EmbedBuilder()
+      .setColor(ecolor.TEXT)
+      .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112450026875146321/Thankyou.png")
+      .setTitle(`Danke..`)
+      .setDescription(`
+      *Krass, vielen Dank fürs hinzufügen unseres Bots auf den Discord! Das echt nett, dass du diesen Bot testet!
+      Euer Vertrauen und Support bedeuten uns mega viel. Unser Bot ist hier, um euer Discord-Game aufzumischen und euch mit seinen Skills zu helfen. Wir hoffen, er rockt eure Socken und bringt Schwung in die Bude.* (Wir sind unter 40)
+      
+      ***Falls ihr Fragen, Ideen oder Probleme habt, lasst es uns wissen. Wir sind immer am Start, um den Bot zu pimpen und eure Wünsche umzusetzen.***
+
+      *Nochmal dickes Danke für die Einladung und das Vertrauen. Wir sind hyped, Teil eures Servers zu sein und freuen uns wenn ihr all den geilen Stuff ausprobiert!*
+      `)
+      .setFields([
+        { name: '\u200B', value: '\u200B' },
+        {
+          name:"Bot Creators",
+          value:`
+          **Niklas** aka 
+          **Lenox#9196**
+          **David** aka 
+          **EinfachDavide#5883**
+          `,
+          inline: true
+        },
+        {
+          name:"GitHub Page",
+          value:`[PLACEHOLDER]`,
+          inline: true
+        },
+        {
+          name:"How to Start",
+          value:`Nun kannst du mit \`/help\` dir alle Commands ansehen oder direkt mit \`/bal\` durchstarten..`,
+          inline: false
+        },
+      ])
+      .setTimestamp()
+  channelToSendTo.send({embeds: [newGuildEmbed]})
+})
+
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.id === client.user.id) {
     return;
@@ -67,8 +125,8 @@ client.on("interactionCreate", async (interaction) => {
   var fail = new EmbedBuilder()
     .setColor(Colors.Red)
     .setTitle("\`ERROR: Something going wrong..\`")
-    .setThumbnail(interaction.member.displayAvatarURL())
-    .setDescription(`Melde dich bei **Niklas** oder bei **David**!`)
+    .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112457266000580658/Design_ohne_Titel.gif")
+    .setDescription(`Melde dich bitte umgehend bei den **Bot Creators**! (Siehe \`/info\`)`)
 
   if (command) {
     try {
@@ -76,14 +134,18 @@ client.on("interactionCreate", async (interaction) => {
       const User = mongoose.models.User;
       const user = await User.findOne({_id: interaction.member.id}, 'multiplier');
 
-      if (Date.now() - user.multiplier.last > 4 * 60* 60 * 1000) {
-        await User.updateOne({_id: interaction.member.id}, {$set: {
-          "multiplier.value": 1,
-          "multiplier.last": 0,
-        }})
-      }
+        if (!user) {
+          await createNewUser(interaction.member.id, client);
+        }
 
-      await command.execute(interaction, client);
+        if (Date.now() - user.multiplier.last > 4 * 60* 60 * 1000) {
+          await User.updateOne({_id: interaction.member.id}, {$set: {
+            "multiplier.value": 1,
+            "multiplier.last": 0,
+          }})
+        }
+  
+        await command.execute(interaction, client);
     } catch (error) {
       console.error(error);
 
@@ -125,6 +187,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     XP: Number,
     lvl: Number,
     lastMonkeys: Number,
+    inventory: Object,
   });
   mongoose.model("User", userScheme);
 

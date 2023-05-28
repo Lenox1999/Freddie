@@ -37,8 +37,9 @@ module.exports = {
 
         Wir sind ein Team aus 2 Mitgliedern, die nach und nach an diesen Bot arbeiten. Es sind viele Ideen und Features geplant. Dazu haben wir eine Reihe an Features schon bereit gestellt. Wir würden uns sehr über dein Feedback freuen und bei Fehlern und sonstigen Bugs gerne von euch hören!
 
+        Bot Creators: Lenox#9196 und EinfachDavide#5883
+        GitHub: [PLACEHOLDER]
         Discord-Server: https://discord.gg/26xxXbcxfr
-        Team-Discord-Tags: Lenox#9196 und EinfachDavide#5883
       `)
       .setFields([
         {
@@ -51,7 +52,7 @@ module.exports = {
         {
           name: `Economy`,
           value: `
-          \`bal\`, \`daily\`, \`rank\`, \`top10\`, \`sell\`, \`spin\`, \`slots\`, \`gears\`, \`monkeys\`, \`exch\`, \`shop\`, \`inv\`, \`use\`
+          \`bal\`, \`daily\`, \`rank\`, \`top10\`, \`sell\`, \`spin\`, \`slots\`, \`gears\`, \`monkeys\`, \`exch\`, \`shop\`, \`inv\`, \`use\`, \`open\`
           `,
           inline: false
         },
@@ -96,6 +97,7 @@ module.exports = {
       **/shop** ▸ *Kaufe Gearupgrades, Multiplier oder Lootboxen*
       **/inv** ▸ *Sehe deine Items*
       **/use** ▸ *Benutze ein Item*
+      **/open** ▸ *Öffne deine Lootbox*
       `);
 
     const buttons = new ActionRowBuilder().addComponents(

@@ -1,14 +1,9 @@
 {
-    "functional": [{
-        "default": [""],
-        "rare": [""],
-        "epic": [""],
-        "mystical": [""]
-    }],
-    "nofunctional": [{
-        "default": [""],
-        "rare": [""],
-        "epic": [""],
-        "mystical": [""]
-    }]
+    "Excalibur": {
+        "id": 1,
+        "rarity": "mystical",
+        "class": "weapon",
+        "description": "-"
+    }
 }
+

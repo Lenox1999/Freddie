@@ -10,6 +10,8 @@ const {
 } = require("discord.js");
 const mongoose = require("mongoose");
 
+const shopDB = require('../economy/shop.json');
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("shop")
@@ -55,18 +57,18 @@ module.exports = {
         .setThumbnail(interaction.guild.iconURL())
         .setFields([
             {
-                name:`Plantage Lvl ${banana.level}`,
-                value:`Kosten: ...`,
+                name:`Plantage | Lvl __${banana.level}__ > __${banana.level + 1}__`,
+                value:`Kosten: ${shopDB.plantation["default-price"] * (user.gears.plantation.level +1)}`,
                 inline: false
             },
             {
-                name:`Dünger Lvl ${fertilizer.level}`,
-                value:`Kosten: ...`,
+                name:`Dünger | Lvl __${fertilizer.level}__ > __${fertilizer.level + 1}__`,
+                value:`Kosten: ${shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1)}`,
                 inline: false
             },
             {
-                name:`Affenbande Lvl ${monkeys.level}`,
-                value:`Kosten: ...`,
+                name:`Affenbande | Lvl __${monkeys.level}__ > __${monkeys.level + 1}__`,
+                value:`Kosten: ${shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1)}`,
                 inline: false
             }
         ])
@@ -169,71 +171,139 @@ module.exports = {
 
   // means user wants to buy a product
   } else if (product === 'plantation' || product === 'fertilizer' || product === 'moremonkeys'){
+    let maxlevel = new EmbedBuilder()
+      .setColor(Colors.DarkRed)
+      .setTitle("\`Max. Level\`")
+      .setDescription("Du hast das maximale Level schon erreicht!")
+      .setTimestamp();
+    
+    let nomoney = new EmbedBuilder()
+      .setColor(Colors.DarkRed)
+      .setTitle("\`Du bist arm..\`")
+      .setDescription("Du hast nicht genügend Geld um dieses Upgrade zu erwerben!")
+      .setTimestamp();
+
     if (product === 'plantation') {
 
-    if (user.gears.plantation.level >= 9) {
-      interaction.reply('Deine Plantage hat bereits das Maximallevel erreicht');
+    if (user.gears.plantation.level >= shopDB.plantation["max-level"]) {
+      interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
-    } else if (user.coinAmmount < 1500) {
-      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    } else if (user.coinAmmount < shopDB.plantation["default-price"] * (user.gears.plantation.level +1)) {
+      interaction.reply({embeds: [nomoney], ephemeral: true});
+      return;
     }
 
     await User.updateOne({_id: interaction.member.id}, {$set: {
-      coinAmmount: user.coinAmmount -= 1500,
+      coinAmmount: user.coinAmmount -= shopDB.plantation["default-price"] * (user.gears.plantation.level +1),
       "gears.plantation.level": user.gears.plantation.level += 1,
       "gears.plantation.onebanana": user.gears.plantation.onebanana -= 5,
       "gears.plantation.twobanana": user.gears.plantation.twobanana += 4,
       "gears.plantation.threebanana": user.gears.plantation.threebanana += 1,
     }})
-    interaction.reply(`Deine Plantage wurde erfolgreich auf Level ${user.gears[product].level + 1} geupgradet`);
+    let upgradefinish = new EmbedBuilder()
+      .setColor(Colors.Green)
+      .setTitle("\`UPGRADE\`")
+      .setDescription(`Deine Plantage wurde erfolgreich auf Level ${user.gears[product].level + 1} geupgradet.`)
+      .setTimestamp();
+
+    interaction.reply({embeds: [upgradefinish]});
     return;
     } else if (product === 'fertilizer') {
 
-    if (user.gears.fertilizer.level == 10) {
-      interaction.reply('Dein Dünger hat bereits das Maximallevel erreicht');
+    if (user.gears.fertilizer.level == shopDB.fertilizer["max-level"]) {
+      interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
-    } else if (user.coinAmmount < 1500) {
-      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    } else if (user.coinAmmount < shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1)) {
+      interaction.reply({embeds: [nomoney], ephemeral: true});
+      return;
     }
-
     await User.updateOne({_id: interaction.member.id}, {$set: {
-      coinAmmount: user.coinAmmount -= 1500,
+      coinAmmount: user.coinAmmount -= shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1),
       "gears.fertilizer.level": user.gears.fertilizer.level += 1,
       "gears.fertilizer.cooldownmsg": user.gears.fertilizer.cooldownmsg -= 1,
       "gears.fertilizer.cooldownvc": user.gears.fertilizer.cooldownvc -= 1,
 
     }})
+    let upgradefinish = new EmbedBuilder()
+      .setColor(Colors.Green)
+      .setTitle("\`UPGRADE\`")
+      .setDescription(`Dünger wurde erfolgreich auf Level ${user.gears[product].level} geupgradet.`)
+      .setTimestamp();
 
-    interaction.reply(`Dünger wurde erfolgreich auf Level ${user.gears[product].level} geupgradet`);
+    interaction.reply({embeds: [upgradefinish]});
     return;
     } else  if (product === 'moremonkeys') {
-    if (user.gears.moremonkeys.level >= 6) {
-      interaction.reply('Deine Affenbande hat bereits das Maximallevel erreicht');
+    if (user.gears.moremonkeys.level >= shopDB.moremonkeys["max-level"]) {
+      interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
-    } else if (user.coinAmmount < 1500) {
-      interaction.reply('Du hast zu wenig Geld um dieses Upgrade zu erwerben');
+    } else if (user.coinAmmount < shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1)) {
+      interaction.reply({embeds: [nomoney], ephemeral: true});
+      return;
     }
 
     await User.updateOne({_id: interaction.member.id}, {$set: {
-      coinAmmount: user.coinAmmount -= 1500,
+      coinAmmount: user.coinAmmount -= shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1),
       "gears.moremonkeys.level": user.gears.moremonkeys.level += 1,
       "gears.moremonkeys.time": user.gears.moremonkeys.time -= 0.5,
     }})
+    let upgradefinish = new EmbedBuilder()
+      .setColor(Colors.Green)
+      .setTitle("\`UPGRADE\`")
+      .setDescription(`Affenbande wurde erfolgreich auf Level ${user.gears[product].level} geupgradet.`)
+      .setTimestamp();
 
-    interaction.reply(`Affenbande wurde erfolgreich auf Level ${user.gears[product].level} geupgradet`);
+    interaction.reply({embeds: [upgradefinish]});
     return;
     }
 
   } else if (product === '1.5x' || product === '2.0x' || product === '3.0x') {
+    let nomoney = new EmbedBuilder()
+      .setColor(Colors.DarkRed)
+      .setTitle("\`Du bist arm..\`")
+      .setDescription("Du hast nicht genügend Geld um diesen Multiplier zu erwerben!")
+      .setTimestamp();
+
+    if (user.multiplier.last != 0) {
+      let multiplier2 = new EmbedBuilder()
+      .setColor(Colors.DarkRed)
+      .setTitle("\`Laufender Multiplier\`")
+      .setDescription(`Dein jetztiger Multiplier muss erst auslaufen, bevor du dir einen neuen kaufen kannst.`)
+      .setTimestamp();
+
+    interaction.reply({embeds: [multiplier2], ephemeral: true});
+    return;
+    }
+
+    const price = shopDB[product].price;
+
+    if (user.coinAmmount - price < 0) {
+      interaction.reply({embeds: [nomoney], ephemeral: true});
+      return;
+    }
+    
     let multiplier = Number(product.split('').slice(0, 3).join('')); // get the value from the input and slice the x in 2x and so on away
     await User.updateOne({_id: interaction.member.id}, {$set: {
+      coinAmmount: user.coinAmmount -= price,
       "multiplier.value": multiplier,
       "multiplier.last": Date.now(), 
     }})
-    interaction.reply(`Dein Multiplier beträgt jetzt ${multiplier}!`);
+    let multiplierfinish = new EmbedBuilder()
+      .setColor(Colors.Green)
+      .setTitle("\`Multiplier gekauft\`")
+      .setDescription(`Dein Multiplier beträgt jetzt **${multiplier}**!`)
+      .setTimestamp();
+
+    interaction.reply({embeds: [multiplierfinish], ephemeral: true});
     return;
   } else if (product === 'rareLoot' || product === 'defaultLoot'  || product === 'epicLoot') {
     interaction.reply('Coming soon! Lootboxen sind noch nicht verfügbar.');
+    /*
+      items aus items.json werden in einen Array eingelesen
+      es wird eine Random Zahl generiert zwischen 0 und der länge des Arrays
+      Lootboxen verschiedener Raritäten haben unterschiedliche Wahrscheinlichkeiten auf Items verschiedener Raritäten
+      Wenn die Rarität eines gezogenen Items höher ist, als die der Lootbox, muss eine Zahl so und so oft regeneriert werden.
+      Wenn der Index beispielsweise mehr als 10 mal von hundert generierten Zahlen auftaucht, wird das Item in die Lootbox gepackt. 
+    */
   }
 
   },

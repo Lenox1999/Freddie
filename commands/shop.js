@@ -91,17 +91,17 @@ module.exports = {
         .setFields([
             {
                 name:`1.5x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["1.5x"].price}`,
                 inline: false
             },
             {
                 name:`2x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["2.0x"].price}`,
                 inline: false
             },
             {
                 name:`3x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["3.0x"].price}`,
                 inline: false
             }
         ])
@@ -113,17 +113,22 @@ module.exports = {
         .setFields([
             {
                 name:`Default Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["default"].price}`,
                 inline: false
             },
             {
                 name:`Rare Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["rare"].price}`,
                 inline: false
             },
             {
                 name:`Epic Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["epic"].price}`,
+                inline: false
+            },
+            {
+                name:`Mystical Lootbox`,
+                value:`Kosten: ${shopDB["mystical"].price}`,
                 inline: false
             }
         ])

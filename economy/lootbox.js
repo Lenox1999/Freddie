@@ -1,9 +1,6 @@
 const itemsDB = require("./items.json");
 
 let iterationCounts = 0;
-let timeStamp1 = 0;
-let timeStamp2 = 0;
-
 module.exports = (boxRarity, givenLootbox) => {
   return new Promise((resolve) => {
     const respinItem = (rarity, itemCount, itemIndex) => {

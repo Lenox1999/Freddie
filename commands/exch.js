@@ -43,7 +43,8 @@ module.exports = {
           value: `1 🍌 ➨ **${exchangeString}** ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
           inline: false
         }
-      ]);
+      ])
+      .setTimestamp();
     interaction.reply({ embeds: [exchangeEmbed] });
   },
 };

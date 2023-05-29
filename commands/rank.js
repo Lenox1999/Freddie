@@ -1,5 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require("discord.js");
 const mongoose = require("mongoose");
+const ecolor = require("../util/embedColors.json")
+const canvacord = require("canvacord")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,7 +10,7 @@ module.exports = {
 
   async execute(interaction, client) {
     const User = mongoose.models.User;
-    console.log(mongoose.modelNames());
+    //console.log(mongoose.modelNames());
     const Levels = mongoose.models.levels;
 
     if (!Levels || !User) {
@@ -21,6 +23,18 @@ module.exports = {
       console.log("DB ERROR!");
       return;
     }
+
+    let data = await User.find({})
+    let members = [];
+
+    for(let obj of data) {
+      members.push({id: obj._id ,xp: obj.XP})
+    };
+
+    let sorted = members.sort((b, a) => (a.xp) - (b.xp))
+
+    let currentRank = sorted.findIndex((lvl) => lvl.id === interaction.member.id) + 1;
+
     User.findOne({ _id: interaction.member.id })
       .select("XP lvl")
       .exec((err, user) => {
@@ -39,14 +53,25 @@ module.exports = {
 
         let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
-        var levelembed = new EmbedBuilder()
-          .setColor(Colors.Blue)
-          .setTitle(`\`Rank ${user.lvl}\``)
-          .setDescription(`
-          **${nextLvLDiff}** | **${LvLDiff}** XP
-          `)
-          .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
-        interaction.reply({ embeds: [levelembed] });
-      });
+
+        const background = 'https://cdn.discordapp.com/attachments/661359204572987393/1112849059649179798/RankC.png'
+        const rank = new canvacord.Rank()
+          .setAvatar(interaction.member.displayAvatarURL({ size: 256 }))
+          .setRank(currentRank)
+          .setLevel(user.lvl)
+          .setCurrentXP(nextLvLDiff)
+          .setRequiredXP(LvLDiff)
+          .setStatus(interaction.member.presence.clientStatus.desktop)
+          .setProgressBar("#FFFFFF","COLOR")
+          .setUsername(interaction.member.displayName)
+          .setBackground("IMAGE", background)
+          .setDiscriminator(interaction.member.user.discriminator)
+
+        rank.build()
+          .then(data => {
+            const attachment = new AttachmentBuilder(data, "RankC.png")
+            interaction.reply({ files: [attachment] })
+          })
+      })
   },
 };

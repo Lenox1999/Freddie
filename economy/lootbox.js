@@ -1,9 +1,6 @@
 const itemsDB = require("./items.json");
 
 let iterationCounts = 0;
-let timeStamp1 = 0;
-let timeStamp2 = 0;
-
 module.exports = (boxRarity, givenLootbox) => {
   return new Promise((resolve) => {
     const respinItem = (rarity, itemCount, itemIndex) => {
@@ -40,7 +37,8 @@ module.exports = (boxRarity, givenLootbox) => {
         return false;
       }
     };
-    let itemCount = 5;
+
+    let itemCount = 3;
     let items = [];
     let newLootbox = [];
 
@@ -103,9 +101,13 @@ module.exports = (boxRarity, givenLootbox) => {
       }
     } while (newLootbox.length < 5);
     timeStamp2 = Date.now();
+    
+
+
     resolve({
       rarity: boxRarity,
-      contents: newLootbox,
+      // lil hotfix for lootboxes being bigger than 5 items
+      contents: newLootbox.slice(0,itemCount),
       timestamp: Date.now(),
     });
 

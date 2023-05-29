@@ -66,6 +66,7 @@ module.exports = {
               inline: false
             }
           ])
+          .setTimestamp();
 
         interaction.reply({ embeds: [balembed]});
       });

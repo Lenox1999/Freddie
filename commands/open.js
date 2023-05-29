@@ -78,7 +78,7 @@ module.exports = {
       } else {
         await User.updateOne(
           { _id: interaction.member.id },
-          { $set: { "inventory.contents": [contents] } }
+          { $set: { "inventory.contents": contents } }
         );
       }
 

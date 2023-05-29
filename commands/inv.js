@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  Colors,
+  AllowedMentionsTypes,
+} = require("discord.js");
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -42,13 +47,12 @@ module.exports = {
     }
 
     const rarityString = listOfRarities.join("\n");
-    console.log(listOfRarities);
 
     let classObj = {};
 
     const items = user.inventory.contents;
 
-    for (let i = 0; i < items.length - 1; i++) {
+    for (let i = 0; i <= items.length - 1; i++) {
       let currItem = items[i];
       let currClass = currItem.class;
 
@@ -59,7 +63,6 @@ module.exports = {
       }
     }
 
-    // console.log(classObj);
 
     let finalString = [];
 
@@ -67,12 +70,29 @@ module.exports = {
 
     for (const [key, value] of Object.entries(classObj)) {
       classObj[`${key}String`] = [`**${key.toUpperCase()}** \n`];
-      classObj[key].forEach((e) => {
-        if (alreadyItems.indexOf(e.name) === -1) {
-          classObj[`${key}String`].push(`1x ${e.name}\n`);
-          alreadyItems.push(e.name);
-        } 
-      });
+      for (let i = 0; i <= classObj[key].length -1; i++) {
+        let e = classObj[key][i];
+
+        if (alreadyItems.indexOf(e.name) !== -1) {
+          continue;
+        }
+
+        let itemCount = 1;
+
+
+        for (
+          let k = classObj[key][i] + 1;
+          k <= classObj[key].length -1;
+          k++
+        ) {
+          if (!classObj[key][k]) continue;
+          if (classObj[key][k].name === e.name) {
+            itemCount += 1;
+            alreadyItems.push(e.name);
+          }
+        }
+        classObj[`${key}String`].push(`${itemCount}x ${e.name}\n`);
+      }
       finalString.push(classObj[`${key}String`].join(""));
     }
 
@@ -80,13 +100,11 @@ module.exports = {
       finalString.push(`**Lootboxen**`, rarityString);
     }
 
-    // console.log(finalString.join('\n'));
-    var invEmbed = new EmbedBuilder()
-      .setTitle("`Dein Inventar`")
-      .setAuthor({
-        name: `${interaction.member.displayName}`,
-        iconURL: interaction.member.displayAvatarURL(),
-      }).setDescription(`
+
+    var invEmbed = new EmbedBuilder().setTitle("`Dein Inventar`").setAuthor({
+      name: `${interaction.member.displayName}`,
+      iconURL: interaction.member.displayAvatarURL(),
+    }).setDescription(`
 
         ${finalString.join(`\n`)}
         `);

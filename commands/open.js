@@ -46,18 +46,23 @@ module.exports = {
       }
 
       const names = [];
-      const contents = [...searchRes.contents];
+      const contents = searchRes.contents;
 
       //extract lootbox
       for (let i = 0; i <= searchRes.contents.length - 1; i++) {
         let content = searchRes.contents[i];
         names.push(content.name);
       }
-      if (user.inventory.hasOwnProperty("contents")) {
-        await User.updateOne(
-          { _id: interaction.member.id },
-          { $push: { "inventory.contents": contents } }
-        );
+      // check if inventory.contents already exists for user in db
+      if (user.inventory["contents"]) {
+        contents.forEach(async (e) => {
+          console.log(e);
+          await User.updateOne(
+            { _id: interaction.member.id },
+            { $push: { "inventory.contents": e } }
+          );
+        });
+        await user.save();
       } else {
         await User.updateOne(
           { _id: interaction.member.id },
@@ -67,6 +72,7 @@ module.exports = {
 
       const timestamp = searchRes.timestamp;
 
+      // remove lootbox from inventory.lootboxes with the help of the unique timestamp
       await User.updateOne(
         { _id: interaction.member.id },
         { $pull: { "inventory.lootboxes": { timestamp: timestamp } } }

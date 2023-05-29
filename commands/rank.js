@@ -1,5 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, Colors, AttachmentBuilder } = require("discord.js");
 const mongoose = require("mongoose");
+const ecolor = require("../util/embedColors.json")
+const canvacord = require("canvacord")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,6 +41,22 @@ module.exports = {
 
         let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
+        console.log(nextLvLDiff, LvLDiff)
+
+        const rank = new canvacord.Rank()
+          .setAvatar(interaction.member.displayAvatarURL({ size: 256 }))
+          .setLevel(user.lvl)
+          .setCurrentXP(nextLvLDiff)
+          .setRequiredXP(LvLDiff)
+          .setStatus(interaction.member.presence.clientStatus.desktop)
+          .setProgressBar("#FFC300","COLOR")
+          .setUsername(interaction.member.displayName)
+          .setDiscriminator(interaction.member.user.discriminator)
+        const data = rank.build();
+        const attachment = new AttachmentBuilder(data);
+        interaction.reply({files: [attachment]})
+        console.log(attachment);
+
         var levelembed = new EmbedBuilder()
           .setColor(Colors.Blue)
           .setTitle(`\`Rank ${user.lvl}\``)
@@ -46,7 +64,7 @@ module.exports = {
           **${nextLvLDiff}** | **${LvLDiff}** XP
           `)
           .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
-        interaction.reply({ embeds: [levelembed] });
+        //interaction.followUp({ embeds: [levelembed] });
       });
   },
 };

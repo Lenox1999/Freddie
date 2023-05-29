@@ -3,5 +3,9 @@
     "DENY":"#CB4335",
     "ATTENTION":"#F4D03F",
     "TEXT":"#48C9B0",
-    "UPDATE":"#884EA0"
+    "UPDATE":"#884EA0",
+    "DEFAULT":"#E5E7E9",
+    "RARE":"#24ABE7",
+    "EPIC":"#512E5F",
+    "MYSTICAL":"##F272E6"
 }

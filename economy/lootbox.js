@@ -37,7 +37,8 @@ module.exports = (boxRarity, givenLootbox) => {
         return false;
       }
     };
-    let itemCount = 5;
+
+    let itemCount = 3;
     let items = [];
     let newLootbox = [];
 
@@ -105,7 +106,8 @@ module.exports = (boxRarity, givenLootbox) => {
 
     resolve({
       rarity: boxRarity,
-      contents: newLootbox.slice(0,5),
+      // lil hotfix for lootboxes being bigger than 5 items
+      contents: newLootbox.slice(0,itemCount),
       timestamp: Date.now(),
     });
 

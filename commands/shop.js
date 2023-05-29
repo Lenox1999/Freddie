@@ -298,10 +298,13 @@ module.exports = {
     }
     
     let multiplier = Number(product.split('').slice(0, 3).join('')); // get the value from the input and slice the x in 2x and so on away
-    await User.updateOne({_id: interaction.member.id}, {$set: {
-      coinAmmount: user.coinAmmount -= price,
-      "multiplier.value": multiplier,
-      "multiplier.last": Date.now(), 
+    await User.updateOne(
+      {_id: interaction.member.id},
+      {
+        $set: {
+         coinAmmount: user.coinAmmount -= price,
+         "multiplier.value": multiplier,
+         "multiplier.last": Date.now(), 
     }})
     let multiplierfinish = new EmbedBuilder()
       .setColor(Colors.Green)

@@ -43,4 +43,5 @@
 - -> ein user kann nur alle 10 Tage ausgeraubt werden (Schutz kann für Geld gekauft werden)
 - /stocks -> in virtuelle Aktien investieren
 - reward system (keine Ahnung für welche Funktionen);
+- Shop Rank Design kaufen können!
   ... more to come ...

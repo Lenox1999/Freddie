@@ -100,9 +100,12 @@ module.exports = (boxRarity, givenLootbox) => {
       }
     } while (newLootbox.length < 5);
     timeStamp2 = Date.now();
+    
+
+
     resolve({
       rarity: boxRarity,
-      contents: newLootbox,
+      contents: newLootbox.slice(0,5),
       timestamp: Date.now(),
     });
 

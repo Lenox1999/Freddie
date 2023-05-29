@@ -42,4 +42,5 @@
 - /rob -> Anderen User ausrauben (nur alle 24h) -> 50% um 2% der coins eines users zu bekommen -> 50% um geschnappt zu werden und 20% deiner coins zu verlieren
 - -> ein user kann nur alle 10 Tage ausgeraubt werden (Schutz kann für Geld gekauft werden)
 - /stocks -> in virtuelle Aktien investieren
+- reward system (keine Ahnung für welche Funktionen);
   ... more to come ...

@@ -8,6 +8,8 @@ const {
   ComponentType,
 } = require("discord.js");
 
+const ecolor = require("../util/embedColors.json")
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
@@ -15,7 +17,7 @@ module.exports = {
 
   async execute(interaction, client) {
     var startembed = new EmbedBuilder()
-      .setColor(Colors.Blue)
+      .setColor(ecolor.TEXT)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -66,7 +68,7 @@ module.exports = {
       ])
 
     var firstCommands = new EmbedBuilder()
-      .setColor(Colors.Blue)
+      .setColor(ecolor.TEXT)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -85,7 +87,7 @@ module.exports = {
       `);
 
     var secondCommands = new EmbedBuilder()
-      .setColor(Colors.Blue)
+      .setColor(ecolor.TEXT)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),
@@ -148,7 +150,9 @@ module.exports = {
 
     collector.on("end", async () => {
       var helptimeout = new EmbedBuilder()
-        .setColor(Colors.Red)
+        .setColor(ecolor.DENY)
+        .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })
+        .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112473801054236842/fail.png")
         .setTitle("\`ERROR: Helping closed..\`")
         .setTimestamp();
 

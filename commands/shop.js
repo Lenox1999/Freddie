@@ -91,17 +91,17 @@ module.exports = {
         .setFields([
             {
                 name:`1.5x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["1.5x"].price}`,
                 inline: false
             },
             {
                 name:`2x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["2.0x"].price}`,
                 inline: false
             },
             {
                 name:`3x Multiplier`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["3.0x"].price}`,
                 inline: false
             }
         ])
@@ -113,17 +113,22 @@ module.exports = {
         .setFields([
             {
                 name:`Default Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["default"].price}`,
                 inline: false
             },
             {
                 name:`Rare Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["rare"].price}`,
                 inline: false
             },
             {
                 name:`Epic Lootbox`,
-                value:`Kosten: ...`,
+                value:`Kosten: ${shopDB["epic"].price}`,
+                inline: false
+            },
+            {
+                name:`Mystical Lootbox`,
+                value:`Kosten: ${shopDB["mystical"].price}`,
                 inline: false
             }
         ])
@@ -306,7 +311,7 @@ module.exports = {
 
     interaction.reply({embeds: [multiplierfinish], ephemeral: true});
     return;
-  } else if (product === 'rare' || product === 'default'  || product === 'epic' || product === 'mystical') {
+  } else if (product === 'default' || product === 'rare'  || product === 'epic' || product === 'mystical') {
     
 
     if (user.coinAmmount < shopDB[product].price) {
@@ -316,12 +321,8 @@ module.exports = {
 
     lootbox = await createLootbox(product, undefined)
 
-    console.log(lootbox);    
-
-    const lol1  = await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
-    const lol = await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
-
-    console.log(lol, lol1);
+    await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
+    await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
 
     interaction.reply(`Eine ${product} Lootbox wurde deinem Inventar hinzugefügt`);
 

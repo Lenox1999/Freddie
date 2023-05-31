@@ -5,11 +5,10 @@ const canvacord = require("canvacord")
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("rank")
-    .setDescription("🠞 Levelsystem: Get your Level, XP and Rank"),
+    .setDescription("🠞 Levelsystem: Level + XP"),
 
   async execute(interaction, client) {
     const User = mongoose.models.User;
-    //console.log(mongoose.modelNames());
     const Levels = mongoose.models.levels;
 
     if (!Levels || !User) {
@@ -53,7 +52,7 @@ module.exports = {
         let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
 
-        const background = 'https://cdn.discordapp.com/attachments/661359204572987393/1113004823319674942/bg.png'
+        const background = 'https://cdn.discordapp.com/attachments/661359204572987393/1112849059649179798/RankC.png'
         const rank = new canvacord.Rank()
           .setAvatar(interaction.member.displayAvatarURL({ size: 256 }))
           .setRank(currentRank)

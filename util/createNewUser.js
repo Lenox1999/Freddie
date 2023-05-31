@@ -29,6 +29,7 @@ module.exports = async (id, client) => {
       lvl: 0,
       lastMonkeys: 0,
       inventory: { lootboxes: [] },
+      rob: { lastRobbed: 0, protection: 0 },
     },
     { strict: false }
   );

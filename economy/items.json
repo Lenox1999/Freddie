@@ -2,229 +2,229 @@
     "Excalibur": {
         "id": 1,
         "rarity": "mystical",
-        "class": "weapon",
-        "description": "-"
+        "class": "weapons",
+        "description": "das legendäre Schwert"
     },
-    "Ebcalibur": {
+    "veredelte Fliegenklatsche": {
         "id": 2,
         "rarity": "rare",
-        "class": "aösldkfj",
+        "class": "utilities",
         "description": "-"
     },
-    "Eccalibur": {
+    "einfaches Küchenmesser": {
         "id": 3,
         "rarity": "default",
-        "class": "aösdfklj",
+        "class": "weapon",
         "description": "-"
     },
-    "Edcalibur": {
+    "Butterfly-Messer": {
         "id": 4,
         "rarity": "epic",
-        "class": "asödnvmm",
+        "class": "weapons",
         "description": "-"
     },
-    "Eealibur": {
+    "2x Multiplier": {
         "id": 5,
         "rarity": "mystical",
-        "class": "aöslkdnv",
+        "class": "Gears",
         "description": "-"
     },
-    "Exclibur": {
+    "Einfacher Degen": {
         "id": 6,
         "rarity": "rare",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "Excaliur": {
+    "Teller": {
         "id": 7,
         "rarity": "default",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "Excaiur": {
+    "Doppelhändig geführtes Langschwert": {
         "id": 8,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "Excibur": {
+    "Damoklesschwert": {
         "id": 9,
         "rarity": "mystical",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "Elibur": {
+    "kleine Bananenplantage": {
         "id": 10,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "Exbur": {
+    "Morgenstern": {
         "id": 11,
         "rarity": "rare",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "Exur": {
+    "Pfanne": {
         "id": 12,
         "rarity": "default",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "Exr": {
+    "1.5x Mutliplier": {
         "id": 13,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "Gears",
         "description": "-"
     },
-    "Exu": {
+    "Einfacher Eisenhelm": {
         "id": 14,
         "rarity": "rare",
-        "class": "weapon",
+        "class": "Armor",
         "description": "-"
     },
-    "Exc": {
+    "Liebestrank": {
         "id": 15,
         "rarity": "default",
-        "class": "weapon",
+        "class": "potions",
         "description": "-"
     },
-    "Exca": {
+    "Leichtes Gift": {
         "id": 16,
         "rarity": "epic",
-        "class": "weapon",
-        "description": "-"
+        "class": "potions",
+        "description": "Reicht um ein Tier zu vergiften"
     },
-    "Excasdf": {
+    "Schwere Axt": {
         "id": 17,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "Excali": {
+    "Elektrische Fliegenklatsche": {
         "id": 18,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "Exusr": {
+    "Verrostete Taschenuhr": {
         "id": 19,
         "rarity": "default",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "asdf": {
+    "Einhorn": {
         "id": 20,
         "rarity": "mystical",
-        "class": "weapon",
+        "class": "hyperxdlul",
         "description": "-"
     },
-    "aösldkfj": {
-        "id": 2,
+    "Schnellkochtopf": {
+        "id": 21,
         "rarity": "rare",
-        "class": "weapon",
+        "class": "utilities",
         "description": "-"
     },
-    "aösdlfkj": {
-        "id": 3,
+    "Gutschein für 5 Coins": {
+        "id": 22,
         "rarity": "default",
-        "class": "weapon",
+        "class": "Gifts",
         "description": "-"
     },
-    "asödlfikij": {
-        "id": 4,
+    "Gutschein für 1000 Coins": {
+        "id": 23,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "Gifts",
         "description": "-"
     },
-    "asödlfkj": {
-        "id": 5,
+    "Sehr effektives Affenfutter": {
+        "id": 24,
         "rarity": "mystical",
-        "class": "weapon",
-        "description": "-"
+        "class": "weapons",
+        "description": "Sorgt für Leistungssteigerung in der Affenplantage"
     },
-    "yöxlckvjyxcvs": {
-        "id": 6,
+    "Knuffiges Plüschtier": {
+        "id": 25,
         "rarity": "rare",
-        "class": "weapon",
-        "description": "-"
+        "class": "random and useless stuff",
+        "description": "Sehr süß, aber genauso Nutzlos"
     },
-    "ansnn": {
-        "id": 7,
+    "Autoreifen": {
+        "id": 26,
         "rarity": "default",
-        "class": "weapon",
+        "class": "random and useless stuff",
         "description": "-"
     },
-    "ösalvkdja": {
-        "id": 8,
+    "Gutschein für eine Rare-Lootbox": {
+        "id": 27,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "Gifts",
         "description": "-"
     },
-    "aösdlkfnasdv": {
-        "id": 9,
+    "Goldesel": {
+        "id": 28,
         "rarity": "mystical",
-        "class": "weapon",
-        "description": "-"
+        "class": "Gifts",
+        "description": "Du bekommst mehr Coins bei jedem sell für die nächsten 4h"
     },
-    "vaölkdsnvöasldvk": {
-        "id": 10,
+    "Ultrakrasser Langspeer": {
+        "id": 29,
         "rarity": "epic",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
-    "aösvldkn": {
-        "id": 11,
+    "Nahkampfpfanne": {
+        "id": 30,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aäsvöldkojas": {
-        "id": 12,
+        "id": 31,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aösldkfjaövlsdkn": {
-        "id": 13,
+        "id": 32,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aösvldknavsd": {
-        "id": 14,
+        "id": 33,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aöävsldknvasöd": {
         "id": 15,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "10293847": {
         "id": 16,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aövlskdnv": {
         "id": 17,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "aövlskdnvaöslvkdn": {
         "id": 18,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     },
     "1ß3109fj123ß0921j": {
         "id": 19,
         "rarity": "default",
-        "class": "weapon",
+        "class": "weapons",
         "description": "-"
     }
 }

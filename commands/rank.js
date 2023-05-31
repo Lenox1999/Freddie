@@ -1,12 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const mongoose = require("mongoose");
-const ecolor = require("../util/embedColors.json")
 const canvacord = require("canvacord")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("rank")
-    .setDescription("🠞 Levelsystem: Level + XP"),
+    .setDescription("🠞 Levelsystem: Get your Level, XP and Rank"),
 
   async execute(interaction, client) {
     const User = mongoose.models.User;
@@ -54,7 +53,7 @@ module.exports = {
         let nextLvLDiff = LvLDiff - (levelList.levelObj[user.lvl + 1] - user.XP)
 
 
-        const background = 'https://cdn.discordapp.com/attachments/661359204572987393/1112849059649179798/RankC.png'
+        const background = 'https://cdn.discordapp.com/attachments/661359204572987393/1113004823319674942/bg.png'
         const rank = new canvacord.Rank()
           .setAvatar(interaction.member.displayAvatarURL({ size: 256 }))
           .setRank(currentRank)

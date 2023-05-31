@@ -73,7 +73,7 @@ client.on("guildCreate", (guild) => {
 
   let newGuildEmbed = new EmbedBuilder()
       .setColor(ecolor.TEXT)
-      .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112450026875146321/Thankyou.png")
+      .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1113023479890055219/thankyou.gif")
       .setTitle(`Danke..`)
       .setDescription(`
       *Krass, vielen Dank fürs hinzufügen unseres Bots auf den Discord! Das echt nett, dass du diesen Bot testet!

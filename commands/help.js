@@ -1,7 +1,6 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder,
-  Colors,
   ButtonBuilder,
   ButtonStyle,
   ActionRowBuilder,

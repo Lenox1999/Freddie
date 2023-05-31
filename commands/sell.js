@@ -1,11 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const mongoose = require("mongoose");
-const userNotRegistered = require('../util/userNotRegistered');
+const ecolor = require("../util/embedColors.json")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
-    .setDescription("🠞 Fishtrading: Become Coins for fish"),
+    .setDescription("🠞 Trading: Make Banana to Coin"),
   async execute(interaction, client) {
     const userId = interaction.member.id;
 
@@ -16,10 +16,6 @@ module.exports = {
       { _id: userId },
       "bananaAmmount coinAmmount name multiplier multiplierduration"
     );
-
-    if (!user) {
-      userNotRegistered(interaction, client);
-    }
 
     const exchange = await Exchange.findOne({ _id: "Exchange" }, "value");
     console.log(exchange);

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const mongoose = require("mongoose");
 const ecolor = require("../util/embedColors.json")
 
@@ -61,14 +61,14 @@ module.exports = {
               ∘ Banananas \`${bananas}\` 🍌${whenselling}
               ∘ Coins \`${coins}\` ${client.emojis.cache.find(emoji => emoji.name === "coins")} | *Verkaufe deine Bananen um Coins zu erhalten*
               ∘ Multiplier \`${multiplier}\`x | *Allgemein bekommst du mehr Coins*
-              ∘ Daily Streak \`${streak}\` ${client.emojis.cache.find(emoji => emoji.name === "daily")} | *Jeden Tag tägliche Belohnung abholen*
+              ∘ Daily Streak \`${streak}\` 🔥 | *Jeden Tag tägliche Belohnung abholen*
               `,
               inline: false
             }
           ])
           .setTimestamp();
 
-        interaction.reply({ embeds: [balembed]});
+        interaction.reply({ embeds: [balembed], ephemeral: true});
       });
   },
 };

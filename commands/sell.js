@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const mongoose = require("mongoose");
-const userNotRegistered = require('../util/userNotRegistered');
+const ecolor = require("../util/embedColors.json")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
-    .setDescription("🠞 Fishtrading: Become Coins for fish"),
+    .setDescription("🠞 Trading: Make Banana to Coin"),
   async execute(interaction, client) {
     const userId = interaction.member.id;
 
@@ -17,12 +17,7 @@ module.exports = {
       "bananaAmmount coinAmmount name multiplier multiplierduration"
     );
 
-    if (!user) {
-      userNotRegistered(interaction, client);
-    }
-
     const exchange = await Exchange.findOne({ _id: "Exchange" }, "value");
-    console.log(exchange);
 
     if (interaction.member.id === client.user.id) {
       return;
@@ -35,22 +30,21 @@ module.exports = {
     if (user.multiplier.value > 1 && Date.now() - user.multiplier.last <= 4 *60*60*1000) {
       multiplier = user.multiplier.value;
     }
-    console.log(multiplier)
 
     if (user.bananaAmmount === 0) {
       let sellErrorEmbed = new EmbedBuilder()
-        .setColor(Colors.Red)
+        .setColor(ecolor.DENY)
         .setAuthor({
           name: interaction.member.displayName,
           iconURL: interaction.member.displayAvatarURL(),
         })
-        .setTitle("\`ERROR: No fish..\`")
+        .setTitle("No Bananas..")
         .setDescription(
           `
-        *Wenn du Fische bekommen willst, dann schreibe etwas oder gehe mit jemanden reden ;)*
+        *Du guckst in dein Rucksack und merkst, dass du garkeine Bananen dabei hast.. Schade aber damit ist klar du musst dir wieder welche besorgen! Du kannst einfach **aktiv im Chat oder im Voice reden**, dabei bekommst dann Bananen. Wenn dir das immer noch zu wenige sind, dann Upgrade deine Gears mit \`/gears\` siehst du dann deine Gears und siehst den weiter Verlaufen..*
         `
         );
-      interaction.reply({ embeds: [sellErrorEmbed] });
+      interaction.reply({ embeds: [sellErrorEmbed], ephemeral: true });
       return;
     }
     const gainedCoins = Math.round(exchange.value * user.bananaAmmount * multiplier);
@@ -69,7 +63,7 @@ module.exports = {
       .join("");
 
     let sellEmbed = new EmbedBuilder()
-      .setColor(Colors.Green)
+      .setColor(ecolor.ACCEPT)
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.displayAvatarURL(),

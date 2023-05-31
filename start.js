@@ -73,7 +73,7 @@ client.on("guildCreate", (guild) => {
 
   let newGuildEmbed = new EmbedBuilder()
       .setColor(ecolor.TEXT)
-      .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112450026875146321/Thankyou.png")
+      .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1113023479890055219/thankyou.gif")
       .setTitle(`Danke..`)
       .setDescription(`
       *Krass, vielen Dank fürs hinzufügen unseres Bots auf den Discord! Das echt nett, dass du diesen Bot testet!
@@ -189,6 +189,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     lvl: Number,
     lastMonkeys: Number,
     inventory: Object,
+    rob: Object,
   });
   mongoose.model("User", userScheme);
 
@@ -218,7 +219,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
   // levelBuilder();
 
-  // Fisch-Wechselkurs generieren
+  // Bananen-Wechselkurs generieren
   const untilNextExchange = 43200000;
   setInterval(() => {
     let newExchange = Math.floor(Math.random() * (20 - 2) + 2 + 1);

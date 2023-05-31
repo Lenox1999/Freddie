@@ -1,2 +1,2 @@
--Überarbeiten von allen Commands mit neuen Design => altes System löschen (David weiß was gemeint ist!)
+-Slots, Spin, Top10 und README-Aufgabe machen (Für Davide!)
 - open command beenden

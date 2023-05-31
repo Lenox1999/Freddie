@@ -1,7 +1,6 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder,
-  Colors,
   AllowedMentionsTypes,
 } = require("discord.js");
 const mongoose = require("mongoose");
@@ -63,34 +62,29 @@ module.exports = {
       }
     }
 
-
     let finalString = [];
 
     let alreadyItems = [];
 
     for (const [key, value] of Object.entries(classObj)) {
       classObj[`${key}String`] = [`**${key.toUpperCase()}** \n`];
-      for (let i = 0; i <= classObj[key].length -1; i++) {
+      for (let i = 0; i <= classObj[key].length - 1; i++) {
         let e = classObj[key][i];
+        let itemCount = 1;
 
         if (alreadyItems.indexOf(e.name) !== -1) {
           continue;
         }
-
-        let itemCount = 1;
-
-
-        for (
-          let k = classObj[key][i] + 1;
-          k <= classObj[key].length -1;
-          k++
-        ) {
-          if (!classObj[key][k]) continue;
+        for (let k = i + 1; k <= classObj[key].length - 1; k++) {
+          if (!classObj[key][k]) {
+            continue;
+          }
           if (classObj[key][k].name === e.name) {
             itemCount += 1;
             alreadyItems.push(e.name);
           }
         }
+        alreadyItems.push(e.name);
         classObj[`${key}String`].push(`${itemCount}x ${e.name}\n`);
       }
       finalString.push(classObj[`${key}String`].join(""));
@@ -99,7 +93,6 @@ module.exports = {
     if (listOfRarities.length > 0) {
       finalString.push(`**Lootboxen**`, rarityString);
     }
-
 
     var invEmbed = new EmbedBuilder().setTitle("`Dein Inventar`").setAuthor({
       name: `${interaction.member.displayName}`,

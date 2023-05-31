@@ -189,6 +189,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
     lvl: Number,
     lastMonkeys: Number,
     inventory: Object,
+    rob: Object,
   });
   mongoose.model("User", userScheme);
 
@@ -218,7 +219,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
   // levelBuilder();
 
-  // Fisch-Wechselkurs generieren
+  // Bananen-Wechselkurs generieren
   const untilNextExchange = 43200000;
   setInterval(() => {
     let newExchange = Math.floor(Math.random() * (20 - 2) + 2 + 1);

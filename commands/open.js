@@ -138,7 +138,7 @@ module.exports = {
     }
 
     var listEmbed = new EmbedBuilder()
-      .setColor(ecolor.ACCEPT)
+      .setColor(ecolor.TEXT)
       .setTitle("Lootbox Inventory")
       .setThumbnail("https://cdn.discordapp.com/attachments/661359204572987393/1112825774827917342/lootchest.png")
       .setAuthor({ name: `${interaction.member.displayName}`, iconURL: interaction.member.displayAvatarURL() })

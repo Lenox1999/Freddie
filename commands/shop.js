@@ -5,20 +5,18 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
-  Colors,
   InteractionResponse
 } = require("discord.js");
 
 const createLootbox = require('../economy/lootbox');
-
 const mongoose = require("mongoose");
-
 const shopDB = require('../economy/shop.json');
+const ecolor = require("../util/embedColors.json")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("shop")
-    .setDescription("Hier kannst du Items kaufen und upgraden")
+    .setDescription("Hier kannst du Items kaufen oder upgraden")
     .addStringOption((option) => 
        option
         .setName("produkt")
@@ -37,11 +35,23 @@ module.exports = {
 
       ).setRequired(false)),
   async execute(interaction, client) {
+    let poortext = [
+      "Arm sein ist asozial.. (bitte als Joke nehmen)",
+      "Du bist pleite-",
+      "Tja arm sein ist kacke..",
+      "HAHAH DU HAST KEIN GELD",
+      "No money here- *Grillen zirpen*"
+    ]
 
-    let nomoney = new EmbedBuilder()
-      .setColor(Colors.DarkRed)
-      .setTitle("\`Du bist arm..\`")
-      .setDescription("Du hast nicht genügend Geld um diesen Multiplier zu erwerben!")
+    let poor = new EmbedBuilder()
+      .setColor(ecolor.DENY)
+      .setTitle(`*${poortext[Math.floor(Math.random() * poortext.length)]}*`)
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+
+    let maxlevel = new EmbedBuilder()
+      .setColor(ecolor.DENY)
+      .setTitle("Bereits ausgelevelt")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
       .setTimestamp();
 
     const User = mongoose.models.User;
@@ -57,78 +67,82 @@ module.exports = {
     const monkeys = user.gears.moremonkeys;
 
     let startembed = new EmbedBuilder()
-        .setColor(Colors.Blue)
+        .setColor(ecolor.TEXT)
         .setTitle("\`Shop\`")
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
         .setThumbnail(interaction.guild.iconURL())
         .setDescription(`*Hier kannst du deine Gears upgraden, Coin-Multiplier kaufen oder auch Lootboxen erwerben!*`)
 
     let gearsembed = new EmbedBuilder()
-        .setColor(Colors.Blue)
+        .setColor(ecolor.TEXT)
         .setTitle("Shop \`Gears Update\`")
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
         .setThumbnail(interaction.guild.iconURL())
         .setFields([
             {
-                name:`Plantage | Lvl __${banana.level}__ > __${banana.level + 1}__`,
-                value:`Kosten: ${shopDB.plantation["default-price"] * (user.gears.plantation.level +1)}`,
+                name:`**Plantage** | Lvl ${banana.level} > ${banana.level + 1}`,
+                value:`Kosten: ${shopDB.plantation["default-price"] * (user.gears.plantation.level +1)} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`Dünger | Lvl __${fertilizer.level}__ > __${fertilizer.level + 1}__`,
-                value:`Kosten: ${shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1)}`,
+                name:`**Dünger** | Lvl ${fertilizer.level} > ${fertilizer.level + 1}`,
+                value:`Kosten: ${shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1)} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`Affenbande | Lvl __${monkeys.level}__ > __${monkeys.level + 1}__`,
-                value:`Kosten: ${shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1)}`,
+                name:`**Affenbande** | Lvl ${monkeys.level} > ${monkeys.level + 1}`,
+                value:`Kosten: ${shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1)} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             }
         ])
 
     let multiplierembed = new EmbedBuilder()
-        .setColor(Colors.Blue)
+        .setColor(ecolor.TEXT)
         .setTitle("Shop \`Coin-Multiplier\`")
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
         .setThumbnail(interaction.guild.iconURL())
         .setFields([
             {
-                name:`1.5x Multiplier`,
-                value:`Kosten: ${shopDB["1.5x"].price}`,
+                name:`**1.5**x Multiplier`,
+                value:`Kosten: ${shopDB["1.5x"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`2x Multiplier`,
-                value:`Kosten: ${shopDB["2.0x"].price}`,
+                name:`**2**x Multiplier`,
+                value:`Kosten: ${shopDB["2.0x"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`3x Multiplier`,
-                value:`Kosten: ${shopDB["3.0x"].price}`,
+                name:`**3**x Multiplier`,
+                value:`Kosten: ${shopDB["3.0x"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             }
         ])
 
     let lootboxembed = new EmbedBuilder()
-        .setColor(Colors.Blue)
+        .setColor(ecolor.TEXT)
         .setTitle("Shop \`Lootboxen\`")
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
         .setThumbnail(interaction.guild.iconURL())
         .setFields([
             {
-                name:`Default Lootbox`,
-                value:`Kosten: ${shopDB["default"].price}`,
+                name:`**Default** Lootbox`,
+                value:`Kosten: ${shopDB["default"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`Rare Lootbox`,
-                value:`Kosten: ${shopDB["rare"].price}`,
+                name:`**Rare** Lootbox`,
+                value:`Kosten: ${shopDB["rare"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`Epic Lootbox`,
-                value:`Kosten: ${shopDB["epic"].price}`,
+                name:`**Epic** Lootbox`,
+                value:`Kosten: ${shopDB["epic"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             },
             {
-                name:`Mystical Lootbox`,
-                value:`Kosten: ${shopDB["mystical"].price}`,
+                name:`**Mystical** Lootbox`,
+                value:`Kosten: ${shopDB["mystical"].price} ${client.emojis.cache.find(emoji => emoji.name === "coins")}`,
                 inline: false
             }
         ])
@@ -165,47 +179,38 @@ module.exports = {
 
       if (id === "upgrade") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [gearsembed] });
+        interaction.editReply({ embeds: [gearsembed], ephemeral: true });
       } else if (id === "multiplier") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [multiplierembed] });
+        interaction.editReply({ embeds: [multiplierembed], ephemeral: true });
       } else if (id === "lootbox") {
         BI.deferUpdate();
-        interaction.editReply({ embeds: [lootboxembed] });
+        interaction.editReply({ embeds: [lootboxembed], ephemeral: true });
       }
     });
 
     collector.on("end", async () => {
       let shopTimeout = new EmbedBuilder()
-        .setColor(Colors.Red)
-        .setTitle("\`ERROR: Shop closed..\`")
+        .setColor(ecolor.DENY)
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+        .setTitle("\`Shop closed..\`")
         .setTimestamp();
 
-      interaction.editReply({ components: [], embeds: [shopTimeout] });
+      interaction.editReply({ components: [], embeds: [shopTimeout], ephemeral: true });
       return;
     });
 
   // means user wants to buy a product
   } else if (product === 'plantation' || product === 'fertilizer' || product === 'moremonkeys'){
-    let maxlevel = new EmbedBuilder()
-      .setColor(Colors.DarkRed)
-      .setTitle("\`Max. Level\`")
-      .setDescription("Du hast das maximale Level schon erreicht!")
-      .setTimestamp();
-    
-    let nomoney = new EmbedBuilder()
-      .setColor(Colors.DarkRed)
-      .setTitle("\`Du bist arm..\`")
-      .setDescription("Du hast nicht genügend Geld um dieses Upgrade zu erwerben!")
-      .setTimestamp();
-
     if (product === 'plantation') {
 
     if (user.gears.plantation.level >= shopDB.plantation["max-level"]) {
+      maxlevel.setDescription(`Leider hast du bei den **Plantagen bereits das maximale Level** erreicht. Auf der einen Seite Glückwunsch und auf der anderen Seite HAHHAHAHA`)
       interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
     } else if (user.coinAmmount < shopDB.plantation["default-price"] * (user.gears.plantation.level +1)) {
-      interaction.reply({embeds: [nomoney], ephemeral: true});
+      poor.setDescription(`Das **Plantagen Upgrade kostet leider zu viel** für dich. Gehe ein wenig aktiv in einen Voice Channel mit paar Friends oder schreibe etwas im Chat. Du kannst aber auch auf eigene Gefahr in die Lotterie gehen..`)
+      interaction.reply({embeds: [poor], ephemeral: true});
       return;
     }
 
@@ -217,9 +222,10 @@ module.exports = {
       "gears.plantation.threebanana": user.gears.plantation.threebanana += 1,
     }})
     let upgradefinish = new EmbedBuilder()
-      .setColor(Colors.Green)
-      .setTitle("\`UPGRADE\`")
-      .setDescription(`Deine Plantage wurde erfolgreich auf Level ${user.gears[product].level + 1} geupgradet.`)
+      .setColor(ecolor.ACCEPT)
+      .setTitle("PLANTAGEN UPGRADE")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+      .setDescription(`${user.gears[product].level - 1} >>> ${user.gears[product].level}`)
       .setTimestamp();
 
     interaction.reply({embeds: [upgradefinish]});
@@ -227,10 +233,12 @@ module.exports = {
     } else if (product === 'fertilizer') {
 
     if (user.gears.fertilizer.level == shopDB.fertilizer["max-level"]) {
+      maxlevel.setDescription(`Leider hast du bei dem **Dünger bereits das maximale Level** erreicht. Auf der einen Seite Glückwunsch und auf der anderen Seite HAHHAHAHA`)
       interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
     } else if (user.coinAmmount < shopDB.fertilizer["default-price"] * (user.gears.fertilizer.level +1)) {
-      interaction.reply({embeds: [nomoney], ephemeral: true});
+      poor.setDescription(`Das **Dünger Upgrade kostet leider zu viel** für dich. Gehe ein wenig aktiv in einen Voice Channel mit paar Friends oder schreibe etwas im Chat. Du kannst aber auch auf eigene Gefahr in die Lotterie gehen..`)
+      interaction.reply({embeds: [poor], ephemeral: true});
       return;
     }
     await User.updateOne({_id: interaction.member.id}, {$set: {
@@ -241,19 +249,22 @@ module.exports = {
 
     }})
     let upgradefinish = new EmbedBuilder()
-      .setColor(Colors.Green)
-      .setTitle("\`UPGRADE\`")
-      .setDescription(`Dünger wurde erfolgreich auf Level ${user.gears[product].level} geupgradet.`)
+      .setColor(ecolor.ACCEPT)
+      .setTitle("DÜNGER UPGRADE")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+      .setDescription(`${user.gears[product].level - 1} >>> ${user.gears[product].level}`)
       .setTimestamp();
 
     interaction.reply({embeds: [upgradefinish]});
     return;
     } else  if (product === 'moremonkeys') {
     if (user.gears.moremonkeys.level >= shopDB.moremonkeys["max-level"]) {
+      maxlevel.setDescription(`Leider sind deine Affen **bereits auf dem maximalen Level**. Auf der einen Seite Glückwunsch und auf der anderen Seite HAHHAHAHA`)
       interaction.reply({embeds: [maxlevel], ephemeral: true});
       return;
     } else if (user.coinAmmount < shopDB.moremonkeys["default-price"] * (user.gears.moremonkeys.level +1)) {
-      interaction.reply({embeds: [nomoney], ephemeral: true});
+      poor.setDescription(`Das **Affenbande Upgrade kostet leider zu viel** für dich. Gehe ein wenig aktiv in einen Voice Channel mit paar Friends oder schreibe etwas im Chat. Du kannst aber auch auf eigene Gefahr in die Lotterie gehen..`)
+      interaction.reply({embeds: [poor], ephemeral: true});
       return;
     }
 
@@ -263,9 +274,10 @@ module.exports = {
       "gears.moremonkeys.time": user.gears.moremonkeys.time -= 0.5,
     }})
     let upgradefinish = new EmbedBuilder()
-      .setColor(Colors.Green)
-      .setTitle("\`UPGRADE\`")
-      .setDescription(`Affenbande wurde erfolgreich auf Level ${user.gears[product].level} geupgradet.`)
+      .setColor(ecolor.ACCEPT)
+      .setTitle("AFFENBANDE UPGRADE")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+      .setDescription(`${user.gears[product].level - 1} >>> ${user.gears[product].level}`)
       .setTimestamp();
 
     interaction.reply({embeds: [upgradefinish]});
@@ -273,18 +285,15 @@ module.exports = {
     }
 
   } else if (product === '1.5x' || product === '2.0x' || product === '3.0x') {
-    let nomoney = new EmbedBuilder()
-      .setColor(Colors.DarkRed)
-      .setTitle("\`Du bist arm..\`")
-      .setDescription("Du hast nicht genügend Geld um diesen Multiplier zu erwerben!")
-      .setTimestamp();
-
     if (user.multiplier.last != 0) {
       let multiplier2 = new EmbedBuilder()
-      .setColor(Colors.DarkRed)
-      .setTitle("\`Laufender Multiplier\`")
-      .setDescription(`Dein jetztiger Multiplier muss erst auslaufen, bevor du dir einen neuen kaufen kannst.`)
-      .setTimestamp();
+        .setColor(ecolor.DENY)
+        .setTitle("Laufender Multiplier")
+        .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+        .setDescription(`Dein jetztiger Multiplier muss erst auslaufen, bevor du dir einen neuen kaufen kannst. 
+        
+        Ein Multiplier geht immer 4h also kannst du dir selber ausrechnen wie lange deiner noch geht.. Dazu kannst du einfach gucken, wenn dein Multiplier wieder bei **1**x ist!`)
+        .setTimestamp();
 
     interaction.reply({embeds: [multiplier2], ephemeral: true});
     return;
@@ -293,7 +302,8 @@ module.exports = {
     const price = shopDB[product].price;
 
     if (user.coinAmmount - price < 0) {
-      interaction.reply({embeds: [nomoney], ephemeral: true});
+      poor.setDescription(`Der **Multiplier kostet leider zu viel** für dich. Gehe ein wenig aktiv in einen Voice Channel mit paar Friends oder schreibe etwas im Chat. Du kannst aber auch auf eigene Gefahr in die Lotterie gehen..`)
+      interaction.reply({embeds: [poor], ephemeral: true});
       return;
     }
     
@@ -306,28 +316,46 @@ module.exports = {
          "multiplier.value": multiplier,
          "multiplier.last": Date.now(), 
     }})
+
+    let mb = [
+      "Das ging jetzt ins Geld, aber",
+      "Alter krass, dass wird dir viel bringen und das war jetzt unironisch, aber",
+      "Da ist das Geld weg, aber",
+      "DIREKT IN DIE LOTTERIE UND GRINDEN achso und",
+      "Nett hier. Aber waren Sie schon mal in Baden-Württemberg? Achso und"
+    ]
+
     let multiplierfinish = new EmbedBuilder()
-      .setColor(Colors.Green)
-      .setTitle("\`Multiplier gekauft\`")
-      .setDescription(`Dein Multiplier beträgt jetzt **${multiplier}**!`)
+      .setColor(ecolor.ACCEPT)
+      .setTitle("NEUER MULTIPLIER")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+      .setDescription(`${mb[Math.floor(Math.random() * mb.length)]} du hast jetzt ein Multiplier von **${multiplier}**x erworben.`)
       .setTimestamp();
 
-    interaction.reply({embeds: [multiplierfinish], ephemeral: true});
+    interaction.reply({embeds: [multiplierfinish]});
     return;
   } else if (product === 'default' || product === 'rare'  || product === 'epic' || product === 'mystical') {
     
 
     if (user.coinAmmount < shopDB[product].price) {
-      interaction.reply({embeds: [nomoney]})
+      poor.setDescription(`Die **Lootbox kostet leider zu viel** für dich. Gehe ein wenig aktiv in einen Voice Channel mit paar Friends oder schreibe etwas im Chat. Du kannst aber auch auf eigene Gefahr in die Lotterie gehen..`)
+      interaction.reply({embeds: [poor], ephemeral: true})
       return;
-    }     
+    }
 
     lootbox = await createLootbox(product, undefined)
 
     await User.updateOne({_id: interaction.member.id,}, {$set: {"coinAmmount": user.coinAmmount -= shopDB[product].price}})
     await User.updateOne({_id: interaction.member.id}, {$push: {"inventory.lootboxes": lootbox}} )
 
-    interaction.reply(`Eine ${product} Lootbox wurde deinem Inventar hinzugefügt`);
+    let lootboxfinish = new EmbedBuilder()
+      .setColor(ecolor.ACCEPT)
+      .setTitle("LOOTBOX ERWORBEN")
+      .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL() })
+      .setDescription(`Du hast die gerade eine **${product}** Lootbox gekauft.. Bist du schon gespannt, wie ein Bettlaken was da drin ist?`)
+      .setTimestamp();
+
+    interaction.reply({ embeds: [lootboxfinish] });
 
     return;
     /*

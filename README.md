@@ -36,6 +36,7 @@
 - /shop -> kaufe Bananenausrüstung und Items (Ohne Argument: Shop anzeigen, Mit Argument: bestimmtes item kaufen)
 - /inv -> Sehe deine benutzbaren und nicht benutzbaren Items
 - /use -> Benutze ein Item
+- /rob -> Versuche einen anderen User auszurauben. Allerdings schläft die Gerechtigkeit nie, du läufst immer Gefahr 30% deines Geldes als Strafe zu erhalten und für längere Zeit in Gewahrsam genommen zu werden, sodass du keine weiteren Straftaten begehen kannst. Wenn du allerdings erfolgreich bist, bekommst du 20% der Coins des von dir ausgeraubten Users. Mit jedem erfolgreichen Raub steigen allerdings die Wahrscheinlichkeit geschnappt zu werden und die darauf folgende Strafe, also sei achtsam wie du mit deiner Freiheit umgehst!
 
 ## Featureideen
 

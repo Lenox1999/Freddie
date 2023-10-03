@@ -66,13 +66,17 @@ module.exports = {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       let durationMsg = hours + "h " + minutes + "min " + seconds + "s";
-      interaction.reply(`${victim} darf erst in ${durationMsg} wieder ausgeraubt werden, noch wird er von der Polizei beschützt`);
+      interaction.reply(
+        `${victim} darf erst in ${durationMsg} wieder ausgeraubt werden, noch wird er von der Polizei beschützt`
+      );
     }
 
     // Wahrscheinlichkeit wird kreiert
     let odds = Math.random() * 100;
 
-    if (odds < 40) {
+    let neededOdds = 40 + user1.rob.robCount * 10;
+
+    if (odds < neededOdds) {
       // Raub nicht erfolgreich
       let criminalLoss = user1.coinAmmount * 0.3;
 
@@ -84,7 +88,7 @@ module.exports = {
         `Du wurdest geschnappt! Die Polizei nimmt dich fest! Um dich Freizukaufen wendest du ${criminalLoss} auf!`
       );
       return;
-    } else if (odds >= 40) {
+    } else if (odds >= neededOdds) {
       // Raub erfolgreich
       let victimLoss = user2.coinAmmount * 0.2;
 
@@ -106,6 +110,7 @@ module.exports = {
           $set: {
             coinAmmount: (user1.coinAmmount += victimLoss),
             "rob.lastRobbed": Date.now(),
+            "rob.robCount": (user1.rob.robCount += 1),
           },
         }
       );
